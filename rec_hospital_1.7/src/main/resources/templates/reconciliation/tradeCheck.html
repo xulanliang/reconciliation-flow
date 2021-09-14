@@ -1,0 +1,133 @@
+<div class="m-content-wrapper" >
+        <div class="table-content-wrap">
+		      <div class="row tool-box-content">
+		            <form class="form-inline" id="tradeCheckSearchForm">
+		            	<div class="form-group">
+							<input type="text" style="width: 150px;" class="form-control" data-name="code" id="tradeCheckTree" placeholder="所属机构"/>
+				        </div>
+				        <div class="form-group">
+				         	<label>支付商户流水号:</label>
+				         	<input type="text" class="form-control" placeholder="支付商户流水号" id="tradeCheck_businessNo" name="tradeCheck_businessNo"/>
+				        	<label>支付方流水号:</label>
+				         	<input type="text" class="form-control" placeholder="支付方流水号" id="tradeCheck_payNo" name="tradeCheck_payNo"/>
+				        	<label>his流水号:</label>
+				         	<input type="text" class="form-control" placeholder="his流水号" id="tradeCheck_hisFlowNo" name="tradeCheck_hisFlowNo"/>
+				         	<label>设备编码:</label>
+				         	<select class="form-control" id="tradeCheck_equipmentNo" name="tradeCheck_equipmentNo"><option value=""></option></select>
+				        </div>
+	                    <div class="form-group">
+	                    	<label for="beginTime">日期:</label>
+	                        <div class="input-group">
+	                           <div class="input-group-addon">
+	                               <i class="fa fa-calendar"></i>
+	                           </div>
+	                           <input AUTOCOMPLETE="off" type="text" class="form-control pull-right" name="beginTime">
+	                        </div>
+		                </div>
+	                    <div class="form-group m-btn">
+	                    	<button type="button" class="btn btn-primary"  onclick="app.admin.tradeCheck.search()">查询</button>
+	                    	<a onclick='app.admin.tradeCheck.importData()' class="btn btn-primary">导入</a>
+	                    	<a onclick='app.admin.tradeCheck.startRec()' class="btn btn-primary">对账</a>
+	                    </div>	             
+	                </form>
+		        </div>
+		        <div class="row">
+		       		<input type="hidden" th:value="${orgJSON}" id="tradeCheckOrgNo">
+		        	<input type="hidden" th:value="${typesJSON}" id="tradeCheckType">
+		        	<input type="hidden" th:value="${accountDate}" id="tradeCheckTime">
+					<table class="table table-bordered table-nomal " id="tradeCheckDataTable" data-striped="false">
+						<thead>
+							<tr>
+								<th data-formatter="app.admin.tradeCheck.number">序号</th>
+								<!-- <th data-field="id"  data-formatter="app.admin.tradeCheck.formatHandler">处理</th> -->
+								<th data-field="checkStateValue">状态</th>
+								<th data-field="businessNo">支付商户流水号</th>
+								<th data-field="payName" data-formatter="app.admin.tradeCheck.formatter">支付类型</th>
+								<th data-field="buinessType" data-formatter="app.admin.tradeCheck.formatter">业务类型</th>
+								<th data-field="patientNo">患者编码</th>
+								<th data-field="patientName">患者名称</th>
+								<th data-field="tradeName">交易类型</th>
+								<th data-field="tradeAmount" data-formatter="app.admin.tradeCheck.moneyFormat">金额(元)</th>
+								<th data-field="tradeTime">交易时间</th>
+								<th data-field="paymentRefundFlow">支付商户退费流水号</th>
+								<th data-field="orgNo" data-formatter="app.admin.tradeCheck.orgFormatter">机构名称</th>
+								<th data-field="tradeResult">交易结果</th>
+								<th data-field="paymentAccount">付款方账号</th>
+								<th data-field="equipmentNo">设备编码</th>
+							</tr>
+						</thead>
+					</table>
+		        </div>
+	</div>
+</div>
+<div class="modal fade" id="fileUp" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">请选择上传的文件</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" enctype ="multipart/form-data">
+					<input type="hidden"  name="id" />
+					<div class="form-group">
+						<label class="col-sm-3 control-label">微信支付账单:</label>
+						<div class="col-sm-9">
+							<input name="file" type="file" id="file1"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">微信退费账单:</label>
+						<div class="col-sm-9">
+							<input name="file" type="file" id="file2"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">选择微信商户号:</label>
+						<div class="col-sm-9">
+							<select class="form-control" id="wechatApplyId" name="wechatApplyId"></select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">支付宝支付账单:</label>
+						<div class="col-sm-9">
+							<input name="file" type="file" id="file3"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">支付宝退费账单:</label>
+						<div class="col-sm-9">
+							<input name="file" type="file" id="file4"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">选择支付宝商户号:</label>
+						<div class="col-sm-9">
+							<select class="form-control" id="alipayApplyId" name="alipayApplyId"></select>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" onclick="app.admin.tradeCheck.importSave()">保存</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="followLoading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">提示</h4>
+      </div>
+      <div class="modal-body">
+        请稍候。。。
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/admin/tradeCheck.js}"></script>
+<script>
+ app.admin.tradeCheck.init();
+</script>

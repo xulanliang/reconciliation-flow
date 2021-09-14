@@ -1,0 +1,132 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+	    <form class="form-inline m-search" id="orderSearchForm">
+			<div class="row tool-box-content">
+		    	<div class="form-group">
+		            <label class="search-label">所属机构：</label><div class="form-group no-margin">
+		             	<input type="text" class="form-control" id="orderOrgSelect" data-name="orgCode"/>
+		            </div>
+		        </div>
+		       <div class="form-group">
+	                 <label for="beginTime" class="search-label">选择日期：</label><div class="input-group">
+	                           <div class="input-group-addon">
+	                               <i class="fa fa-calendar"></i>
+	                           </div>
+	                           <input type="text" class="form-control" style="width: 220px;" onmousemove="this.style.cursor='pointer';"
+						id="orderTime" readonly="readonly"/>
+	                </div>
+	             </div>
+		         <div class="form-group m-btn">
+		          	<button type="button" class="btn btn-primary" onclick="app.admin.order.search(this)">查询</button>
+		          	<a data-toggle="collapse" data-parent="#orderSearch-search-box" href="#orderSearch-search-box"> 高级查询 <i class="fa fa-angle-down"></i></a>
+		         </div>
+		        <!-- <div class="form-group">
+		            <label>设备来源：</label>
+		            <select  class="selectpicker" name="platFormType"></select>
+		        </div> -->
+		        <div id="orderSearch-search-box" class="panel-collapse collapse ">
+		        	<div class="more-collapse-plan">
+				        <div class="form-group">
+				            <label class="search-label">支付类型：</label><select  class="selectpicker" name="payCode" ></select>
+				        </div>
+				        <div class="form-group">
+				            <label class="search-label">支付状态：</label><select  class="selectpicker" name="payState"></select>
+				        </div>
+				         <div class="form-group">
+				            <label class="search-label">订单状态：</label><select  class="selectpicker" name="orderState"></select>
+				        </div>
+				        <div class="form-group">
+				            <label class="search-label">退款状态：</label><select class="selectpicker" name="refundState"></select>
+				        </div>
+						<div class="form-group">
+				            <label class="search-label">订单号：</label><input type="text" class="form-control"  placeholder="订单号" name="orderNo"/>
+						</div>
+						<div class="form-group">
+				            <label class="search-label" style="width:120px">业务系统订单号：</label><input type="text" class="form-control"  placeholder="业务系统订单号" name="outTradeNo"/>
+						</div>
+				        <div class="form-group">
+				            <label class="search-label" style="width:130px">第三方平台订单号：</label><input type="text" class="form-control"  placeholder="第三方平台订单号" name="tsn"/>
+						</div>
+					</div>
+				</div>
+			</div>
+	    </form>
+	<div class="row">
+		<input type="hidden" th:value="${accountDate}" id="accountDate">
+		<table class="table table-bordered table-nomal" id="orderDataTable" data-striped="false"  th:attr="typesJSON=${typesJSON},orgJSON=${orgJSON}">
+			<thead>
+				<tr>
+					<th data-formatter="app.admin.order.number" class="text-center" data-width="50">序号</th>
+					<th data-field="orgCode" data-sortable="true" data-formatter="app.admin.order.formatOrg">机构名称</th>
+					<th data-field="orderTime" data-sortable="true">订单时间</th>
+					<th data-field="payName" data-width="100" data-align="center">支付类型</th>
+					<th data-field="systemCode" data-sortable="true" data-formatter="app.admin.order.formatType">系统名称</th>
+					<th data-field="orderNo" data-sortable="true">订单号</th>
+					<th data-field="orderAmount" data-sortable="true" data-formatter="app.admin.order.moneyFormat">订单金额(元)</th>
+					<th data-field="payStateValue" data-sortable="true">支付状态</th>
+					<th data-field="id" data-width="100" data-align="center" data-formatter="app.admin.order.formatOpt">操作</th>
+<!-- 					<th data-field="id" data-align="center" data-width="100" data-formatter="app.admin.order.formatOpt">商品查看</th>
+					<th data-field="orderTime" data-width="155" data-align="center">订单时间</th>
+					<th data-field="systemCode" data-width="100" data-align="center" data-formatter="app.admin.order.formatType">系统名称</th>
+					<th data-field="orgCode" data-width="200" data-align="center" data-formatter="app.admin.order.formatOrg">机构名称</th>
+					<th data-field="uid" data-width="100" data-align="center">用户id</th>
+					<th data-field="orderNo" data-width="250" data-align="center">订单号</th>
+					<th data-field="outTradeNo" data-width="250" data-align="center">业务系统订单号</th>
+					<th data-field="platFormTypeValue" data-width="150"  data-align="center">设备来源</th>
+					<th data-field="contactName" data-width="150"  data-align="center">联系人</th>
+					<th data-field="contactMobile" data-width="200" data-align="center">手机号</th>
+					<th data-field="orderAmount" data-width="100" data-align="center" data-formatter="app.admin.order.moneyFormat">订单金额(元)</th>
+					<th data-field="orderStateValue" data-width="100" data-align="center">订单状态</th>
+					<th data-field="payName" data-width="100" data-align="center">支付类型</th>
+					<th data-field="payAmount" data-width="100" data-align="center" data-formatter="app.admin.order.moneyFormat">支付金额</th>
+					<th data-field="payStateValue" data-width="100" data-align="center">支付状态</th>
+					<th data-field="tsn" data-width="250" data-align="center">第三方平台订单号</th>
+					<th data-field="refundAmount" data-width="100" data-align="center" data-formatter="app.admin.order.moneyFormat">退款金额</th>
+					<th data-field="refundStateValue" data-width="100" data-align="center">退款状态</th> -->
+				</tr>
+			</thead>
+		</table>
+	</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="orderInfoDlg" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">商品详情</h4>
+			</div>
+			
+			<div class="modal-body m-form-detail-body">
+			<!-- <div class="modal-body"> -->
+			
+				<div style="margin-top:5px;">
+					<dl class="dl-horizontal" form="detail">
+						<dt>机构名称：</dt><dd data-name="orgCode"></dd>
+						<dt>系统名称：</dt><dd data-name="systemCode"></dd>
+<!-- 						<dt>用户ID：</dt><dd data-name="uid"></dd> -->
+						<dt>订单号：</dt><dd data-name="orderNo"></dd>
+						<dt>业务系统订单号：</dt><dd data-name="outTradeNo"></dd>
+						<dt>第三方平台订单号：</dt><dd data-name="tsn"></dd>
+<!-- 						<dt>设备来源：</dt><dd data-name="platFormType"></dd> -->
+<!-- 						<dt>联系人：</dt><dd data-name="contactName"></dd> -->
+<!-- 						<dt>手机号：</dt><dd data-name="contactMobile"></dd> -->
+						<dt>订单金额：</dt><dd data-name="orderAmount"></dd>
+						<dt>订单状态：</dt><dd data-name="payStateValue"></dd>
+						<dt>支付类型：</dt><dd data-name="payName"></dd>
+						<dt>支付金额：</dt><dd data-name="payAmount"></dd>
+						<dt>退款金额：</dt><dd data-name="refundAmount"></dd>
+						<dt>退款状态：</dt><dd data-name="refundState"></dd>
+					</dl>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div> 
+
+<script type="text/javascript" th:src="@{/assets/js/admin/order.js}"></script>

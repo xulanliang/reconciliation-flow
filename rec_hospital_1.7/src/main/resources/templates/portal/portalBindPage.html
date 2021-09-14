@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Login Form</title>
+    <style type="text/css">
+    body {
+  margin:0;
+  overflow: hidden;
+}
+
+.login {
+  width:400px;
+  font-size: 16px;
+  position: absolute;
+  top:20%;
+  left:40%;
+}
+
+.login-header,
+.login p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.login-triangle {
+  width: 0;
+  margin-right: auto;
+  margin-left: auto;
+  border: 12px solid transparent;
+  border-bottom-color: #2196f3;
+}
+
+.login-header {
+  background: #2196f3;
+  padding: 20px;
+  font-size: 1.4em;
+  font-weight: normal;
+  text-align: center;
+  text-transform: uppercase;
+  color: #fff;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.login-header-tip {
+  background: #fff;
+  padding: 15px 0;
+  font-size: 0.8em;
+  font-weight: normal;
+  text-align: center;
+  text-transform: uppercase;
+  border-radius: 30px;
+}
+
+.login-container {
+  background: #fff;
+  padding: 12px;
+  border-top: 0;
+  border:1px solid #2196f3;
+    border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.login p {
+  padding: 12px;
+  position: relative;
+}
+
+.login input {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  border-width: 1px;
+  border-style: solid;
+  padding: 16px;
+  outline: 0;
+  font-family: inherit;
+  font-size: 0.95em;
+  border: 0;
+  border-bottom: 1px solid;
+}
+
+.login input[type="text"],
+.login input[type="password"] {
+  background: #fff;
+  border-color: #bbb;
+  color: #555;
+}
+
+.login input[type="text"]:focus,
+.login input[type="password"]:focus {
+  border-color: #888;
+}
+
+.login input[type="submit"] {
+  background: #2196f3;
+  border-color: transparent;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.login input[type="submit"]:hover {
+  background: #17c;
+}
+
+.login input[type="submit"]:focus {
+  border-color: #05a;
+}
+
+.login input[type="button"] {
+  background: #2196f3;
+  border-color: transparent;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.login input[type="button"]:hover {
+  background: #17c;
+}
+
+.login input[type="button"]:focus {
+  border-color: #05a;
+}</style>
+</head>
+<body>
+    <div class="login">
+        <h2 class="login-header-tip">使用您的帐号与<span style="color:#2196f3;font-size:1.2em;"> 统一门户 </span>绑定，实现统一登录。</h2>
+        <div class="login-triangle"></div>
+        <h2 class="login-header">运维管理系统</h2>
+        <form class="login-container"  id="bindForm" action="">
+            <p><input type="text" name="username" placeholder="帐号" /></p>
+            <p><input type="password" name="password" placeholder="密码" /></p>
+            <!-- 不用验证码可以删除以下 -->
+            <!--<p>
+                <input type="text" placeholder="验证码" />
+                <span id="codeBox" style="position: absolute;top:8px;right:13px;width:100px;height:36px;cursor: pointer;">
+								<img src="https://passport.baidu.com/cgi-bin/genimage?njG7c06f5d3e7c3f549025114c45b012d8aa6c65b0688048980"
+								 onclick="this.src='https://passport.baidu.com/cgi-bin/genimage?time='+new Date().getTime()"/>
+								</span>
+            </p>-->
+            <!-- 不用验证码可以删除以上 -->
+
+            <div class="login-error" id="JS_loginerror">
+                <p style="color:red;text-align: center;">
+                <span id='errorText' text=""></span>
+                </p>
+            </div>
+
+            <p><input id="bindSubmit" type="button" value="授权并登录" /></p>
+            <input type="hidden" name="userId" id="bindUserId" th:value="${userId}"  />
+            <input type="hidden" name="appId" id="bindAppId" th:value="${appId}" />
+        </form>
+    </div>
+    <div id="svgbg"></div>
+    <script src="/assets/js/trianglify.min.js"></script>
+    <script src="/assets/js/jquery-1.11.1.min.js"></script>
+    <script>
+        function bgInitBind() {
+            var pattern = Trianglify({
+                variance: "1",
+                seed: '3o5fh',
+                x_colors: 'random',
+                cell_size: 10,
+                width: window.innerWidth,
+                height: window.innerHeight
+            });
+            document.getElementById("svgbg").appendChild(pattern.canvas());
+        }
+        bgInitBind();
+        window.resize = function() {
+            bgInitBind();
+        }
+
+        $("#bindSubmit").click(function () {
+            $.ajax({
+                url: "/api/portal/bind",
+                type:"post",
+                dataType:"json",
+                data:$("#bindForm").serialize(),
+                success:function (data) {
+                    if(data.code==0){
+                        $("#errorText").text("绑定成功");
+                        $("input[name='username']").val("");
+                        $("input[name='password']").val("");
+                    }else{
+                        $("#errorText").text(data.message);
+                    }
+                }
+
+            })
+        });
+
+
+    </script>
+</body>
+
+</html>

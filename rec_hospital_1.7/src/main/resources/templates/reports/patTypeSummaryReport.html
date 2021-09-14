@@ -1,0 +1,91 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+	    <div class="row tool-box-content">
+			<form class="form-inline" id="patTypeSummarySearchForm">
+				<div style="min-width:1550px;" class="row tool-box-content">
+					<div class="form-group">
+						<label>所属机构:</label>
+					</div>
+					<div class="form-group">
+						<input type="text" style="width: 280px;" class="form-control" data-name="code" id="patTypeSummaryTree"/>
+					</div>
+					<div class="form-group">
+						<div class="form-group">
+							<label>开始时间:</label>
+						</div>
+						<div class="input-group">
+							<input AUTOCOMPLETE="off" type="text" class="form-control pull-right"
+								placeholder="开始时间" name="startTime">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="endTime">结束时间：</label>
+						<div class="input-group">
+							<input AUTOCOMPLETE="off" type="text" style="width: 200px"
+								class="form-control pull-right" placeholder="结束时间" name="endTime">
+						</div>
+					</div>
+					<div class="form-group">
+						<button type="button" class="btn btn-primary"
+							onclick="app.admin.patTypeSummaryReport.search()">查询</button>
+						<button id="btn_add" type="button" class="btn btn-success"
+							onclick="app.admin.patTypeSummaryReport.exportData()">导出</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="row">
+			<input type="hidden" th:value="${orgJSON}" id="patTypeOrgNo">
+	       	<input type="hidden" th:value="${typesJSON}" id="patTypeType">
+	       	<input type="hidden" th:value="${tradeDate}" id="patTypeDate">
+			<table class="table table-bordered table-nomal" id="patTypeSummaryDataTable" data-striped="false">
+		        <thead>
+		          <tr>
+					<th data-valign="middle" data-width="1600" data-align="center" colspan="16" name="tableTitle"></th>
+				  </tr>
+		          <tr>
+		            <th data-valign="middle" data-width="200" data-align="center" colspan="2" data-tableexport-colspan="2"></th>
+		            <th data-valign="middle" data-width="200"data-align="center" colspan="2" data-tableexport-colspan="2">微信</th>
+		            <th data-valign="middle" data-width="200" data-align="center" colspan="2" data-tableexport-colspan="2">支付宝</th>
+		            <th data-valign="middle" data-width="200" data-align="center" colspan="2" data-tableexport-colspan="2">银联</th>
+		            <th data-valign="middle" data-width="200" data-align="center" colspan="2" data-tableexport-colspan="2">现金</th>
+		            <th data-valign="middle" data-width="200" data-align="center" colspan="2" data-tableexport-colspan="2">聚合支付</th>
+		            <th data-valign="middle" data-width="200" data-align="center" colspan="2" data-tableexport-colspan="2">其他</th>
+		            <th data-valign="middle" data-width="200" data-align="center" colspan="2" data-tableexport-colspan="2">合计</th>
+		          </tr>
+		          <tr>
+		            <th data-field="source" data-align="center" data-width="100" data-cell-style="app.admin.patTypeSummaryReport.setBold">来源</th>
+		            <th data-field="patType" data-align="center" data-width="100" data-cell-style="app.admin.patTypeSummaryReport.setBold">类型</th>
+		            
+		            <th data-field="wechatCount" data-align="center" data-width="100" data-cell-style="app.admin.patTypeSummaryReport.setBold">笔数</th>
+		            <th data-field="wechatPayAmount" data-align="center" data-width="100" data-cell-style="app.admin.patTypeSummaryReport.setBold" data-formatter="app.admin.patTypeSummaryReport.moneyFormat">金额</th>
+		            
+		            <th data-field="aliPayCount" data-align="center" data-width="100" data-cell-style="app.admin.patTypeSummaryReport.setBold">笔数</th>
+		            <th data-field="aliPayPayAmount" data-align="center" data-width="100" data-cell-style="app.admin.patTypeSummaryReport.setBold" data-formatter="app.admin.patTypeSummaryReport.moneyFormat">金额</th>
+		            
+		            <th data-field="bankCount" data-align="center" data-width="100" data-cell-style="app.admin.patTypeSummaryReport.setBold">笔数</th>
+		            <th data-field="bankPayAmount" data-align="center" data-width="100" data-cell-style="app.admin.patTypeSummaryReport.setBold" data-formatter="app.admin.patTypeSummaryReport.moneyFormat">金额</th>
+		            
+		            <th data-field="cashCount" data-align="center" data-width="100" data-cell-style="app.admin.patTypeSummaryReport.setBold">笔数</th>
+		            <th data-field="cashPayAmount" data-align="center" data-width="100" data-cell-style="app.admin.patTypeSummaryReport.setBold" data-formatter="app.admin.patTypeSummaryReport.moneyFormat">金额</th>
+		            
+		            <th data-field="polyCount" data-align="center" data-width="100" data-cell-style="app.admin.patTypeSummaryReport.setBold">笔数</th>
+		            <th data-field="polyPayAmount" data-align="center" data-width="100" data-cell-style="app.admin.patTypeSummaryReport.setBold" data-formatter="app.admin.patTypeSummaryReport.moneyFormat">金额</th>
+		            
+		            <th data-field="otherCount" data-align="center" data-width="100" data-cell-style="app.admin.patTypeSummaryReport.setBold">笔数</th>
+		            <th data-field="otherPayAmount" data-align="center" data-width="100" data-cell-style="app.admin.patTypeSummaryReport.setBold" data-formatter="app.admin.patTypeSummaryReport.moneyFormat">金额</th>
+		            
+		            <th data-field="count" data-align="center" data-width="100" data-cell-style="app.admin.patTypeSummaryReport.setBold">笔数</th>
+		            <th data-field="payAmount" data-align="center" data-width="100" data-cell-style="app.admin.patTypeSummaryReport.setBold" data-formatter="app.admin.patTypeSummaryReport.moneyFormat">金额</th>
+		          </tr>
+		        </thead>
+		    </table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/reports/patTypeSummaryReport.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/reports.css}">
+<script>
+//初始化
+app.admin.patTypeSummaryReport.init();
+</script> 

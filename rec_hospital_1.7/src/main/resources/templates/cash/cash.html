@@ -1,0 +1,65 @@
+<div class="m-content-wrapper" >
+        <div class="table-content-wrap">
+		      <div class="row tool-box-content">
+		            <form class="form-inline" id="cashSearchForm">
+		            	<div class="form-group">
+							<input type="text" style="width: 150px;" class="form-control" data-name="code" id="cashTree" placeholder="所属机构"/>
+				        </div>
+	                    <div class="form-group">
+	                    	<label>业务类型:</label><select class="form-control" id="cash_businessType" name="cash_businessType"></select>	                       
+	                    	<input type="text" class="form-control" id="cash_cashier" name="cash_cashier" placeholder="收费员"/>
+	                    	<input type="text" class="form-control" id="cash_sysSerial" name="cash_sysSerial" placeholder="支付方流水号"/>
+		                </div>
+		                <div class="form-group">
+		                	<label for="beginTime">开始时间:</label>
+	                        <div class="input-group">
+	                           <div class="input-group-addon">
+	                               <i class="fa fa-calendar"></i>
+	                           </div>
+	                           <input AUTOCOMPLETE="off" type="text" class="form-control pull-right" placeholder="开始时间" name="beginTime">
+	                        </div>
+	                         <label for="endTime">结束时间:</label>
+	                       		<div class="input-group">
+		                           <div class="input-group-addon">
+		                               <i class="fa fa-calendar"></i>
+		                           </div>
+		                           <input AUTOCOMPLETE="off" type="text" class="form-control pull-right"  placeholder="结束时间" name="endTime">
+		                       </div>
+		                </div>
+	                    <div class="form-group m-btn">
+	                    	<button type="button" class="btn btn-primary"  onclick="app.admin.cash.search()">查询</button>
+	                    	<a onclick='app.admin.cash.exportData()' class="btn btn-primary">导出</a>
+	                    </div>	             
+	                </form>
+		        </div>
+		        
+		        <div class="row">
+		        	<input type="hidden" th:value="${orgJSON}" id="cashOrgNo">
+		        	<input type="hidden" th:value="${typesJSON}" id="cashType">
+		        	<input type="hidden" th:value="${cashCode}" id="cash_payType">
+		        	<input type="hidden" th:value="${org}" id="cash_dataSource">
+					<table class="table table-bordered table-nomal " id="cashDataTable" data-striped="false">
+						<thead>
+							<tr>
+								<th data-formatter="app.admin.cash.number">序号</th>
+								<th data-field="tradeDatatime">账单时间</th>
+								<th data-field="orgNo"  data-formatter="app.admin.cash.orgFormatter">机构名称</th>
+								<th data-field="tradeCode" data-formatter="app.admin.cash.formatter">交易类型</th>
+								<th data-field="payBusinessType" data-formatter="app.admin.cash.formatter">业务类型</th>
+								<th data-field="payType" data-formatter="app.admin.cash.formatter">支付类型</th>
+								<th data-field="patientName">客户名称</th>
+								<th data-field="custIdentifyType" data-formatter="app.admin.cash.formatter">客户标识</th>
+								<th data-field="payFlowNo">支付方流水号</th>
+								<th data-field="payAmount" data-formatter="app.admin.cash.moneyFormat">金额(元)</th>
+								<th data-field="cashier">收费员</th>
+								<th data-field="paySource" data-formatter="app.admin.cash.formatter">支付来源</th>
+							</tr>
+						</thead>
+					</table>
+		        </div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/cash/cash.js}"></script>
+<script>
+ app.admin.cash.init();
+</script>

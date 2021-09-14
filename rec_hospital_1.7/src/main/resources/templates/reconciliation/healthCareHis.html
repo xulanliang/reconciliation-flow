@@ -1,0 +1,199 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<form class="form-inline m-search" id="healthCareHisSearchForm">
+			<div class="row tool-box-content">
+				<div class="form-group">
+					<label class="search-label">所属机构：</label><div class="form-group no-margin">
+						<input type="text" class="form-control" data-name="orgNo"
+							name="orgNoTree" />
+					</div>
+				</div>
+				<div class="form-group">
+                	<label for="beginTime"  class="search-label">选择日期：</label>
+                	<div class="input-group">
+						<input AUTOCOMPLETE="off" type="text"
+							class="form-control pull-right" placeholder="对账时间"
+							name="startTime" id="healthCareHisTime" readonly="readonly">
+					</div>
+                 </div>
+				
+				<div class="form-group  m-btn">
+					<button type="button" class="btn btn-primary"
+						onclick="app.admin.healthCareHis.search(null,null,this)">查询</button>
+					<button id="btn_add" type="button" class="btn btn-success"
+						onclick="app.admin.healthCareHis.exportData()">导出</button>
+					<a data-toggle="collapse" data-parent="#healthCareHisDedailed-search-box" 
+						href="#healthCareHisDedailed-search-box">高级查询 <i class="fa fa-angle-down"></i></a>
+				</div>
+				<div id="healthCareHisDedailed-search-box" class="panel-collapse collapse ">
+					<div class="more-collapse-plan">
+						<div class="form-group">
+							<label class="search-label">交易类型：</label><select class="form-control" name="operationType" class="selectpicker" ></select>
+						</div>
+						<div class="form-group">
+							<label class="search-label">医保类型：</label><select class="form-control" name="healthcareTypeCode" class="selectpicker"></select>
+						</div>
+						<div class="form-group">
+							<label class="search-label">支付方流水号：</label><input type="text" class="form-control"	name="payFlowNo">
+						</div>
+						<div class="form-group">
+							<label class="search-label">业务周期号：</label><input type="text" class="form-control" name="businessCycleNo">
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+<!-- 			<form class="form-inline m-search" id="healthCareHisSearchForm">
+				<div class="row tool-box-content">
+					<div class="form-group">
+						<label class="search-label">所属机构：</label><div class="form-group no-margin">
+							<input type="text" class="form-control" data-name="orgNo"
+								name="orgNoTree" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="search-label">交易类型：</label><select class="form-control"  style="width: 220px"
+							name="operationType" class="selectpicker" multiple="multiple"></select>
+					</div>
+					<div class="form-group">
+						<label class="search-label">医保类型：</label><select class="form-control" style="width: 220px"
+							name="healthcareTypeCode" class="selectpicker"
+							multiple="multiple"></select>
+					</div>
+					<div class="form-group">
+						<label class="search-label">支付方流水号：</label><input type="text" class="form-control"
+							name="payFlowNo">
+					</div>
+					<div class="form-group">
+						<label class="search-label">业务周期号：</label><input type="text" class="form-control"
+							name="businessCycleNo">
+					</div>
+
+					<div class="form-group">
+						<label class="search-label">开始时间：</label><input AUTOCOMPLETE="off" type="text"
+							class="form-control pull-right" placeholder="开始时间"
+							name="beginTime">
+					</div>
+					<div class="form-group">
+						<label class="search-label" for="endTime">结束时间：</label><input AUTOCOMPLETE="off"
+							type="text" class="form-control pull-right"
+							placeholder="结束时间" name="endTime">
+					</div>
+					<div class="form-group  m-btn">
+						<button type="button" class="btn btn-primary"
+							onclick="app.admin.healthCareHis.search(null,null)">查询</button>
+						<button id="btn_add" type="button" class="btn btn-success"
+							onclick="app.admin.healthCareHis.exportData()">导出</button>
+					</div>
+
+				</div>
+			</form> -->
+		<div class="row">
+			<input type="hidden" th:value="${orgJSON}" id="healthCareHisOrgNo">
+			<input type="hidden" th:value="${typesJSON}" id="healthCareHisType">
+			<table class="table table-bordered table-nomal"
+				id="healthCareHisDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-formatter="app.admin.healthCareHis.number" class="text-center" data-width="50">序号</th>
+						<th data-field="orgNo" data-formatter="app.admin.healthCareHis.orgFormatter" data-sortable="true">机构名称</th>
+						<th data-field="tradeDatatime" data-sortable="true">账单日期</th>
+						<th data-field="operationType" data-formatter="app.admin.healthCareHis.formatter" data-sortable="true">交易类型</th>
+						<th data-field="payFlowNo" data-sortable="true">支付方流水号</th>
+						<!-- TODO 字段名称待确认-->
+						<th data-field="" data-sortable="true">医保电脑号</th>
+						<th data-field="patientName" data-sortable="true">患者姓名</th>
+						<th data-field="costAll" data-formatter="app.admin.healthCareHis.moneyFormat" data-sortable="true">医疗费总额(元)</th>
+						<th data-field="costAccount" data-formatter="app.admin.healthCareHis.moneyFormat" data-sortable="true">账户支付金额(元)</th>
+						<th data-field="costWhole" data-formatter="app.admin.healthCareHis.moneyFormat" data-sortable="true">统筹支付金额(元)</th>
+						<th data-field="" data-width="100" data-align="center" data-formatter="app.admin.healthCareHis.formatOpt">操作</th>
+<!-- 						<th data-formatter="app.admin.healthCareHis.number"
+							data-width="50">序号</th>
+						<th data-field="tradeDatatime">账单日期</th>
+						<th data-field="orgNo"
+							data-formatter="app.admin.healthCareHis.orgFormatter"
+							data-width="200">机构名称</th>
+						<th data-field="operationType"
+							data-formatter="app.admin.healthCareHis.formatter"
+							data-width="100">交易类型</th>
+						<th data-field="payFlowNo" >支付方流水号</th>
+						<th data-field="healthcareTypeCode"
+							data-formatter="app.admin.healthCareHis.formatter"
+							data-width="150">医保类型</th>
+						<th data-field="businessCycleNo">业务周期号</th>
+						<th data-field="costAll" "
+							data-formatter="app.admin.healthCareHis.moneyFormat">医疗费总额</th>
+						<th data-field="costBasic" 
+							data-formatter="app.admin.healthCareHis.moneyFormat">基本医疗费用</th>
+						<th data-field="costAccount" 
+							data-formatter="app.admin.healthCareHis.moneyFormat">账户支付金额</th>
+						<th data-field="costCash" 
+							data-formatter="app.admin.healthCareHis.moneyFormat">现金支付金额</th>
+						<th data-field="costWhole" 
+							data-formatter="app.admin.healthCareHis.moneyFormat">统筹支付金额</th>
+						<th data-field="costRescue" 
+							data-formatter="app.admin.healthCareHis.moneyFormat">救助基金支付金额</th>
+						<th data-field="costSubsidy" 
+							data-formatter="app.admin.healthCareHis.moneyFormat">补助支付金额</th> -->
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="healthCareHisLoading" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">提示</h4>
+			</div>
+			<div class="modal-body">请稍候。。。</div>
+		</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="healthCareHisDedailedDlg" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">详情</h4>
+			</div>
+			<div class="modal-body m-form-detail-body" style="height:500px;">
+				<dl class="dl-horizontal" form="detail">
+					<dt>账单日期</dt><dd data-name="tradeDatatime"></dd>
+					<dt>机构名称</dt><dd data-name="orgNo"></dd>
+					<dt>交易类型</dt><dd data-name="operationType"></dd>
+					<dt>支付方流水号</dt><dd data-name="payFlowNo"></dd>
+					<!--<dt>医保类型</dt><dd data-name="healthcareTypeCode"></dd>-->
+					<dt>业务周期号</dt><dd data-name="businessCycleNo"></dd>
+					<dt>医疗费总额(元) </dt><dd data-name="costAll"></dd>
+					<dt>基本医疗费用(元)</dt><dd data-name="costBasic"></dd>
+					<dt>账户支付金额(元)</dt><dd data-name="costAccount"></dd>
+					<dt>现金支付金额(元)</dt><dd data-name="costCash"></dd>
+					<dt>统筹支付金额(元)</dt><dd data-name="costWhole"></dd>
+					<dt>救助基金支付金额(元)</dt><dd data-name="costRescue"></dd>
+					<dt>补助支付金额(元)</dt><dd data-name="costSubsidy"></dd>
+				</dl>				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"	th:src="@{/assets/js/recon/healthCareHis.js}"></script>
+<script th:inline="javascript">
+
+////获取后台传递的值
+var typesJSON = [[${typesJSON}]];
+var orgJSON = [[${orgJSON}]];
+var accountDate = [[${accountDate}]];
+
+//初始化
+app.admin.healthCareHis.init(typesJSON,orgJSON,accountDate);
+ 
+ 
+</script>

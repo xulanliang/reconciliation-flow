@@ -1,0 +1,64 @@
+<!-- 市二渠道数据报表-->
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row tool-box-content">
+               <form class="form-inline" id="billDataReportsSearchForm">
+                   <div class="form-group">
+               	   		<label>所属机构:</label>
+	                   <div class="form-group">
+	                       <input type="text" style="width:280px;" class="form-control" data-name="orgCode" id="summaryByPayBusinessTypeOrgSelect"/>
+	                   </div>
+               	   </div>
+                   <div class="form-group">
+						<div class="form-group">
+							<label>选择日期:</label>
+						</div>
+						<div class="input-group">
+	                		 <input type="text" class="form-control" style="width: 220px;" onmousemove="this.style.cursor='pointer';"
+		                 		id="billDataTime" readonly="readonly"/>
+						</div>
+					</div>
+                   <div class="form-group m-btn">
+                     <button type="button" class="btn btn-primary" onclick="app.admin.ReportsPayBusinessType.search(this)">查询</button>
+                     <button type="button" class="btn btn-success" onclick="app.admin.ReportsPayBusinessType.exportList()">导出</button>
+                   </div>
+               </form>
+        </div>
+		<div class="row">
+			<div class="tableTitleArea"><span style="font-size: 18px;">渠道数据汇总报表<span style="font-size: 14px;" id="remark"></span></span></div>
+			<table class="table table-bordered table-nomal" id="billDataReportsDataTable" data-striped="false">
+				<thead>
+					<!-- <tr>
+						<th data-valign="middle" data-width="1200" colspan="13" name="tableTitle"
+							 class="tableExcelDisplayArea"></th>
+					</tr> -->
+					<tr>
+						<th data-field="Cashiera" data-width="100" data-formatter="app.admin.ReportsPayBusinessType.normal">收费员(渠道)</th>
+					    <th data-field="countBill" data-width="100" data-formatter="app.admin.ReportsPayBusinessType.normal">笔数(渠道)</th>
+						<th data-field="payAmountBill" data-width="100" data-formatter="app.admin.ReportsPayBusinessType.moneyFormat">渠道金额(元)</th>
+					    <th data-field="bankBill" data-width="100" data-formatter="app.admin.ReportsPayBusinessType.normal">银行卡(渠道)元</th>
+						<th data-field="wechatBill" data-width="100" data-formatter="app.admin.ReportsPayBusinessType.moneyFormat">微信(渠道)元</th>
+						<th data-field="alipayBill" data-width="100" data-formatter="app.admin.ReportsPayBusinessType.normal">支付宝(渠道)元</th>
+
+						<th data-field="Cashierb" data-width="100" data-formatter="app.admin.ReportsPayBusinessType.normal">收费员(His)</th>
+					    <th data-field="countHis" data-width="100" data-formatter="app.admin.ReportsPayBusinessType.normal">笔数(His)</th>
+						<th data-field="payAmountHis" data-width="100" data-formatter="app.admin.ReportsPayBusinessType.moneyFormat">His金额(元)</th>
+					    <th data-field="bankHis" data-width="100" data-formatter="app.admin.ReportsPayBusinessType.normal">银行卡(His)元</th>
+						<th data-field="wechatHis" data-width="100" data-formatter="app.admin.ReportsPayBusinessType.moneyFormat">微信(His)元</th>
+						<th data-field="alipayHis" data-width="100" data-formatter="app.admin.ReportsPayBusinessType.normal">支付宝(His)元</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/reports/billDataReports.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/reports.css}">
+<script th:inline="javascript">
+
+var orgCode = [[${orgCode}]];
+var beginTime = [[${beginTime}]];
+var endTime = [[${endTime}]];
+app.admin.ReportsPayBusinessType.init(orgCode,beginTime, endTime);
+
+</script>

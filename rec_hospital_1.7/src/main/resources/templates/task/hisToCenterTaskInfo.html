@@ -1,0 +1,101 @@
+<div class="m-content-wrapper" >
+	<div class="table-content-wrap">
+	<div class="row tool-box-content">
+	    <form class="form-inline">
+	    	<div class="form-group">
+	            <label class="control-label">所属机构：</label>
+	            <div class="form-group">
+	             <input type="text" class="form-control" id="hiscentertaskSearchOrgSelect" data-name="hiscentertaskOrgSelect"/>
+	            </div>
+	        </div>
+	         <div class="form-group m-btn">
+	          	<button type="button" class="btn btn-primary" onclick="app.reconciliation.hiscentertask.search()">查询</button>
+	          	<button type="button" class="btn btn-primary" onclick="app.reconciliation.hiscentertask.create()">新增</button>
+	         </div>
+	    </form>
+	</div>
+	<div class="row">
+		<table class="table table-bordered table-nomal " id="hiscentertaskDataTable" data-striped="false">
+			<thead>
+				<tr>
+					<th data-field="orgName">机构名称</th>
+					<th data-field="jobname">任务名称</th>
+					<th data-field="jobcorn">执行周期</th>
+					<th data-field="jobdesc">任务描述</th>
+					<th data-field="jobsstatus" data-align="center" data-formatter="app.reconciliation.hiscentertask.formatStatus">运行状态</th>
+					<th data-field="" data-width="250" data-align="center" data-formatter="app.reconciliation.hiscentertask.formatOpt">操作</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	</div>
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="hiscentertaskDlg" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">新增任务</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form">
+					<input type="hidden"  name="id" />
+					<div class="form-group">
+						<label class="col-sm-2 control-label">机构名称</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" data-name="orgNo" id="hiscentertaskFormOrgSelect"/>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label">任务名称</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="jobname" placeholder="请输入任务名称"/>
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">执行周期</label>
+						<div class="col-sm-10" class="form-inline" >
+							<select class="form-control" onchange="app.reconciliation.hiscentertask.cronchagneHandle(this)" style="margin-left: 13px;padding-right: 0px;" id="histaskCronSelect">
+							 <option value="1">每隔n秒</option>
+							 <option value="2">每隔n分</option>
+							 <option value="3">每隔n小时</option>
+							 <option value="4">每天的n点(m分)</option>
+							 <option value="5">每周x的n点(m分)</option>
+							 <option value="6">自定义corn表达式</option>
+							</select>
+							<select class="form-control" id="histask_weekSelect" style="display: none;padding-right: 0px;">
+							     <option value="MON">周一</option>
+								 <option value="TUE">周二</option>
+								 <option value="WED">周三</option>
+								 <option value="THU">周四</option>
+								 <option value="FRI">周五</option>
+								 <option value="SAT">周六</option>
+								 <option value="SUN">周日</option>
+							</select>
+							<select class="form-control" id="histask_hourSelect" style="display: none;padding-right: 0px;"></select>
+							<select class="form-control" id="histask_minuteSelect" style="display: none;padding-right: 0px;"></select>
+							<select class="form-control" id="histask_secondSelect" style="padding-right: 0px;"></select>
+							<input type="text" class="form-control" id="histask_comtomCronInput" name="jobcorn" style="display: none;"/>
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">任务描述</label>
+						<div class="col-sm-10">
+							<textarea rows="3" class="form-control" cols="40" name="jobdesc"></textarea>
+				    	</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" onclick="app.reconciliation.hiscentertask.save()">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/task/hiscentertask.js}"></script>
+
+
+

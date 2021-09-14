@@ -1,0 +1,58 @@
+<div class="m-content-wrapper" >
+	<div class="table-content-wrap">
+	<div class="row tool-box-content">
+	    <form class="form-inline">
+	    	<!-- <div class="form-group">
+	            <label>字典类型：</label>
+	            <select id="dictTypeList" class="selectpicker" ></select>
+	        </div> -->
+	         <div class="form-group m-btn">
+	          	<!-- <button type="button" class="btn btn-primary" onclick="app.admin.systemMetadata.search()">查询</button> -->
+		        <!-- <button id="btn_add" type="button" class="btn btn-success" onclick="app.admin.dict.create()">新增</button> -->
+	         </div>
+	    </form>
+	</div>
+	<div class="row">
+		<table class="table table-bordered table-nomal " id="systemMetadataDataTable"
+			data-striped="false" th:attr="typesJSON=${typesJSON}">
+			<thead>
+				<tr>
+					<!-- <th data-width="5%" data-align="center" data-formatter="app.admin.dict.number">序号</th> -->
+					<th data-width="20%" data-field="name">名称</th>
+					<th data-width="10%" data-field="value">字典键</th>
+					<!-- <th data-width="10%" data-field="sort">排序号</th> -->
+<!-- 					<th data-width="10%" data-field="description">描述</th> -->
+					<th data-width="20%" data-field="dictType" data-align="center" data-formatter="app.admin.systemMetadata.formatType">类型</th>
+					<!-- <th data-width="10%" data-field="isActived" data-formatter="app.admin.dict.activation">是否激活</th> -->
+					<th data-width="32%" data-field="" data-align="center" data-formatter="app.admin.systemMetadata.formatOpt">操作</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	</div>
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="zTreeSystemCode" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">编辑系统来源</h4>
+			</div>
+			<div class="modal-body" style="height: 500px;overflow: auto;">
+				<input type="hidden" id="metaDataCode"/>
+				<ul id="tree" class="ztree"></ul>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" onclick="app.admin.systemMetadata.save()">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript" th:src="@{/assets/js/recon/systemMetadata.js}"></script>
+<script>
+	app.admin.systemMetadata.init();
+</script>

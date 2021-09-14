@@ -1,0 +1,104 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row tool-box-content">
+			<form class="form-inline" id="payTypeCashierReportsSearchForm">
+				<div class="form-group">
+					<label>所属机构:</label>
+					<div class="form-group">
+						<input type="text" style="width: 280px;" class="form-control"
+							data-name="orgCode" id="summaryByPayTypeOrgSelect" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="form-group">
+						<label>选择日期:</label>
+					</div>
+					<div class="input-group">
+						<input type="text" class="form-control" style="width: 220px;"
+							onmousemove="this.style.cursor='pointer';"
+							id="payTypeCashierTime" readonly="readonly" />
+					</div>
+				</div>
+				<input type="hidden" th:value="${typesJSON}"
+					id="businessTypeCashierType">
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary"
+						onclick="app.admin.ReportsPayTypeCashier.search(this)">查询</button>
+					<button type="button" class="btn btn-success"
+						onclick="app.admin.ReportsPayTypeCashier.exportList()">导出</button>
+				</div>
+			</form>
+		</div>
+		<div class="row">
+			<div class="tableTitleArea">
+				<span style="font-size: 18px;">收费员支付方式汇总报表</span>
+			</div>
+			<table class="table table-bordered table-nomal"
+				id="payTypeCashierReportsDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-valign="middle" data-width="1200" colspan="13"
+							name="tableTitle" class="tableExcelDisplayArea"></th>
+					</tr>
+					<tr class="success">
+						<th data-valign="middle" data-width="100">&nbsp;</th>
+						<th data-valign="middle" data-width="200" colspan="2">微信</th>
+						<th data-valign="middle" data-width="200" colspan="2">支付宝</th>
+						<th data-valign="middle" data-width="200" colspan="2">银联</th>
+						<th data-valign="middle" data-width="200" colspan="2">现金</th>
+						<th data-valign="middle" data-width="200" colspan="2">聚合支付</th>
+						<th data-valign="middle" data-width="200" colspan="2">医保</th>
+					</tr>
+
+					<tr>
+						<th data-field="businessType"
+							data-formatter="app.admin.ReportsPayTypeCashier.cashierTypeFormat">收费员</th>
+						<!-- 						<th data-field="businessType">收费员</th> -->
+
+						<th data-field="wechatAcount" data-width="80"
+							data-formatter="app.admin.ReportsPayTypeCashier.normal">笔数</th>
+						<th data-field="wechatAmount" data-width="100"
+							data-formatter="app.admin.ReportsPayTypeCashier.moneyFormat">金额(元)</th>
+
+						<th data-field="zfbAcount" data-width="80"
+							data-formatter="app.admin.ReportsPayTypeCashier.normal">笔数</th>
+						<th data-field="zfbAmount" data-width="100"
+							data-formatter="app.admin.ReportsPayTypeCashier.moneyFormat">金额(元)</th>
+
+						<th data-field="bankAcount" data-width="80"
+							data-formatter="app.admin.ReportsPayTypeCashier.normal">笔数</th>
+						<th data-field="bankAmount" data-width="100"
+							data-formatter="app.admin.ReportsPayTypeCashier.moneyFormat">金额(元)</th>
+
+						<th data-field="cashAcount" data-width="80"
+							data-formatter="app.admin.ReportsPayTypeCashier.normal">笔数</th>
+						<th data-field="cashAmount" data-width="100"
+							data-formatter="app.admin.ReportsPayTypeCashier.moneyFormat">金额(元)</th>
+
+						<th data-field="unionAcount" data-width="80"
+							data-formatter="app.admin.ReportsPayTypeCashier.normal">笔数</th>
+						<th data-field="unionAmount" data-width="100"
+							data-formatter="app.admin.ReportsPayTypeCashier.moneyFormat">金额(元)</th>
+
+						<th data-field="yibaoAcount" data-width="80"
+							data-formatter="app.admin.ReportsPayTypeCashier.normal">笔数</th>
+						<th data-field="yibaoAmount" data-width="100"
+							data-formatter="app.admin.ReportsPayTypeCashier.moneyFormat">金额(元)</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"
+	th:src="@{/assets/js/reports/cashier/payTypeCashierReports.js}"></script>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/reports.css}">
+<script th:inline="javascript">
+
+var orgCode = [[${orgCode}]];
+var beginTime = [[${beginTime}]];
+var endTime = [[${endTime}]];
+app.admin.ReportsPayTypeCashier.init(orgCode,beginTime, endTime);
+
+</script>

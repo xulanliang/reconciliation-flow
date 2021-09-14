@@ -1,0 +1,292 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<form class="form-inline m-search" id="followingSearchForm">
+			<div class="row tool-box-content">
+				<div class="form-group">
+					<label class="search-label">所属机构：</label>
+					<div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control"
+							data-name="code" id="followingTree" placeholder="所属机构" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="startTime">对账时间：</label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input AUTOCOMPLETE="off" type="text"
+							class="form-control pull-right" placeholder="开始时间"
+							name="startTime">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="endTime">结束日期：</label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input AUTOCOMPLETE="off" type="text"
+							class="form-control pull-right" placeholder="结束时间" name="endTime">
+					</div>
+				</div>
+				<!-- <div class="form-group">
+					<div class="form-group">
+						<label>对账时间：</label>
+					</div>
+					<div class="input-group">
+						<input AUTOCOMPLETE="off" type="text"
+							class="form-control pull-right" placeholder="对账时间"
+							name="startTime">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="endTime">结束时间：</label>
+					<div class="input-group">
+						<input AUTOCOMPLETE="off" type="text" style="width: 200px"
+							class="form-control pull-right" placeholder="结束时间" name="endTime">
+					</div>
+				</div> -->
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary"
+						onclick="app.admin.following.search()">查询</button>
+					<a onclick='app.admin.following.exportData()'
+						class="btn btn-success">导出</a> <a
+						onclick='app.admin.following.startRec()' class="btn btn-primary">对账</a>
+				</div>
+			</div>
+		</form>
+		<div class="row">
+			<input type="hidden" th:value="${orgJSON}" id="followingOrgNo">
+			<input type="hidden" th:value="${typesJSON}" id="followingType">
+			<input type="hidden" th:value="${tradeDate}" id="followingTradeDate">
+			<input type="hidden" th:value="${orgNo}" id="followingOrgNoInit">
+			<input type="hidden" th:value="${flag}" id="followingFlagInit">
+
+			<h4>汇总(单位:元)</h4>
+			<table class="table table-bordered table-nomal "
+				id="followingSumDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-formatter="app.admin.following.number"
+							>序号</th>
+						<th data-field="tradeDate" data-sortable="true">账单日期</th>
+						<th data-field="hisAllAmount" data-sortable="true"
+							data-formatter="app.admin.following.moneyFormat">HIS应收总金额</th>
+						<th data-field="settlementAmount" data-sortable="true"
+							data-formatter="app.admin.following.moneyFormat">HIS应收总金额(结算日)</th>
+						<th data-field="payAllAmount" data-sortable="true"
+							data-formatter="app.admin.following.operation">实收总金额</th>
+						<th data-field="tradeDiffAmount" data-sortable="true"
+							data-formatter="app.admin.following.moneyFormat">差异金额</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<div class="row">
+			<h4>
+				异常账单
+				<!-- <span>（冲正：</span><input id="correction" onclick="app.admin.following.removeOrAddFlow(this)" type="checkbox"><span>）</span> -->
+			</h4>
+			<p>
+			<div class="btn-group" id="followTable">
+				<button style="background-color: #ECF5FF" class="btn btn-default"
+					name="followBtn"
+					onclick="app.admin.following.showExceptionTrade('all')">所有</button>
+				<button class="btn btn-default" name="followBtn"
+					onclick="app.admin.following.showExceptionTrade('third')">长款（渠道多出）</button>
+				<button class="btn btn-default" name="followBtn"
+					onclick="app.admin.following.showExceptionTrade('his')">短款（HIS多出）</button>
+			</div>
+			</p>
+		</div>
+		<div class="row">
+			<table class="table table-bordered table-nomal "
+				id="followingDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th 
+							data-formatter="app.admin.following.number">序号</th>
+						<th data-field="billSource" data-sortable="true"
+							data-formatter="app.admin.following.formatter" >渠道名称</th>
+						<th data-field="orgNo" data-sortable="true"
+							data-formatter="app.admin.following.orgFormatter">院区</th>
+						<th data-field="patType" data-sortable="true"
+							data-formatter="app.admin.following.formatter">患者类型</th>
+						<th data-field="exceptionType" data-sortable="true">异常类型</th>
+						<th data-field="payName" data-sortable="true"
+							data-formatter="app.admin.following.formatter">支付类型</th>
+						<th data-field="businessNo" data-sortable="true"
+							data-formatter="app.admin.following.followHandler">支付商户流水号</th>
+						<th data-field="tradeAmount" data-sortable="true"
+							data-formatter="app.admin.following.moneyFormat">金额</th>
+						<th data-field="patientName" data-sortable="true">患者名称</th>
+						<th data-field="tradeTime" data-sortable="true">交易时间</th>
+						<th data-field="businessType" data-sortable="true"
+							data-formatter="app.admin.following.formatter">业务类型</th>
+						<th data-field="tradeName" data-sortable="true"
+							data-formatter="app.admin.following.formatter">交易类型</th>
+						<th data-field="terminalNo" data-sortable="true">终端编号</th>
+						<th data-field="checkStateValue">状态</th>
+						<th data-field="id" data-sortable="true"
+							data-formatter="app.admin.following.formatHandler">处理</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="followLoading" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" data-backdrop='static'>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">提示</h4>
+			</div>
+			<div class="modal-body">请稍候。。。</div>
+		</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="followDetailDlg" tabindex="-1" role="dialog"
+	data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">汇总明细</h4>
+			</div>
+			<div class="modal-body" name="followDetailDlgBody"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="dealFollowDlg" tabindex="-2" role="dialog"
+	data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">手动处理单边账</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" id="dealFollowDlgDlg"
+					enctype="multipart/form-data">
+					<input type="text" name="payFlowNo" style="display: none;" />
+					<div class="form-group">
+						<label class="col-sm-2 control-label">平账原因:</label>
+						<div class="col-sm-10">
+							<textarea rows="4" class="form-control" cols="40"
+								name=description></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">上传图片:</label>
+						<div class="col-sm-10">
+							<input type="file" name="file" />
+							<lable>仅支持图片</lable>
+						</div>
+					</div>
+					<div class="form-group">
+						<lable class="col-sm-12 control-label"
+							style="color:red;text-align:center;">温馨提示：该订单属于短款，此订单只做标记处理。</lable>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary"
+					onclick="app.admin.following.save()">处理</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="showHandFollowDlg" tabindex="-3"
+	role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">手动处理原因</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<lable name="description">描述</lable>
+				</div>
+				<div class="form-group">
+					<img style="width: 150px; height: 100px;" name="fileLocation"
+						src="" alt="" />
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="refundFollowDlg" tabindex="-4" role="dialog"
+	data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">退费操作</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" id="refundFollowDlgDlg"
+					enctype="multipart/form-data">
+					<input type="text" name="id" style="display: none;" /> <input
+						type="text" name="orderNo" style="display: none;" /> <input
+						type="text" name="payCode" style="display: none;" /> <input
+						type="text" name="tradeAmount" style="display: none;" /> <input
+						type="text" name="billSource" style="display: none;" />
+					<div class="form-group">
+						<label class="col-sm-2 control-label">退费原因:</label>
+						<div class="col-sm-10">
+							<textarea rows="4" class="form-control" cols="40" name="reason"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">上传图片:</label>
+						<div class="col-sm-10">
+							<input type="file" name="file" />
+							<lable>仅支持图片</lable>
+						</div>
+					</div>
+					<div class="form-group">
+						<lable class="col-sm-12 control-label"
+							style="color:red;text-align:center;">温馨提示：只能退费接入巨鼎的订单。</lable>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary"
+					onclick="app.admin.following.refundSave()">处理</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript" th:src="@{/assets/js/admin/following.js}"></script>
+<script th:inline="javascript">
+
+var orgJSON = [[${orgJSON}]];
+var billSource = [[${billSource}]];
+var patType = [[${patType}]]; 
+app.admin.following.init(orgJSON,billSource,patType);
+</script>

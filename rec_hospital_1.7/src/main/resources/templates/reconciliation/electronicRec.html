@@ -1,0 +1,1046 @@
+<link rel="stylesheet" type="text/css" href="assets/css/common.css">
+<link rel="stylesheet" type="text/css"
+	  href="assets/css/electronOrder.css">
+<link rel="stylesheet" href="assets/css/orderAbnormal.css">
+
+<div class="m-content-wrapper">   <!-- main-box -->
+	<div class="table-content-wrap electron-order" id="electronic-data-div">
+		<form class="form-inline m-search" id="electronicSearchForm">
+			<div class="row tool-box-content">
+				<div class="form-group">
+					<label class="search-label">机构选择 </label>
+					<div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control"
+							   data-name="code" id="electronicOrgTree" placeholder="所属机构" />
+					</div>
+				</div>
+				<div class="form-group" th:if="${electronicRecPatTypeDisplay}">
+					<label class="search-label">数据来源 </label>
+					<div class="form-group no-margin">
+						<select class="form-control" id="dataSourceTree">
+							<option>全部</option>
+							<option>住院</option>
+							<option>门诊</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="startTime">对账日期 </label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input AUTOCOMPLETE="off" type="text"
+							   class="form-control pull-right" placeholder="对账日期"
+							   name="startTime" id="electronicRecTime" readonly="readonly">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="businessNo">订单号 </label>
+					<div class="input-group">
+						<input AUTOCOMPLETE="off" type="text"
+							   class="form-control pull-right" placeholder="订单号"
+							   name="businessNo" id="businessNo">
+					</div>
+				</div>
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary"
+							onclick="app.admin.electronic.search(this)">查询</button>
+					<button type="button" class="btn btn-default" title="重置"
+							onclick="app.admin.electronic.resetData()">重置</button>
+					<button type="button" class="btn btn-success" title="导出功能只导出未处理异常账单"
+							onclick="app.admin.electronic.exportData()">导出</button>
+				</div>
+			</div>
+		</form>
+
+		<input type="hidden" th:value="${electronicRecDetailButtonOnly}"
+			   id="electronicRecDetailButtonOnly"/>
+		<input type="hidden" th:value="${orgJSON}" id="electronicOrgNo">
+		<input type="hidden" th:value="${typesJSON}" id="electronicType">
+		<input type="hidden" th:value="${date}" id="electronicTradeDate">
+		<input type="hidden" th:value="${orgNo}" id="electronicOrgNoInit">
+		<input type="hidden" th:value="${isRefundExamine}"
+			   id="electronicIsRefundExamine">
+		<!--收入总额-start-->
+		<!-- <div class="electron clear-float">
+
+			<div class="electron-total">
+				<ul class="total-left">
+					<li class="background border">
+						<div class="total-text">
+							<p class="title first" title="第三方支付渠道汇总金额">实收总金额(元)</p>
+							<p class="title color-warning second payAllAmount"></p>
+							<p class="title " title="支付笔数+退款笔数">
+								交易笔数&nbsp; <span class="num payAcount"></span>
+							</p>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<ul class="segment3 total-right border">
+				<li>
+					<div class="total-text">
+						<p class="title first" title="HIS交易明细汇总金额">HIS应收总金额(元)</p>
+						<p class="title color-warning second hisAllAmount"></p>
+						<p class="title " title="支付笔数+退款笔数">
+							交易笔数&nbsp; <span class="num hisPayAcount"></span>
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="total-text">
+						<p class="title first">单边账总笔数</p>
+						<p class="title ">
+							长款笔数&nbsp; <span style="color: red;" class="num untreatedThirdAcount">0</span>
+						</p>
+						<p class="title ">
+							短款笔数&nbsp; <span style="color: red;" class="num untreatedHisAcount">0</span>
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="total-text">
+						<p class="title first">单边账总金额(元)</p>
+						<p class="title ">
+							长款金额&nbsp; <span style="color: red;" class="num untreatedThirdAmount">0.00</span>
+						</p>
+						<p class="title ">
+							短款金额&nbsp; <span style="color: red;" class="num untreatedHisAmount">0.00</span>
+						</p>
+					</div>
+				</li>
+					<li>
+                        <div class="total-text">
+                            <p class="title first">HIS应收总金额(结算日)</p>
+                            <p class="title color-warning second settlementAmount"></p>
+                            <p class="title ">
+                                交易笔数&nbsp; <span class="num settlementPayAcount"></span>
+                            </p>
+                        </div>
+                    </li>
+				<li>
+					<div class="total-text">
+						<p class="title first">差异总金额(元)</p>
+						<p class="title color-warning second tradeDiffAmount"></p>
+						<p class="title ">
+							交易笔数&nbsp; <span class="num tradeDiffPayAcount"></span>
+						</p>
+					</div>
+				</li>
+				<li>
+		            <div class="total-text">
+		                <p class="title first">处理后差额</p>
+		                <p class="title color-warning second dealDiffAmount"></p>
+		                <p class="title ">交易笔数&nbsp; <span class="num dealDiffPayAcount"></span></p>
+		            </div>
+		        </li>
+			</ul>
+		</div> -->
+		<!--收入总额-end-->
+		<!-- <div class="separator"></div> -->
+		<div class="pay-type-list-box show-buinessOrder">
+			<span class="fa fa-angle-double-left" id="electronBillSourceLeft"></span>
+			<div class="pay-type-list-content" id="electronBillSourceContent">
+				<ul class="user-nav pay-type-list clear-float" id="electronBillSourceNav">
+				</ul>
+			</div>
+			<span class="fa fa-angle-double-right" id="electronBillSourceRight"></span>
+		</div>
+		<!--付款渠道-->
+		<input type="hidden" value="" id="billSource">
+		<!--付款方式-->
+		<input type="hidden" value="" id="payType">
+		<div class="electronic-pay-methods-box show-buinessOrder border" id="electronPayMethodsBox">
+			<!-- <div class="electronic-pay-methods-sum">
+				<div class="electronic-pay-methods-item pay-method-icon">
+					<img src="/assets/img/electronic/zj-icon.png">
+					<span class="text">总计</span>
+				</div>
+				<div class="electronic-pay-methods-item">
+					<span class="title">渠道实收金额(元)</span>
+					<span class="text">6,761.0</span>
+				</div>
+				<div class="electronic-pay-methods-item">
+					<span class="title">HIS应收金额(元)</span>
+					<span class="text">6,761.0</span>
+				</div>
+				<div class="electronic-pay-methods-item">
+					<span class="title">差异金额(元)<span class="badge electronic-diff-err">异常</span></span>
+					<span class="text err">6,761.0</span>
+				</div>
+				<a class="pay-type-more-box" onclick="app.admin.electronic.clickCollapse()" data-toggle="collapse" data-parent="#electronPayMethodsBox"
+				   href="#electronPayTypecollapse">
+					<span class="fa fa-angle-double-down more-arrow"></span>
+					<span class="pay-type-more-text">更多详情</span>
+				</a>
+			</div>
+			<div id="electronPayTypecollapse" class="panel-collapse collapse">
+			<ul class="pay-methods">
+				<li>
+					<div class="electronic-pay-methods-item pay-method-icon">
+						<img src="/assets/img/electronic/zfb-icon.png">
+						<span class="text">支付宝</span>
+					</div>
+					<div class="electronic-pay-methods-item-box">
+						<div class="electronic-pay-methods-box-item">
+							<div class="electronic-pay-methods-item">
+								<span class="title">渠道实收总金额(元)</span>
+								<span class="text">6,761.0</span>
+							</div>
+							<div class="electronic-pay-methods-item">
+								<span class="title">渠道支付笔数</span>
+								<span class="text">12</span>
+							</div>
+							<div class="electronic-pay-methods-item">
+								<span class="title">渠道退款笔数</span>
+								<span class="text">12</span>
+							</div>
+						</div>
+						<div class="electronic-pay-methods-box-item">
+							<div class="electronic-pay-methods-item">
+								<span class="title">HIS应收总金额(元)</span>
+								<span class="text">6,761.0</span>
+							</div>
+							<div class="electronic-pay-methods-item">
+								<span class="title">HIS支付笔数</span>
+								<span class="text">12</span>
+							</div>
+							<div class="electronic-pay-methods-item">
+								<span class="title">HIS退款笔数</span>
+								<span class="text">12</span>
+							</div>
+						</div>
+					</div>
+					<div class="electronic-pay-methods-diff">
+						<div class="electronic-pay-methods-diff-item">
+							<div class="electronic-pay-methods-diff-item-box">
+								<span class="title">对账后差异金额(元)<span class="badge electronic-diff-err">异常</span></span>
+								<span class="text">0.00</span>
+							</div>
+							<div class="electronic-pay-methods-diff-item-box">
+								<span class="title">对账后差异笔数</span>
+								<span class="text">0</span>
+							</div>
+						</div>
+						<div class="electronic-pay-methods-diff-item">
+							<div class="electronic-pay-methods-diff-item-box">
+								<span class="title">调账后差异金额(元)<span class="badge electronic-diff-err">异常</span></span>
+								<span class="text">0.00</span>
+							</div>
+							<div class="electronic-pay-methods-diff-item-box">
+								<span class="title">调账后差异笔数</span>
+								<span class="text">0</span>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="electronic-pay-methods-item pay-method-icon">
+						<img src="/assets/img/electronic/wx-icon.png">
+						<span class="text">微信</span>
+					</div>
+					<div class="electronic-pay-methods-item-box">
+						<div class="electronic-pay-methods-box-item">
+							<div class="electronic-pay-methods-item">
+								<span class="title">渠道实收总金额(元)</span>
+								<span class="text">6,761.0</span>
+							</div>
+							<div class="electronic-pay-methods-item">
+								<span class="title">渠道支付笔数</span>
+								<span class="text">12</span>
+							</div>
+							<div class="electronic-pay-methods-item">
+								<span class="title">渠道退款笔数</span>
+								<span class="text">12</span>
+							</div>
+						</div>
+						<div class="electronic-pay-methods-box-item">
+							<div class="electronic-pay-methods-item">
+								<span class="title">HIS应收总金额(元)</span>
+								<span class="text">6,761.0</span>
+							</div>
+							<div class="electronic-pay-methods-item">
+								<span class="title">HIS支付笔数</span>
+								<span class="text">12</span>
+							</div>
+							<div class="electronic-pay-methods-item">
+								<span class="title">HIS退款笔数</span>
+								<span class="text">12</span>
+							</div>
+						</div>
+					</div>
+					<div class="electronic-pay-methods-diff">
+						<div class="electronic-pay-methods-diff-item">
+							<div class="electronic-pay-methods-diff-item-box">
+								<span class="title">对账后差异金额(元)<span class="badge electronic-diff-err">异常</span></span>
+								<span class="text">0.00</span>
+							</div>
+							<div class="electronic-pay-methods-diff-item-box">
+								<span class="title">对账后差异笔数</span>
+								<span class="text">0</span>
+							</div>
+						</div>
+						<div class="electronic-pay-methods-diff-item">
+							<div class="electronic-pay-methods-diff-item-box">
+								<span class="title">调账后差异金额(元)<span class="badge electronic-diff-err">异常</span></span>
+								<span class="text err">0.00</span>
+							</div>
+							<div class="electronic-pay-methods-diff-item-box">
+								<span class="title">调账后差异笔数</span>
+								<span class="text">0</span>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+			</div> -->
+		</div>
+		<div class="row">
+			<h4>异常账单</h4>
+			<div class="btn-group show-buinessOrder" id="electronicTable">
+				<button style="background-color: #ECF5FF" class="btn btn-default"
+						name="electronicBtn"
+						onclick="app.admin.electronic.showExceptionTrade('all')">所有</button>
+				<button class="btn btn-default" name="electronicBtn"
+						onclick="app.admin.electronic.showExceptionTrade('third')">长款</button>
+				<button class="btn btn-default" name="electronicBtn"
+						onclick="app.admin.electronic.showExceptionTrade('his')">短款</button>
+			</div>
+		</div>
+		<div class="row">
+			<table class="table table-bordered table-nomal"
+				   id="electronicRecDataTable" data-striped="false">
+				<thead>
+				<tr>
+					<th data-field="businessNo" data-width="13%" data-sortable="true" data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">支付方流水号</th>
+					<!-- <th data-field="hisFlowNo" data-sortable="true" data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">HIS流水号</th> -->
+					<th data-field="paymentAccount" data-width="10%" data-sortable="true">银行卡号</th>
+					<th data-field="payName" data-width="10%" data-sortable="true"
+						data-formatter="app.admin.electronic.formatter">支付类型</th>
+					<th data-field="tradeName" data-formatter="app.admin.electronic.formatter"
+						data-sortable="true" data-width="8%">交易类型</th>
+					<th data-field="tradeAmount" data-sortable="true"
+						data-formatter="app.admin.electronic.moneyFormat" data-width="10%">交易金额(元)</th>
+					<th data-field="patientName" data-sortable="true" data-width="8%">患者姓名</th>
+					<!--<th data-field="tradeTime" data-sortable="true" data-width="13%">交易时间</th>-->
+					<th data-field="billSource" data-sortable="true"
+						data-formatter="app.admin.electronic.formatter" data-width="8%">渠道名称</th>
+					<!-- 						<th data-field="businessType" data-sortable="true" data-formatter="app.admin.electronic.formatter" data-width="8%">业务类型</th> -->
+					<th data-field="exceptionType"
+						data-formatter="app.admin.electronic.exceptionState"
+						data-width="6%">异常类型</th>
+					<th data-field="checkStateValue"
+						data-formatter="app.admin.electronic.currentState"
+						data-width="6%">当前状态</th>
+					<th data-field="id" data-sortable="false"
+						data-align="center"
+						data-formatter="app.admin.electronic.formatHandler"
+						data-width="200">操作</th>
+				</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="followLoading" tabindex="-1" role="dialog"
+	 aria-labelledby="myModalLabel" data-backdrop='static'>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">提示</h4>
+			</div>
+			<div class="modal-body">请稍候。。。</div>
+		</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="electronicFollowDetailDlg" tabindex="-1"
+	 role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+				<h4 class="modal-title">汇总明细</h4>
+			</div>
+			<div class="modal-body" name="electronicFollowDetailDlgBody"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="electronicDealFollowDlg" tabindex="-2"
+	 role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+				<h4 class="modal-title" hidden="false" id="floating">平账</h4>
+				<h4 class="modal-title" hidden="false" id="recover">追回</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form"
+					  id="electronicDealFollowDlgDlg" enctype="multipart/form-data">
+					<input type="text" name="payFlowNo" style="display: none;" />
+					<input type="text" name="checkState" style="display: none;" />
+					<input type="text" name="tradeAmount" style="display: none;" />
+					<input type="text" name="orgCode" style="display: none;" />
+					<input type="text" name="tradeDatetime" style="display: none;"/>
+					<input type="text" name="payType" style="display: none;"/>
+					<input type="text" name="billSource" style="display: none;"/>
+					<input type="text" name="patType" style="display: none;"/>
+
+					<input type="text" name="recHisId" style="display: none;"/>
+					<input type="text" name="recThridId" style="display: none;"/>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" hidden="false" id="floatingSeason">平账原因:</label>
+						<label class="col-sm-2 control-label" hidden="false" id="recoverSeason">追回原因:</label>
+						<div class="col-sm-10">
+							<textarea rows="4" class="form-control" cols="40"
+									  name=description></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">上传图片:</label>
+						<div class="col-sm-10">
+							<input type="file" name="file" />
+							<lable>温馨提示：图片最大支持2M，支持格式为bmp.png jpeg.jpg.gif</lable>
+						</div>
+					</div>
+					<!-- <div class="form-group">
+						<lable class="col-sm-12 control-label"
+							style="color:red;text-align:center;">温馨提示：该订单属于短款，此订单只做标记处理。</lable>
+					</div> -->
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="save"
+						onclick="app.admin.electronic.save()">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="electronicShowHandFollowDlg" tabindex="-3"
+	 role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+				<h4 class="modal-title">手动处理原因</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<lable name="description">描述</lable>
+				</div>
+				<div class="form-group">
+					<img style="width: 150px; height: 100px;" name="fileLocation"
+						 src="" alt="" />
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 退费操作 -->
+<div class="modal fade" id="electronicRefundFollowDlg" tabindex="-4"
+	 role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+				<h4 class="modal-title">退费操作</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form"
+					  id="electronicRefundFollowDlgDlg" enctype="multipart/form-data">
+					<input type="text" name="id" style="display: none;" />
+					<input type="text" name="orderNo" style="display: none;" />
+					<input type="text" name="payCode" style="display: none;" />
+					<!-- 退款金额 -->
+					<input type="text" name="tradeAmount" id="tradeAmount" style="display: none;" />
+					<!-- 订单金额 -->
+					<input type="text" name="payAmount" id="payAmount" style="display: none;" />
+					<input type="text" name="billSource" style="display: none;" />
+					<input type="text" name="orgCode" style="display: none;" />
+					<input type="text" name="state" style="display: none;" />
+					<input type="text" name="time" style="display: none;" />
+					<input type="text" name="tradetime" style="display: none;" />
+					<input type="text" id="businessType" name="businessType" style="display: none;" />
+					<input type="text" name="shopNo" style="display: none;" />
+					<input type="text" name="patType" style="display: none;" />
+					<input type="text" name="payNo" style="display: none;" />
+					<input type="text" name="terminalNo" style="display: none;" />
+					<!-- 发票号 -->
+					<input type="text" name="invoiceNo" style="display: none;" />
+					<input type="text" name="payType" style="display: none;"/>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">退费原因:</label>
+						<div class="col-sm-10">
+							<textarea rows="4" class="form-control" cols="40" name="reason"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">退款金额:</label>
+						<div class="col-sm-10">
+							<input type="number" onkeyup="app.admin.electronic.numExt(this)" size="10" class="form-control" id="refundAmount">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">退款类型:</label>
+						<div class="col-sm-10">
+							<select class="form-control" name="refundType" id="refundType">
+								<option value="1">原路径退回</option>
+								<option value="2">线下现金退回</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">上传图片:</label>
+						<div class="col-sm-10">
+							<input type="file" name="file" />
+							<lable>仅支持图片</lable>
+						</div>
+					</div>
+					<div id="cashier" class="form-group" style="display: none;">
+						<label class="col-sm-2 control-label">操作员:</label>
+						<div class="col-sm-10">
+							<input type="text" id="cashierId" class="form-control" name="cashier"/>
+						</div>
+					</div>
+					<div id="counterNo" class="form-group" style="display: none;">
+						<label class="col-sm-2 control-label">终端号:</label>
+						<div class="col-sm-10">
+							<input type="text" id="counterNoId" class="form-control"  name="counterNo" />
+						</div>
+					</div>
+					<div id="bocNo" class="form-group" style="display: none;">
+						<label class="col-sm-2 control-label">流水号:</label>
+						<div class="col-sm-10">
+							<input type="text" id="bocNoId" class="form-control"  name="bocNo" />
+						</div>
+					</div>
+					<div id="sqm" class="form-group" style="display: none;">
+						<label class="col-sm-2 control-label">授权码:</label>
+						<div class="col-sm-10">
+							<input type="text" id="sqmId" class="form-control" name="sqm"/>
+						</div>
+					</div>
+					<div id="pjh" class="form-group" style="display: none;">
+						<label class="col-sm-2 control-label">票据号:</label>
+						<div class="col-sm-10">
+							<input type="text" id="pjhId" class="form-control" name="pjh"/>
+						</div>
+					</div>
+					<div id="sysNo" class="form-group" style="display: none;">
+						<label class="col-sm-2 control-label">系统订单号:</label>
+						<div class="col-sm-10">
+							<input type="text" id="sysNoId" class="form-control"  name="sysNo" />
+						</div>
+					</div>
+					<!-- <div class="form-group">
+						<lable class="col-sm-12 control-label"
+							style="color:red;text-align:center;">温馨提示：只能退费接入巨鼎的订单。</lable>
+					</div> -->
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="refundSave"
+						onclick="app.admin.electronic.refundSave()">处理</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="electronicDlg" tabindex="-1" role="dialog"
+	 data-backdrop="false">
+	<div class="modal-dialog" style="width: 900px">
+		<div class="modal-content order-abnormal">
+			<div class="abnormal border ">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+					<h4 class="modal-title">订单详情</h4>
+				</div>
+				<div class="abnormal-text">
+					<div id="electronicRecOrderStep">
+						<div class="electronic-step-legend">
+							<div class="pay-step-thrid"><div class='electronic-step-legend-item'><div></div></div>渠道</div>
+							<div class="pay-step-his"><div class='electronic-step-legend-item'><div></div></div>HIS</div>
+							<div class="pay-step-refund"><div class='electronic-step-legend-item'><div></div></div>手动退费</div>
+						</div>
+						<div id="electronicRecPayStepBox" data-interval="false" data-wrap="false" class="electronic-rec-pay-step-box carousel slide">
+							<a class="electronic-rec-pay-step-left disabled" href="#electronicRecPayStepBox" data-slide="prev"></a>
+							<div class="carousel-inner">
+							</div>
+							<a class="electronic-rec-pay-step-right" href="#electronicRecPayStepBox" data-slide="next"></a>
+						</div>
+					</div>
+					<ul class="detail">
+						<li class=" detail-card " form="hisOrderTableForm" hidden="true">
+							<p class="detail-title">HIS订单信息<span style="color:red;vertical-align: text-top;" data-name="his_titleState"></span></p>
+							<table class="table table-bordered table-nomal" id="hisOrderTable" data-striped="false" style="min-width:699px;">
+								<thead>
+								<tr>
+									<th data-field="payFlowNo" data-sortable="true" data-width=280px>支付方流水号</th>
+									<th data-field="hisFlowNo"  data-sortable="true" data-width=140px>HIS流水号</th>
+									<th data-field="patName" data-sortable="true" data-width=100px>患者姓名</th>
+									<th data-field="patType" data-sortable="true" data-width=100px>患者类型</th>
+									<th data-field="visitNumber" data-sortable="true" data-width=100px>患者ID</th>
+									<th data-field="mzCode" data-sortable="true" data-width=100px>门诊号</th>
+									<th data-field="payType" data-sortable="true" data-width=100px>支付类型</th>
+									<th data-field="payBusinessType"  data-sortable="true" data-width=100px>业务类型</th>
+									<th data-field="orderState" data-sortable="true" data-width=100px>订单状态</th>
+									<th data-field="tradeTime" data-sortable="true" data-width=170px>交易时间</th>
+									<th data-field="tradeAmount"  data-sortable="true" data-width=120px>交易金额(元)</th>
+								</tr>
+								</thead>
+							</table>
+						</li>
+						<li class=" detail-card" form="hisOrder" hidden="true">
+							<p class="detail-title">
+								HIS订单信息<span style="color:red" data-name="his_titleState"></span>
+							</p>
+							<ul class="detail-list-plan">
+								<li class="detail-text">
+									<div class="detail-text-list ">
+										<p class="list-left">患者姓名：</p>
+										<p class="list-right" data-name="patName"></p>
+									</div>
+									<div class=" detail-text-list">
+										<p class="list-left">患者类型：</p>
+										<p class="list-right" data-name="patType"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">订单状态：</p>
+										<p class="list-right" data-name="orderState"></p>
+									</div>
+									<div class=" detail-text-list">
+										<p class="list-left">HIS流水号：</p>
+										<p class="list-right" data-name="hisFlowNo"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">支付流水号：</p>
+										<p class="list-right" data-name="payFlowNo"></p>
+									</div>
+								</li>
+								<li class="detail-text">
+									<div class="detail-text-list ">
+										<p class="list-left">交易金额：</p>
+										<p class="list-right" data-name="tradeAmount"></p>
+									</div>
+									<div class=" detail-text-list">
+										<p class="list-left">交易时间：</p>
+										<p class="list-right" data-name="tradeTime"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">就诊卡号：</p>
+										<p class="list-right" data-name="visitNumber"></p>
+									</div>
+								</li>
+								<li class="detail-text">
+									<div class="detail-text-list ">
+										<p class="list-left">参考号：</p>
+										<p class="list-right" data-name="referenceNum"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">患者ID：</p>
+										<p class="list-right" data-name="patNumber"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">门诊号：</p>
+										<p class="list-right" data-name="mzCode"></p>
+									</div>
+									<div class=" detail-text-list">
+										<p class="list-left">支付类型：</p>
+										<p class="list-right" data-name="payType"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">商户订单号：</p>
+										<p class="list-right" data-name="shopFlowNo"></p>
+									</div>
+								</li>
+								<li class="detail-text">
+									<div class="detail-text-list ">
+										<p class="list-left">发票号：</p>
+										<p class="list-right" data-name="invoiceNo"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">商户号：</p>
+										<p class="list-right" data-name="payShopNo"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">终端号：</p>
+										<p class="list-right" data-name="terminalNo"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">差额：</p>
+										<p class="list-right" data-name="differenceAmount"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">业务类型：</p>
+										<p class="list-right" data-name="payBusinessType"></p>
+									</div>
+								</li>
+							</ul>
+						</li>
+						<li class=" detail-card " form="payOrderTableForm" hidden="true">
+							<p class="detail-title">支付订单信息</p>
+							<ul class="detail-list clear-float">
+								<table class="table table-bordered table-nomal" id="payOrderTable" data-striped="false" >
+									<thead>
+									<tr>
+										<th data-field="orderNo" data-sortable="true" data-width=280px>支付方流水号</th>
+										<th data-field="shopFlowNo" data-sortable="true" data-width=200px>商户流水号</th>
+										<th data-field="paymentAccount" data-sortable="true" data-width=200px>银行卡号</th>
+										<th data-field="payAmount" data-sortable="true" data-width=120px>交易金额(元)</th>
+										<th data-field="businessType" data-sortable="true" data-width= 100px>业务类型</th>
+										<th data-field="orderState"  data-sortable="true"data-width=100px>订单状态</th>
+										<th data-field="custName" data-sortable="true" data-width=100px>患者姓名</th>
+										<th data-field="patType" data-sortable="true" data-width=100px>患者类型</th>
+										<!-- <th data-field="patientCardNo" data-sortable="true" data-width=100px>患者ID</th> -->
+										<th data-field="payType" data-sortable="true" data-width=100px>支付类型</th>
+										<th data-field="tradeDatatime" data-sortable="true" data-width=170px>交易时间</th>
+									</tr>
+									</thead>
+								</table>
+							</ul>
+							<ul class="detail-list clear-float">
+								<div class="electronic-handle-description">
+									<div class="detail-text-list electronic-desc-img">
+										<p class="list-left">
+											<a data-name="descImg" value="" href="javascript:void()"
+											   onclick="app.admin.electronic.showImg(this)">查看图片附件</a>
+										</p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">处理说明：</p>
+										<p class="list-right" data-name="description"
+										   style="white-space: normal"></p>
+									</div>
+								</div>
+							</ul>
+						</li>
+						<li class=" detail-card " form="payOrder" hidden="true">
+							<p class="detail-title">支付订单信息</p>
+							<ul class="detail-list-plan">
+								<li class="detail-text">
+									<div class="detail-text-list ">
+										<p class="list-left">患者姓名：</p>
+										<p class="list-right" data-name="thirdDetail_custName"></p>
+									</div>
+									<div class="detail-text-list " >
+										<p class="list-left">患者类型：</p>
+										<p class="list-right" data-name="thirdDetail_patType"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">订单状态：</p>
+										<p class="list-right" data-name="thirdDetail_orderState"></p>
+									</div>
+									<div class="detail-text-list " >
+										<p class="list-left">支付流水号：</p>
+										<p class="list-right" data-name="thirdDetail_orderNo"></p>
+									</div>
+									<div class=" detail-text-list">
+										<p class="list-left">银行卡号：</p>
+										<p class="list-right" data-name="paymentAccount"></p>
+									</div>
+								</li>
+								<li class="detail-text" >
+									<div class="detail-text-list">
+										<p class="list-left">交易金额：</p>
+										<p class="list-right" data-name="thirdDetail_payAmount"></p>
+									</div>
+									<div class=" detail-text-list">
+										<p class="list-left">授权码：</p>
+										<p class="list-right" data-name="thirdDetail_authoriCode"></p>
+									</div>
+									<div class=" detail-text-list">
+										<p class="list-left">就诊卡号：</p>
+										<p class="list-right" data-name="patientCardNo"></p>
+									</div>
+								</li>
+
+								<li class="detail-text">
+									<div class=" detail-text-list">
+										<p class="list-left">参考号：</p>
+										<p class="list-right" data-name="referenceNum"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">商户号：</p>
+										<p class="list-right" data-name="payShopNo"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">终端号：</p>
+										<p class="list-right" data-name="payTermNo"></p>
+									</div>
+									<div class="detail-text-list">
+										<p class="list-left">商户订单号：</p>
+										<p class="list-right" data-name="thirdDetail_businessFlowNo"></p>
+									</div>
+								</li>
+								<li class="detail-text" >
+									<div class=" detail-text-list">
+										<p class="list-left">业务类型：</p>
+										<p class="list-right" data-name="thirdDetail_businessType"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">支付类型：</p>
+										<p class="list-right" data-name="thirdDetail_payType"></p>
+									</div>
+									<div class=" detail-text-list">
+										<p class="list-left">交易时间：</p>
+										<p class="list-right" data-name="thirdDetail_tradeDatatime"></p>
+									</div>
+								</li>
+							</ul>
+							<ul class="detail-list">
+								<div class="electronic-handle-description">
+									<div class="detail-text-list electronic-desc-img">
+										<p class="list-left">
+											<a data-name="descImg" value="" href="javascript:void()"
+											   onclick="app.admin.electronic.showImg(this)">查看图片附件</a>
+										</p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">处理说明：</p>
+										<p class="list-right" data-name="description"
+										   style="white-space: normal"></p>
+									</div>
+								</div>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/lib/loading/PerfectLoad.js}"></script>
+<script type="text/javascript"
+		th:src="@{/assets/js/recon/electronicRec.js}"></script>
+<script th:inline="javascript">
+	//获取后台传递的值
+	var orgJSON = [[${orgJSON}]];
+	var billSource = [[${billSource}]];
+	var patType = [[${patType}]];
+	var typesJSON=[[${typesJSON}]];
+	app.admin.electronic.init(orgJSON,billSource,patType);
+
+	$('#businessNo').bind('input propertychange', function(){
+		var businessNo = $('#businessNo').val();
+		if (businessNo == "") {
+			app.admin.electronic.resetData();
+		}
+	})
+
+</script>
+
+
+<style>
+	.electronic-rec-pay-step{
+		overflow: hidden;
+		font-size: 12px;
+		display: flex;
+		flex-wrap: wrap;
+		margin:30px 0;
+		position: relative;
+	}
+	.electronic-rec-pay-step:BEFORE{
+		content: " ";
+		position: absolute;
+		left: 45px;
+		right: 0;
+		top: 50%;
+		transform: translateY(-50%);
+		height: 2px;
+		background: #eaeced;
+	}
+	.electronic-rec-pay-step:AFTER{
+		content: " ";
+		position: absolute;
+		top: 50%;
+		right:-5px;
+		transform: translateY(-50%);
+		width: 0;
+		height: 0;
+		border-width: 5px;
+		border-style: solid;
+		border-color:transparent transparent transparent #eaeced;
+	}
+	.electronic-rec-pay-step.last-his:BEFORE{
+		background: #26d9b5;
+	}
+	.electronic-rec-pay-step.last-his:AFTER{
+		border-color:transparent transparent transparent #26d9b5;
+	}
+	.electronic-rec-pay-step.last-thrid:BEFORE{
+		background: #49bbfc;
+	}
+	.electronic-rec-pay-step.last-thrid:AFTER{
+		border-color:transparent transparent transparent #49bbfc;
+	}
+	.electronic-rec-pay-step.last-refund:BEFORE
+	{
+		background: #fdc07e;
+	}
+	.electronic-rec-pay-step.last-refund:AFTER{
+		border-color:transparent transparent transparent #fdc07e;
+	}
+	.electronic-rec-pay-step-box{
+		display: flex;
+		align-items: center;
+	}
+	.electronic-rec-pay-step-left{
+		margin-right: 30px;
+		margin-left: -10px;
+		content: url(assets/img/electronic/left.png);
+	}
+	.electronic-rec-pay-step-left[disabled],
+	.electronic-rec-pay-step-left.disabled,
+	.electronic-rec-pay-step-left:hover{
+		content: url(assets/img/electronic/hover-left.png);
+	}
+	.electronic-rec-pay-step-right{
+		margin-right: -10px;
+		margin-left: 30px;
+		content: url(assets/img/electronic/right.png);
+	}
+	.electronic-rec-pay-step-right[disabled],
+	.electronic-rec-pay-step-right.disabled,
+	.electronic-rec-pay-step-right:hover{
+		content: url(assets/img/electronic/hover-right.png);
+	}
+	.electronic-rec-pay-step-item{
+		position: relative;
+		min-width: 15%;
+		text-align: center;
+		display: inline-block;
+	}
+	.electronic-rec-pay-step-item:FIRST-CHILD{
+		margin-left: -20px;
+	}
+	.electronic-rec-pay-step-item:LAST-CHILD{
+		/* margin-right: -25px; */
+	}
+	.electronic-step-legend{
+		display: flex;
+		justify-content: flex-end;
+		color: #999dad;
+		font-size: 12px;
+	}
+	.electronic-step-legend > div{
+		margin-left: 30px;
+	}
+	.electronic-step-legend .electronic-step-legend-item{
+		display: inline-block;
+		margin-right: 6px;
+	}
+	.electronic-step-legend-item,
+	.electronic-rec-pay-step-item-point{
+		width: 16px;
+		height: 16px;
+		border: 2px solid #26d9b5;
+		border-radius: 10px;
+		margin: 15px auto;
+		background: white;
+	}
+	.electronic-step-legend-item{
+		margin: 0px;
+		vertical-align: middle;
+		margin-top: -2px;
+	}
+	.electronic-step-legend-item div,
+	.electronic-rec-pay-step-item-point div{
+		width: 50%;
+		height: 50%;
+		background: #26d9b5;
+		border-radius: 10px;
+		margin: 50%;
+		transform: translate(-50%,-50%);
+	}
+	.electronic-rec-pay-step-item-point:BEFORE{
+		content: "";
+		height: 2px;
+		background: #26d9b5;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		left: 0;
+		right: 50%;
+		margin-right: 8px;
+	}
+	.electronic-rec-pay-step-item-point:AFTER{
+		content: "";
+		height: 2px;
+		background: #26d9b5;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		right: 0;
+		left: 50%;
+		margin-left: 8px;
+	}
+	.electronic-rec-pay-item-text{
+		text-align: center;
+		display: inline-block;
+		color: #333;
+		line-height: 18px;
+	}
+	.electronic-rec-pay-step-item-time{
+		text-align: center;
+		color: #999dad;
+		display: inline-block;
+		width: 90px;
+		line-height: 18px;
+	}
+	.pay-step-thrid .electronic-step-legend-item,
+	.pay-step-thrid .electronic-rec-pay-step-item-point{
+		border-color: #49bbfc;
+	}
+	.pay-step-thrid .electronic-step-legend-item div,
+	.pay-step-thrid .electronic-rec-pay-step-item-point:BEFORE,
+	.pay-step-thrid .electronic-rec-pay-step-item-point:AFTER,
+	.pay-step-thrid .electronic-rec-pay-step-item-point div{
+		background: #49bbfc;
+	}
+	.pay-step-his .electronic-step-legend-item,
+	.pay-step-his .electronic-rec-pay-step-item-point{
+		border-color: #26d9b5;
+	}
+	.pay-step-his .electronic-step-legend-item div,
+	.pay-step-his .electronic-rec-pay-step-item-point:BEFORE,
+	.pay-step-his .electronic-rec-pay-step-item-point:AFTER,
+	.pay-step-his .electronic-rec-pay-step-item-point div{
+		background: #26d9b5;
+	}
+	.pay-step-refund .electronic-step-legend-item,
+	.pay-step-refund .electronic-rec-pay-step-item-point{
+		border-color: #fdc07e;
+	}
+	.pay-step-refund .electronic-step-legend-item div,
+	.pay-step-refund .electronic-rec-pay-step-item-point:BEFORE,
+	.pay-step-refund .electronic-rec-pay-step-item-point:AFTER,
+	.pay-step-refund .electronic-rec-pay-step-item-point div{
+		background: #fdc07e;
+	}
+</style>

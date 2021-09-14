@@ -1,0 +1,267 @@
+<link rel="stylesheet" type="text/css" href="assets/css/common.css">
+<link rel="stylesheet" type="text/css" href="assets/css/insuranceOrder.css">
+
+
+<div class="m-content-wrapper "> <!-- main-box -->
+	<div class="table-content-wrap">
+		<form class="form-inline m-search" id="healthBillSearchForm">
+			<div class="row tool-box-content">
+				<div class="form-group">
+					<label class="search-label">机构选择 </label>
+					<div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control"
+							   data-name="code" id="healthBillTree" placeholder="所属机构" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="search-label">数据来源 </label>
+					<div class="form-group no-margin">
+						<select class="form-control" id="dataSourceTree">
+							<option>全部</option>
+							<option>住院</option>
+							<option>门诊</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="form-group">
+						<label>对账时间:</label>
+					</div>
+					<div class="input-group">
+						<input AUTOCOMPLETE="off" type="text"
+							   class="form-control pull-right" placeholder="对账时间"
+							   name="startTime" id="healthBillTime" readonly="readonly">
+					</div>
+				</div>
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary"
+							onclick="app.admin.healthBill.search(this)">查询</button>
+					<a onclick='app.admin.healthBill.exportData()' class="btn btn-success">导出</a>
+					<!--<a onclick='app.admin.healthBill.startRec()' class="btn btn-primary">对账</a> -->
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<input type="hidden" th:value="${orgJSON}" id="healthBillOrgNo">
+	<input type="hidden" th:value="${typesJSON}" id="healthBillType">
+	<input type="hidden" th:value="${tradeDate}" id="healthBillTradeDate">
+	<input type="hidden" th:value="${flag}" id="healthBillFlagInit">
+
+	<!--1.5:开始-->
+	<ul class="insurance-order clear-float row-space">
+		<li class="insurance-list border">
+			<p class="title-left">医保中心</p>
+			<p class="title-center">医保总金额</p>
+			<p class="amount" id="billAmountDiv">0.00</p>
+			<div class="drawing" id="billDrawingDiv"></div>
+			<ul class="classify clear" id="billDiv">
+			</ul>
+		</li>
+		<li class="insurance-list border">
+			<p class="title-left">HIS</p>
+			<p class="title-center">医保总金额</p>
+			<p class="amount" id="hisAmountDiv">0.00</p>
+			<div class="drawing" id="hisDrawingDiv"></div>
+			<ul class="classify clear" id="hisDiv">
+			</ul>
+		</li>
+		<li class="insurance-list  diff border">
+			<p class="title-left">差异</p>
+			<p class="title-center">医保差异金额</p>
+			<p class="amount" id="xAmountDiv">0.00</p>
+			<div class="drawing"><div class="drawing-diff" id="xDrawingDiv"></div></div>
+			<ul class="classify clear" id="xDiv">
+			</ul>
+		</li>
+	</ul>
+
+	<!-- 模态框（Modal） -->
+	<div class="modal fade" id="healthDealFollowDlg" tabindex="-2"
+		 role="dialog" data-backdrop="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+					<h4 class="modal-title" hidden="false" id="floating">平账</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form"
+						  id="healthDealFollowDlgDlg" enctype="multipart/form-data">
+						<input type="text" name="payFlowNo" style="display: none;" />
+						<input type="text" name="checkState" style="display: none;" />
+						<input type="text" name="tradeAmount" style="display: none;" />
+						<input type="text" name="orgCode" style="display: none;" />
+						<input type="text" name="tradeDatetime" style="display: none;"/>
+						<input type="text" name="payType" style="display: none;"/>
+						<input type="text" name="billSource" style="display: none;"/>
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label" hidden="false" id="floatingSeason">平账原因:</label>
+							<label class="col-sm-2 control-label" hidden="false" id="recoverSeason">追回原因:</label>
+							<div class="col-sm-10">
+							<textarea rows="4" class="form-control" cols="40"
+									  name=description></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">上传图片:</label>
+							<div class="col-sm-10">
+								<input type="file" name="file" />
+								<lable>温馨提示：图片最大支持2M，支持格式为bmp.png jpeg.jpg.gif</lable>
+							</div>
+						</div>
+						<!-- <div class="form-group">
+                            <lable class="col-sm-12 control-label"
+                                style="color:red;text-align:center;">温馨提示：该订单属于短款，此订单只做标记处理。</lable>
+                        </div> -->
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" id="save"
+							onclick="app.admin.healthBill.save()">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- <div class="row">
+		<div class="col-md-2"  style="width: 30%;float: left;">
+			<div class="modal-content">
+				<div class="modal-header" style="text-align: center;">
+					<h4 class="modal-title" data-align="center">医保中心</h4>
+				</div>
+				<div class="modal-body" id="billDiv">
+					<label style="width: 50%;">对账时间:</label><label style="width: 50%;">对账时间</label>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-2 col-md-offset-0.5"  style="width: 30%;float: left;">
+			<div class="modal-content">
+				<div class="modal-header" style="text-align: center;">
+					<h4 class="modal-title" data-align="center">HIS</h4>
+				</div>
+				<div class="modal-body" id="hisDiv">
+					<label style="width: 50%;">对账时间:</label><label style="width: 50%;">对账时间</label>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-2 col-md-offset-0.5"  style="width: 30%;float: left;">
+			<div class="modal-content">
+				<div class="modal-header" style="text-align: center;">
+					<h4 class="modal-title">差异</h4>
+				</div>
+				<div class="modal-body" id="xDiv">
+					<label style="width: 50%;">对账时间:</label><label style="width: 50%;">对账时间</label>
+				</div>
+			</div>
+		</div>
+	</div> -->
+
+	<!--1.4:结束-->
+	<div class="row" >
+		<div class="col-md-1" style="width:auto">
+			<h4>
+				异常账单
+			</h4>
+		</div>
+		<!-- <div class="col-md-1 col-md-offset-1">
+			<div class="form-group"  style="width: 220px;">
+				<label>医保类型：</label><select class="form-control" onchange="app.admin.healthBill.healthExceptionList()" id="healthType" name="healthType"></select>
+			</div>
+		</div> -->
+	</div>
+
+	<div>
+		<table class="table table-bordered table-nomal "
+			   id="healthBillDataTable" data-striped="false">
+			<thead>
+			<tr>
+				<th data-field="payFlowNo" data-width="14%" data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">结算业务序列号</th>
+				<th data-field="shopFlowNo" data-width="14%" data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">医保就诊流水号</th>
+				<!-- <th data-field="healthType" data-width="9%"  data-formatter="app.admin.healthBill.formatter">医保类型</th>-->
+				<th data-field="healthCode" data-width="12%" >医保卡号</th>
+				<th data-field="socialComputerNumber" data-width="12%">医保电脑号</th>
+				<th data-field="busnessType" data-width="12%">挂号/缴费</th>
+				<th data-field="orderState" data-width="9%"  data-formatter="app.admin.healthBill.formatter">支付类型</th>
+				<th data-field="patientName" data-width="9%">患者姓名</th>
+				<!--					<th data-field="billCostAccount" data-width="10%" data-formatter="app.admin.healthBill.moneyFormat">个账支付<span class="th-info" >(医保)</span></th>-->
+				<!--					<th data-field="billCostWhole" data-width="10%" data-formatter="app.admin.healthBill.moneyFormat">统筹金额<span class="th-info" >(医保)</span></th>-->
+				<th data-field="costTotalInsurance" data-width="12%" data-formatter="app.admin.healthBill.zdBIllStateFormat">医保合计金额<span class="th-info" >(医保)</span></th>
+				<!--					<th data-field="hisCostAccount" data-width="10%" data-formatter="app.admin.healthBill.moneyFormat">个账支付<span class="th-his-info" >(HIS)</span></th>-->
+				<!--					<th data-field="hisCostWhole" data-width="10%" data-formatter="app.admin.healthBill.moneyFormat">统筹金额<span class="th-his-info" >(HIS)</span></th>-->
+				<th data-field="costTotalInsuranceHis" data-width="12%" data-formatter="app.admin.healthBill.zdHisStateFormat">医保合计金额<span class="th-his-info" >(HIS)</span></th>
+				<th data-field="state" data-width="12%" data-formatter="app.admin.healthBill.currentState">当前状态</th>
+				<th data-field="" data-formatter="app.admin.healthBill.formatHandler" data-width="18%">操作</th>
+			</tr>
+			</thead>
+		</table>
+	</div>
+</div>
+
+<div class="modal fade" id="followLoading" tabindex="-1" role="dialog"
+	 aria-labelledby="myModalLabel" data-backdrop='static'>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">提示</h4>
+			</div>
+			<div class="modal-body">请稍候。。。</div>
+		</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="healthDetails" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">订单详情</h4>
+			</div>
+			<div class="modal-body">
+				<table class="table table-bordered table-nomal" data-striped="false">
+					<thead>
+					<tr>
+						<th style="width: 33%;text-align:center;">医保中心</th>
+						<th style="width: 33%;text-align:center;">his</th>
+						<th style="width: 33%;text-align:center;">差异</th>
+					</tr>
+					</thead>
+					<tbody id="healthDetailsBody">
+
+					</tbody>
+				</table>
+
+				<!-- 处理详情 -->
+				<div style="margin-left: 10px;display: none" id="dealImage">
+					<a id="descImg" value="" href="javascript:void()"
+					   onclick="app.admin.healthBill.showImg(this)">查看图片附件
+					</a>
+				</div>
+				<div style="margin-left: 10px;margin-top: 4px;display: none;" id="dealDesc">
+					<div style="float: left">处理说明：</div>
+					<div class="list-right" data-name="description" id="description" style="float: left"></div>
+				</div>
+
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<script type="text/javascript" th:src="@{/assets/js/recon/healthBill.js}"></script>
+<script type="text/javascript" th:src="@{/bst1.0/plugins/echarts/echarts.common.min.js}"></script>
+<script th:inline="javascript">
+	var orgJSON = [[${orgJSON}]];
+	app.admin.healthBill.init(orgJSON);
+</script>

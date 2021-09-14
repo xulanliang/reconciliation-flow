@@ -1,0 +1,258 @@
+<!-- 窗口现金核对 -->
+<link rel="stylesheet" href="assets/css/common.css">
+<link rel="stylesheet" href="assets/css/orderAbnormal.css">
+<!-- <script src="../jquery.min.js"></script> -->
+<link rel="stylesheet" href="assets/byStep/byStep.css"/>
+<script src="assets/byStep/byStep.js"></script>
+<script src="assets/js/TabNav.js"></script>
+<div class="m-content-wrapper" id="windowCashCheckDiv">
+    <div class="table-content-wrap">
+        <form class="form-inline m-search" id="windowCashCheckSearchForm">
+            <div class="row tool-box-content">
+                <div class="form-group">
+                    <label class="search-label">所属机构：</label>
+                    <div class="form-group no-margin">
+                        <input type="text" style="width: 220px;" class="form-control" data-name="orgCode" id="tradeTree"
+                               placeholder="所属机构"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="search-label" for="beginTime">选择时间：</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="text" class="form-control" style="width: 330px;"
+                               onmousemove="this.style.cursor='pointer';"
+                               name="beginTime" id="cashCheckStartTime" readonly="readonly"/>
+                    </div>
+                </div>
+                <div class="form-group m-btn">
+                    <a onclick='app.admin.windowCashCheck.showAddRowDataForm()' class="btn btn-success">新增</a>
+                    <button type="button" class="btn btn-primary" onclick="app.admin.windowCashCheck.search(this)">查询
+                    </button>
+                    <a onclick='app.admin.windowCashCheck.exportData()' class="btn btn-success">导出</a>
+                    <a data-toggle="collapse" data-parent="#cash-search-box" href="#cash-search-box"> 高级查询 <i
+                            class="fa fa-angle-down"></i></a>
+                </div>
+                <div id="cash-search-box" class="panel-collapse collapse ">
+                    <div class="form-group">
+                        <label class="search-label">存款人：</label>
+                        <input type="text" class="form-control" id="cashierName" name="cashierName" placeholder="存款人"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="search-label">存款银行：</label>
+                        <select class="form-control" style="width: 220px" id="bankType" name="bankType"></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="search-label">类型：</label>
+                        <input type="text" id="businessTypeVal" style="display: none">
+                        <select class="form-control" id="businessType" name="businessType">
+                            <option value="">全部</option>
+                            <option value="zy">住院</option>
+                            <option value="mz">门诊</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <input type="hidden" th:value="${orgJSON}" id="tradeOrgNo">
+            <input type="hidden" th:value="${typesJSON}" id="tradeType">
+            <input type="hidden" th:value="${org}" id="trade_dataSource">
+            <input type="hidden" th:value="${hConfig}" id="hConfig">
+            <table class="table table-bordered table-nomal " id="windowCashCheckTable" data-striped="false">
+                <thead>
+                <tr>
+                    <th data-formatter="app.admin.windowCashCheck.number" data-width="50px" class="text-center">序号</th>
+                    <th data-field="orgCode" data-sortable="true"
+                        data-formatter="app.admin.windowCashCheck.orgFormatter">机构名称
+                    </th>
+                    <th data-field="cashDate" data-sortable="true"
+                        data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">存款日期
+                    </th>
+                    <th data-field="hisAmount" data-sortable="true"
+                        data-formatter="app.admin.windowCashCheck.moneyFormat">应存金额(元)
+                    </th>
+                    <th data-field="channelAmount" data-sortable="true" data-formatter="app.admin.windowCashCheck.moneyFormat">
+                        实存金额(元)
+                    </th>
+                    <th data-field="exceptionalAmount" data-formatter="app.admin.windowCashCheck.moneyFormat"
+                        data-sortable="true">垫付金额(元)
+                    </th>
+                    <th data-field="cashierName" data-sortable="true">存款人</th>
+                    <th data-field="businessType" data-formatter="app.admin.windowCashCheck.formatter" data-sortable="true">
+                        类型
+                    </th>
+                    <th data-field="cashStatus" data-sortable="true"
+                        data-formatter="app.admin.windowCashCheck.formatterState">状态
+                    </th>
+                    <th data-field="" data-width="180px" data-align="center"
+                        data-formatter="app.admin.windowCashCheck.formatOpt">操作
+                    </th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- 查看详情模态框（Modal） -->
+<div class="modal fade" id="cashCheckDedailedDlg" tabindex="-1" role="dialog" data-backdrop=true>
+    <div class="modal-dialog" style="width:40%;min-width:720px">
+        <div class="modal-content order-abnormal">
+            <div class="abnormal border ">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">&times;
+                    </button>
+                    <h4 class="modal-title">查看</h4>
+                </div>
+                <div class="abnormal-text">
+                    <ul class="detail">
+                        <li class=" detail-card border">
+                            <ul class="detail-list clear-float">
+                                <dl form="detailPage">
+                                    <li class="detail-text">
+                                        <div class="list-top detail-text-list ">
+                                            <p class="list-left">应存金额：</p>
+                                            <p class="list-right" data-name="hisAmount"></p>
+                                        </div>
+                                        <div class="list-bottom detail-text-list">
+                                            <p class="list-left">实存金额：</p>
+                                            <p class="list-right" data-name="channelAmount"></p>
+                                        </div>
+                                    </li>
+                                    <li class="detail-text">
+                                        <div class="list-top detail-text-list ">
+                                            <p class="list-left" style="text-align: right">垫付金额：</p>
+                                            <p class="list-right" data-name="exceptionalAmount"></p>
+                                        </div>
+                                        <div class="list-bottom detail-text-list">
+                                            <p class="list-left" style="text-align: right">存款人：</p>
+                                            <p class="list-right" data-name="cashierName"></p>
+                                        </div>
+                                    </li>
+                                    <li class="detail-text">
+                                        <div class="list-top detail-text-list ">
+                                            <p class="list-left" style="text-align: right">存款日期：</p>
+                                            <p class="list-right" data-name="cashDate"></p>
+                                        </div>
+                                        <div class="list-bottom detail-text-list">
+                                            <p class="list-left" style="text-align: right">操作时间：</p>
+                                            <p class="list-right" data-name="createdDateTime"></p>
+                                        </div>
+                                    </li>
+                                    <li class="detail-text">
+                                        <div class="list-top detail-text-list ">
+                                            <p class="list-left">银行：</p>
+                                            <p class="list-right" data-name="bankType"></p>
+                                        </div>
+                                        <div class="list-top detail-text-list ">
+                                            <p class="list-left">类型：</p>
+                                            <p class="list-right" data-name="businessType"></p>
+                                        </div>
+                                    </li>
+                                    <li class="detail-text">
+                                        <div class="list-top detail-text-list">
+                                            <p class="list-left">垫付原因：</p>
+                                            <p class="list-right" data-name="exceptionalReason"></p>
+                                        </div>
+                                    </li>
+                                </dl>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="toast-bottom">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 新增模态框（Modal） -->
+<div class="modal fade" id="windowCashCheckDlg" tabindex="-4" role="dialog"
+     data-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;
+                </button>
+                <h4 class="modal-title">存款</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" id="addRowDataForm"
+                      enctype="multipart/form-data">
+                    <input type="text" name="id" style="display: none;"/>
+                    <input type="text" name="orgCode" style="display: none;"/>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">实存金额:</label>
+                        <div class="col-sm-10">
+                            <input type="number" onkeyup="app.admin.windowCashCheck.numExt(this)" size="10"
+                                   class="form-control" id="channelAmount" name="channelAmount">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">垫付金额:</label>
+                        <div class="col-sm-10">
+                            <input type="number" onkeyup="app.admin.windowCashCheck.numExt(this)" size="10"
+                                   class="form-control" name="exceptionalAmount" id="exceptionalAmount">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">存款日期:</label>
+                        <div class="col-sm-10">
+                            <!--<input type="number" size="10" class="form-control">-->
+                            <input type="text" class="form-control" style="width: 100%;" onmousemove="this.style.cursor='pointer';"
+                                   id="cashDate" name="cashDate"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">存款银行:</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" style="width: 100%" id="bankTypeAddRow" name="bankType"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">类型:</label>
+                        <div class="col-sm-10">
+                            <!--<input type="number" size="10" class="form-control">-->
+                            <select class="form-control" id="businessTypeAddRow" name="businessType">
+                                <option value="">全部</option>
+                                <option value="zy">住院</option>
+                                <option value="mz">门诊</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">垫付原因:</label>
+                        <div class="col-sm-10">
+                            <textarea rows="4" class="form-control" cols="40" name="exceptionalReason" id="exceptionalReason"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="addRowDataButton"
+                        onclick="app.admin.windowCashCheck.saveRowData()">确定
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" th:src="@{/assets/js/recon/windowCashCheck.js}"></script>
+<script th:inline="javascript">
+    var accountDate = [[${accountDate}]];
+    var date = [[${date}]];
+    var orgCode = [[${orgCode}]];
+    var orderState = [[${orderState}]];
+    app.admin.windowCashCheck.init(accountDate, date, orgCode, orderState);
+</script>
+<script>
+</script>

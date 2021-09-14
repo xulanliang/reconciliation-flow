@@ -1,0 +1,129 @@
+
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row tool-box-content">
+            <form class="form-inline" id="refundTableSearchForm">
+            
+
+                <div class="form-group">
+                    <label class="search-label">微信、支付宝流水号</label><input type="text"
+						style="width: 230px;" class="form-control" 
+						name="payFlowNo" id="searchPayFlowNo" placeholder="微信、支付宝流水号" />
+		        </div>
+
+				<div class="form-group">
+					<label for="beginTime" class="search-label">申请时间</label>
+					<div class="input-group">
+					<div class="input-group-addon">
+						<i class="fa fa-calendar"></i>
+					</div>
+					<input type="text" class="form-control" style="width: 220px;" onmousemove="this.style.cursor='pointer';"
+						   id="searchRequestTime" readonly="readonly"/>
+					</div>
+				</div>
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary" onclick="app.admin.refundTable.search()">查询</button>
+				</div>
+
+            </form>
+        </div>
+		<div class="row">
+			<table class="table table-bordered table-nomal"
+				id="refundTableTable" data-striped="false">
+				<thead>
+					<tr>
+					    <th data-formatter="app.admin.refundTable.number">序号</th>
+                        <th data-field="payFlowNo" >微信、支付宝流水号</th>
+                        <th data-field="refundAmount" >退费金额</th>
+                        <th data-field="refundState" data-formatter="app.admin.refundTable.formatRefundState" >退费状态</th>
+                        <th data-field="requestTime" >申请时间</th>
+
+                        <th data-field="" data-width="230" data-align="center"
+							data-formatter="app.admin.refundTable.formaterOpt">操作</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<!-- 审核退费模态框（Modal） -->
+<div class="modal fade" id="refundTableDlg" tabindex="-1"
+	role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="title">退费审核</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form">
+					<input type="hidden" id="id"  name="id" />
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label">微信、支付宝流水号:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" readonly="readonly"
+							name="payFlowNo"  />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label">申请人:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" readonly="readonly"
+								   name="requestPeople"  />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label">申请时间:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" readonly="readonly"
+								   name="requestTime"  />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label">退费金额:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" readonly="readonly"
+							name="refundAmount"  />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label">退费原因:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" readonly="readonly"
+							name="reason"  />
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label">审核原因:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control"
+							name="shengheReason"  />
+						</div>
+					</div>
+
+
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary"
+					onclick="app.admin.refundTable.save()">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<input type="hidden" th:value="${nowDate}" id="nowDate">
+
+<script th:src="@{/assets/js/admin/refundTable.js}"></script>
+<script>
+	app.admin.refundTable.init();
+</script>

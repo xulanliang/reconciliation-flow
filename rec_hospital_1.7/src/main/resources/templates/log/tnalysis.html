@@ -1,0 +1,34 @@
+<div class="m-content-wrapper" >
+	<div class="table-content-wrap">
+	<div class="row tool-box-content">
+	    <form class="form-inline">
+	    	<div class="form-group">
+	            <label class="control-label">所属机构：</label>
+	            <div class="form-group">
+	             <input type="text" class="form-control" id="tnalysisOrgSelect" data-name="tnalysisOrgSelect"/>
+	            </div>
+	        </div>
+	         <div class="form-group m-btn">
+	          	<button type="button" class="btn btn-primary" onclick="app.reconciliation.tnalysis.search()">查询</button>
+	         </div>
+	    </form>
+	</div>
+	<div class="row">
+		<table class="table table-bordered table-nomal " id="tnalysisDataTable" data-striped="false" th:attr="typesJSON=${typesJSON},typesJSONS=${typesJSONS},orgJSON=${orgJSON}">
+			<thead>
+				<tr>
+					<th data-field="systemCode" data-align="center" data-formatter="app.reconciliation.tnalysis.formatSys">系统名称</th>
+					<th data-field="orgCode"  data-align="center" data-formatter="app.reconciliation.tnalysis.formatOrg">机构名称</th>
+					<th data-field="payChannel"  data-align="center" data-formatter="app.reconciliation.tnalysis.format">支付渠道</th>
+					<th data-field="orderDate" ">订单时间</th>
+					<th data-field="state" data-align="center" data-formatter="app.reconciliation.tnalysis.format">状态</th>
+					<th data-field="remarks" >描述</th>
+					<th data-field="fileId" >文件id</th>
+					<th data-field="" data-width="120" data-align="center" data-formatter="app.reconciliation.tnalysis.formatOpt">操作</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/log/tnalysis.js}"></script>

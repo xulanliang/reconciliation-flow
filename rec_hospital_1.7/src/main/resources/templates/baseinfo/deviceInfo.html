@@ -1,0 +1,96 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+	<div class="row tool-box-content">
+	    <form class="form-inline">
+	    	<div class="form-group">
+	    	    <input type="text" class="form-control" data-name="deviceNo" id="deviceNo" name="deviceNo" placeholder="设备编码"/>
+	        </div>
+	        <div class="form-group">
+				<input type="text" style="width: 230px;" class="form-control" data-name="searchOrgNameTree" id="searchOrgNameTree" placeholder="机构名称"/>
+	        </div>
+	         <div class="form-group m-btn">
+	          	<button type="button" class="btn btn-primary" onclick="app.admin.deviceInfo.search()">查询</button>
+		        <button id="btn_add" type="button" class="btn btn-success" onclick="app.admin.deviceInfo.create()">新增</button>
+	         </div>
+	    </form>
+	</div>
+	<div class="row">
+		<table class="table table-bordered table-nomal " id="deviceInfoTable" data-striped="false">
+			<thead>
+				<tr>
+					<th data-width="5%" data-align="center" data-formatter="app.admin.deviceInfo.number">序号</th>
+					<th data-width="20%" data-field="deviceNo">设备编码</th>
+					<th data-width="20%" data-field="orgName">机构名称</th>
+					<th data-width="10%" data-field="orgNo">机构编码</th>
+					<th data-width="10%" data-field="deviceSn">设备序列号</th>
+<!-- 					<th data-width="10%" data-field="deviceMackey">设备传输密钥</th> -->
+					<th data-width="10%" data-field="deviceArea">所在区域</th>
+<!-- 					<th data-width="10%" data-field="remarkInfo">备注</th> -->
+					<th data-width="" data-align="center" data-formatter="app.admin.deviceInfo.formatOpt">操作</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	</div>
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="deviceInfoDlg" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">新增</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form">
+					<input style="display:none" name="id" />
+					<div class="form-group">
+						<label class="col-sm-3 control-label">设备编码:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" name="deviceNo" placeholder="请输入">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">设备序列号:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" name="deviceSn" placeholder="请输入">
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">设备传输密钥:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" name="deviceMackey" placeholder="请输入"/>
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">所属机构:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" data-name="orgNo" id="dOrgNameTree"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">设备所在的区域:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" name="deviceArea" placeholder="请输入"/>
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">描述</label>
+						<div class="col-sm-9">
+							<textarea rows="3" class="form-control" cols="40" name="remarkInfo"></textarea>
+				    	</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" onclick="app.admin.deviceInfo.save()">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" th:src="@{/assets/js/baseinfo/deviceInfo.js}"></script>
+<script type="text/javascript">
+	app.admin.deviceInfo.init();
+</script>

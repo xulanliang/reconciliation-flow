@@ -1,0 +1,100 @@
+<div class="m-content-wrapper" >
+	<div class="table-content-wrap">
+	<div class="row tool-box-content">
+	    <form class="form-inline">
+	    	<div class="form-group">
+	            <label>字典类型：</label>
+	            <select id="dictTypeList" class="selectpicker" ></select>
+	        </div>
+	         <div class="form-group m-btn">
+	          	<button type="button" class="btn btn-primary" onclick="app.admin.dict.search()">查询</button>
+		        <button id="btn_add" type="button" class="btn btn-success" onclick="app.admin.dict.create()">新增</button>
+	         </div>
+	    </form>
+	</div>
+	<div class="row">
+		<table class="table table-bordered table-nomal " id="dictDataTable"
+			data-striped="false" th:attr="typesJSON=${typesJSON}">
+			<thead>
+				<tr>
+					<th data-width="5%" data-align="center" data-formatter="app.admin.dict.number">序号</th>
+					<th data-width="20%" data-field="name">名称</th>
+					<th data-width="10%" data-field="value">字典键</th>
+					<th data-width="10%" data-field="sort">排序号</th>
+<!-- 					<th data-width="10%" data-field="description">描述</th> -->
+					<th data-width="20%" data-field="dictType" data-align="center" data-formatter="app.admin.dict.formatType">类型</th>
+					<th data-width="10%" data-field="isActived" data-formatter="app.admin.dict.activation">是否激活</th>
+					<th data-width="32%" data-field="" data-align="center" data-formatter="app.admin.dict.formatOpt">操作</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	</div>
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="dictDlg" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">新增字典</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form">
+					<input type="hidden"  name="id" />
+					<div class="form-group">
+						<label class="col-sm-2 control-label">名称</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="name" placeholder="请输入名称">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">字典键</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="value" placeholder="请输入字典键">
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">排序号</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="sort" placeholder="请输入字典键">
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">描述</label>
+						<div class="col-sm-10">
+							<textarea rows="3" class="form-control" cols="40" name="description"></textarea>
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">类型</label>
+						<div class="col-sm-10">
+							<select  name="dictType" class="selectpicker" ></select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">是否激活</label>
+						<div class="col-sm-10">
+							<select  name="isActived" id="isActived" class="form-control">
+								<option value="1">激活</option>
+								<option value="0">禁用</option>
+							</select>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" onclick="app.admin.dict.save()">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript" th:src="@{/assets/js/admin/dict/dict.js}"></script>
+<script>
+	app.admin.dict.init();
+</script>
+
+

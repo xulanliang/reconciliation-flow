@@ -1,0 +1,151 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row tool-box-content">
+			<form class="form-inline" id="payTypeAndBussinessTypeCashierReportsSearchForm">
+				<div class="form-group">
+					<label>所属机构:</label>
+					<div class="form-group">
+						<input type="text" style="width: 280px;" class="form-control" data-name="orgCode" id="summaryByPayTypeAndBussinessTypeOrgSelect" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="form-group">
+						<label>选择日期:</label>
+					</div>
+					<div class="input-group">
+						<input type="text" class="form-control" style="width: 220px;" onmousemove="this.style.cursor='pointer';"
+							id="payTypeAndBussinessTypeCashierTime" readonly="readonly" />
+					</div>
+				</div>
+				<input type="hidden" th:value="${typesJSON}" id="businessTypeCashierType">
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary" onclick="app.admin.payTypeAndBussinessTypeCashierReports.search(this)">查询</button>
+					<button type="button" class="btn btn-success" onclick="app.admin.payTypeAndBussinessTypeCashierReports.exportList()">导出</button>
+				</div>
+			</form>
+		</div>
+
+		<div class="row" style="">
+			<div class="tableTitleArea">
+				<span style="font-size: 18px;">收费员支付方式和业务类型汇总报表</span>
+			</div>
+			<table class="table table-bordered table-nomal " id="payTypeAndBussinessTypeCashierReportsDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-valign="middle" data-width="4300" colspan="43" name="tableTitle" class="tableExcelDisplayArea"></th>
+					</tr>
+					<tr class="success">
+						<th data-valign="middle" data-width="100">&nbsp;</th>
+						<th data-valign="middle" data-width="200" colspan="2">挂号 （微信）</th>
+						<th data-valign="middle" data-width="200" colspan="2">挂号 （支付宝）</th>
+						<th data-valign="middle" data-width="200" colspan="2">挂号 （银联）</th>
+						<th data-valign="middle" data-width="200" colspan="2">挂号 （现金）</th>
+						<th data-valign="middle" data-width="200" colspan="2">预约挂号 （微信）</th>
+						<th data-valign="middle" data-width="200" colspan="2">预约挂号 （支付宝）</th>
+						<th data-valign="middle" data-width="200" colspan="2">预约挂号 （银联）</th>
+						<th data-valign="middle" data-width="200" colspan="2">预约挂号（现金）</th>
+						<th data-valign="middle" data-width="200" colspan="2">缴费 （微信）</th>
+						<th data-valign="middle" data-width="200" colspan="2">缴费 （支付宝）</th>
+						<th data-valign="middle" data-width="200" colspan="2">缴费 （银联）</th>
+						<th data-valign="middle" data-width="200" colspan="2">缴费 （现金）</th>
+						<th data-valign="middle" data-width="200" colspan="2">住院预交金（微信）</th>
+						<th data-valign="middle" data-width="200" colspan="2">住院预交金 （支付宝）</th>
+						<th data-valign="middle" data-width="200" colspan="2">住院预交金 （银联）</th>
+						<th data-valign="middle" data-width="200" colspan="2">住院预交金 （现金）</th>
+						<th data-valign="middle" data-width="200" colspan="2">出院结算 （微信）</th>
+						<th data-valign="middle" data-width="200" colspan="2">出院结算 （支付宝）</th>
+						<th data-valign="middle" data-width="200" colspan="2">出院结算 （银联）</th>
+						<th data-valign="middle" data-width="200" colspan="2">出院结算 （现金）</th>
+						<th data-valign="middle" data-width="200" colspan="2">其他</th>
+
+					</tr>
+
+					<tr>
+						<!--<th data-field="businessType" data-formatter="app.admin.ReportsPayTypeCashier.normal">收费员</th>-->
+						<th data-field="businessType" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.cashierTypeFormat">收费员</th>
+
+						<th data-field="drghWechatAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="drghWechatAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+						<th data-field="drghZfbAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="drghZfbAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+						<th data-field="drghBankAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="drghBankAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+						<th data-field="drghCashAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="drghCashAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+
+						<th data-field="yyghWechatAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="yyghWechatAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+						<th data-field="yyghZfbAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="yyghZfbAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+						<th data-field="yyghBankAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="yyghBankAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+						<th data-field="yyghCashAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="yyghCashAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+
+						<th data-field="jfWechatAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="jfWechatAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+						<th data-field="jfZfbAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="jfZfbAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+						<th data-field="jfBankAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="jfBankAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+						<th data-field="jfCashAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="jfCashAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+
+						<th data-field="zyyjjWechatAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="zyyjjWechatAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+						<th data-field="zyyjjZfbAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="zyyjjZfbAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+						<th data-field="zyyjjBankAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="zyyjjBankAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+						<th data-field="zyyjjCashAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="zyyjjCashAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+
+						<th data-field="cyjsWechatAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="cyjsWechatAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+						<th data-field="cyjsZfbAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="cyjsZfbAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+						<th data-field="cyjsBankAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="cyjsBankAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+						<th data-field="cyjsCashAcount" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.normal">笔数</th>
+						<th data-field="cyjsCashAmount" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.moneyFormat">金额(元)</th>
+
+						<th data-field="" data-width="80" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.otherAcount">笔数</th>
+						<th data-field="" data-width="100" data-formatter="app.admin.payTypeAndBussinessTypeCashierReports.otherAmount">金额(元)</th>
+
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<style>
+.fixed-table-header-columns, .fixed-table-body-columns{
+	display: block !important; 
+}
+</style>
+<script type="text/javascript" th:src="@{/assets/js/reports/cashier/payTypeAndBussinessTypeCashierReports.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/bootstrap-table-fixed-columns.js}"></script>
+<!-- <link rel="stylesheet" type="text/css" th:href="@{/assets/css/reports.css}"> -->
+<script th:inline="javascript">
+var orgCode = [[${orgCode}]]; var beginTime = [[${beginTime}]]; var endTime = [[${endTime}]];
+app.admin.payTypeAndBussinessTypeCashierReports.init(orgCode,beginTime, endTime);
+</script>

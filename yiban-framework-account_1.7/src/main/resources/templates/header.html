@@ -1,0 +1,67 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="BASE_CSS">
+<title th:text="${appConfig.name}"></title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+<link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap/css/bootstrap.min.css'}"/>
+<!-- 选项卡 -->
+<link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-tab/css/font-awesome.min.css'}"/>
+<link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-tab/fonts/element-icons.woff'}"/>
+<link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-tab/fonts/fontawesome-webfont.woff2'}"/>
+<link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2'}"/>
+<link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-tab/css/jquery.scrollbar.min.css'}"/>
+<link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-tab/css/nth.tabs.min.css'}"/>
+<!-- 日期控件:旧版 -->
+<!--<link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/datepicker/datepicker3.css'}"/>-->
+    <!--日期控件：v1.8.0-->
+    <link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css'}"/>
+    <link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.standalone.css'}"/>
+
+    <link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/daterangepicker/daterangepicker.css'}"/>
+
+<link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css'}"/>
+
+
+
+<!-- 普通表格 -->
+<link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstraptable/bootstrap-table.min.css'}"/>
+<!-- 树形表格 -->
+<link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/jquery-treegrid-master/css/jquery.treegrid.css'}"> </link>
+    <!-- end树形表格 -->
+
+    <!--bootstraptable的扩展：可以冻结(固定)列标题-->
+    <link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-table-fixed-columns/bootstrap-table-fixed-columns.css'}"/>
+    <!--end bootstraptable的扩展：可以冻结(固定)列标题-->
+
+    <!-- 对话框 -->
+<link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-dialog/pnotify.brighttheme.css'}"/>
+<link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-dialog/pnotify.css'}"/>
+
+    <!-- end对话框 -->
+
+<!-- 表单验证 插件-->
+<link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-validator/dist/css/bootstrapValidator.min.css'}"/>
+
+<!-- end表单验证插件 -->	
+
+<!-- 下来菜单插件 -->
+<link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/select2/select2.min.css'}"/>
+<!-- end 下来菜单插件 -->
+
+<!-- ztree树形组件 -->
+<link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/plugins/zTree_v3-master/css/zTreeStyle/zTreeStyle.css'}"/> 
+
+<!-- 系统样式 -->
+<link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/dist/css/AdminLTE.min.css'}">
+<link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/dist/css/skins/_all-skins.min.css'}"/>
+<link rel="stylesheet" th:href="@{${appConfig.uiHost}+'/bst1.0/dist/css/base.css'}"/>
+
+<!-- 自定义 -->
+<link rel="stylesheet" th:href="@{/assets/css/base/main.css}"/>
+<link rel="stylesheet" th:href="@{/assets/css/base/common.css}"/>
+</div>
+</body>
+</html>

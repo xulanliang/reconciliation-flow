@@ -1,0 +1,42 @@
+<div id="easyui-layout-content" class="easyui-layout" data-options="fit:true">
+	<div data-options="region:'center',border:false" class="layout-datagrid">
+		  <!-- 分页列表DIVdatagrid -->
+		<table id="drm_dg" class="easyui-datagrid"
+		          data-options="fit:true,singleSelect:true,pageSize:25,pageList:[25,50,75,100,125]"
+		          th:attr="data-search-url=@{/admin/drm/detail},statusJSON=${statusJSON}, typesJSON=${typesJSON},orgJSON=${orgJSON}"
+		           toolbar="#drmToolbar" pagination="true" rownumbers="true" fitColumns="true" singleSelect="true">
+          <thead>
+             <tr>  
+                <th field="tradeDatatime" data-options="width:150,align:'center'" >交易日期</th>  
+                <th field="orgNo" data-options="width:150,align:'center'" formatter="app.admin.drm.orgFormatter">机构名称</th>  
+                <th field="deviceNo" data-options="width:80,align:'center'">设备编码</th>  
+                <th field="deviceArea" data-options="width:100,align:'center'">位置</th>
+                <th field="metaDataBankId" data-options="width:100,align:'center'" formatter="app.admin.drm.formatter">银行</th>  
+                <th field="payAmount" data-options="width:80,align:'center'">钱箱金额(元)</th>  
+                <th field="paySum" data-options="width:80,align:'center'" >钱箱笔数</th>  
+            </tr>  
+          </thead>
+        </table>  
+        
+	        <!-- tools_bar -->
+	        <div id="drmToolbar" data-options="fit:true">
+	           <span class="easyui-panel spanSearch" style="margin-bottom: 2px; margin-top: 5px; overflow: hidden;">
+		        <div class="search_input">
+	                <label>投资银行:</label> <input class="easyui-combobox" panelHeight='auto' id="drm_bankTypeId"  th:value="${flag}"
+					name="drm_bankTypeId" style="width: 156px;"
+					data-options="editable:false,valueField:'id',textField:'value',url:'/admin/reconciliation/typeValue?typeValue=Bank_Type&amp;isIncludeAll=true'" />
+               	</div>
+               	<div class="search_input">
+					<label>交易日期:</label> <input class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'%y-%M-{%d}'})" id="drm_dataTime" name="drm_dataTime" style="width: 200px;" th:value="${dateTime}"/> 
+					<a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="app.admin.drm.search()" >搜索</a>
+					<a href="#" class="easyui-linkbutton" iconCls="icon-daochu" onclick="app.admin.drm.exportData()">导出</a>
+				</div>
+		  </span>
+		   </div>	
+	</div>  
+</div>
+      <!-- end north -->
+<script type="text/javascript" th:src="@{/assets/js/admin/drm.js}"></script>
+<script type="text/javascript">
+	app.admin.drm.init();
+</script>

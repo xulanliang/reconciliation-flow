@@ -1,0 +1,90 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="BASE_SCRIPT">
+    <script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/jQuery/jquery-2.2.3.min.js'}"></script>
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap/js/bootstrap.min.js'}"></script>
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-tab/js/jquery.scrollbar.min.js'}"></script>
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-tab/js/nth.tabs.min.js'}"></script>
+	
+	<!-- bootstaraptable表格插件 -->
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstraptable/bootstrap-table.min.js'}"></script>
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstraptable/bootstrap-table-zh-CN.js'}"></script>	
+    <!-- end bootstraptable表格插件 -->
+    
+    <!-- bootstraptable列宽可拖动 -->
+    <script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/colresizable/colResizable-1.6.js'}"></script>
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstraptable/extensions/resizable/bootstrap-table-resizable.js'}"></script>	
+    <!-- end bootstraptable列宽可拖动 -->
+
+	<!--bootstraptable的扩展：可以冻结(固定)列标题-->
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-table-fixed-columns/bootstrap-table-fixed-columns.js'}"> </script>
+	<!--end bootstraptable的扩展：可以冻结(固定)列标题-->
+
+    <!-- bootstraptable扩展excel导出 -->
+    <script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstraptable/bootstrap-table-export.js'}"></script>
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstraptable/tableExport.js'}"></script>
+	<!-- <script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstraptable/tableExport.min.js'}"></script> -->
+	<!-- end bootstraptable扩展excel导出 -->
+    
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/daterangepicker/moment.min.js'}"></script>
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/daterangepicker/daterangepicker.js'}"></script>
+	<!--日历控件：旧版-->
+	<!--<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/datepicker/bootstrap-datepicker.js'}"></script>-->
+	<!--日期控件：v1.8.0-->
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js'}"></script>
+	
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/laydate/laydate.js'}"></script>
+	
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js'}"></script>
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js'}"></script>
+	
+	<!-- 对话框 -->
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-dialog/pnotify.js'}"></script>
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-dialog/app-jquery-notify.js'}"></script>
+	<!-- end 对话框 -->
+	
+	<!-- alert警告框 插件-->
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/jQuery/bootbox.min.js'}"></script>
+	
+	<!-- jquery form 表单提交插件 -->
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/jQuery/jquery.form.min.js'}"></script>
+	<!-- end 表单插件 -->
+	
+	<!-- 表单验证插件 -->
+	 <script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/bootstrap-validator/dist/js/bootstrapValidator.js'}"></script>
+	<!-- end表单验证插件 -->
+	
+	<!-- 树形表格 -->
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/boostrap-table-tree/js/bootstrap-table-treegrid.js'}"> </script>
+    <script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/boostrap-table-tree/js/jquery.treegrid.min.js'}"> </script>
+	<!-- end树形表格 -->
+	
+	<!-- 滚动插件 -->
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/slimScroll/jquery.slimscroll.min.js'}"></script>
+	
+	<!-- 下拉菜单 -->
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/select2/select2.full.min.js'}"></script>
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/select2/i18n/zh-CN.js'}"></script>
+	<!-- end下拉 -->
+	
+	<!-- 树形组件 -->
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/zTree_v3-master/js/jquery.ztree.all.js'}"></script> 
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/dist/js/selectTree.js'}"> </script>
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/dist/js/NB.js'}"></script>
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/dist/js/util.js'}"></script>
+	<!-- 全局框架 -->
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/dist/js/app.js'}"></script>
+	
+	<script th:src="@{/assets/js/base/common.js}"></script>
+	<!-- 侧边菜单栏 -->
+	<script th:src="@{/assets/js/base/sidebar.js}"></script>
+	<script th:src="@{/assets/js/base/index.js}"></script>
+	
+	<script th:src="@{/assets/js/toolsUitls.js}"></script>
+	<script th:src="@{/assets/js/busiUitls.js}"></script>
+	<!--时间控件  -->
+	<script th:src="@{${appConfig.uiHost}+'/bst1.0/plugins/My97DatePicker/WdatePicker.js'}"></script>
+</div>
+</body>
+</html>

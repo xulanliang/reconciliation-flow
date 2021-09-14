@@ -1,0 +1,79 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row tool-box-content">
+               <form class="form-inline" id="payTypeReportsSearchForm">
+                   <div class="form-group">
+               	   		<label>所属机构:</label>
+	                   <div class="form-group">
+	                       <input type="text" style="width:280px;" class="form-control" data-name="orgCode" id="payTypeOrgSelect"/>
+	                   </div>
+               	   </div>
+	                <div class="form-group">
+						<div class="form-group">
+							<label>选择日期:</label>
+						</div>
+						<div class="input-group">
+							<input type="text" class="form-control" style="width: 220px;" onmousemove="this.style.cursor='pointer';"
+							id="payTypeReportsTime" readonly="readonly"/>
+						</div>
+					</div>
+                   <div class="form-group m-btn">
+                     <button type="button" class="btn btn-primary" onclick="app.admin.ReportsPayType.search(this)">查询</button>
+                     <button type="button" class="btn btn-success" onclick="app.admin.ReportsPayType.exportList()">导出</button>
+                   </div>
+               </form>
+        </div>
+		<div class="row">
+			<div class="tableTitleArea"><span style="font-size: 18px;"><B>支付方式汇总报表</B></span></div>
+			<table class="table table-bordered table-nomal" id="payTypeReportsDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-valign="middle" data-width="1200" colspan="13" name="tableTitle" class="tableExcelDisplayArea"></th>
+					</tr>
+					<tr class="success">
+						<th data-valign="middle" data-width="100">&nbsp;</th>
+						<th data-valign="middle" data-width="200" colspan="2" ><B>挂号</B></th>
+						<th data-valign="middle" data-width="200" colspan="2" ><B>预约挂号</B></th>
+						<th data-valign="middle" data-width="200" colspan="2" ><B>缴费</B></th>
+						<th data-valign="middle" data-width="200" colspan="2" ><B>门诊充值</B></th>
+						<th data-valign="middle" data-width="200" colspan="2" ><B>住院预交金</B></th>
+						<th data-valign="middle" data-width="200" colspan="2" ><B>其他</B></th>
+					</tr>
+					
+					<tr>
+						<th data-field="businessType" data-formatter="app.admin.ReportsPayType.formatter"><B>支付方式</B></th>
+						
+					    <th data-field="registerAcount" data-width="80" data-formatter="app.admin.ReportsPayType.normal"><B>笔数</B></th>
+						<th data-field="registerAmount" data-width="100" data-formatter="app.admin.ReportsPayType.moneyFormat"><B>金额(元)</B></th>
+						
+					    <th data-field="makeAppointmentAcount" data-width="80" data-formatter="app.admin.ReportsPayType.normal"><B>笔数</B></th>
+						<th data-field="makeAppointmentAmount" data-width="100" data-formatter="app.admin.ReportsPayType.moneyFormat"><B>金额(元)</B></th>
+						
+						<th data-field="payAcount" data-width="80" data-formatter="app.admin.ReportsPayType.normal"><B>笔数</B></th>
+						<th data-field="payAmount" data-width="100" data-formatter="app.admin.ReportsPayType.moneyFormat"><B>金额(元)</B></th>
+						
+						<th data-field="clinicAcount" data-width="80" data-formatter="app.admin.ReportsPayType.normal"><B>笔数</B></th>
+						<th data-field="clinicAmount" data-width="100" data-formatter="app.admin.ReportsPayType.moneyFormat"><B>金额(元)</B></th>
+						
+						<th data-field="prepaymentForHospitalizationAcount" data-width="80" data-formatter="app.admin.ReportsPayType.normal"><B>笔数</B></th>
+						<th data-field="prepaymentForHospitalizationAmount" data-width="100" data-formatter="app.admin.ReportsPayType.moneyFormat"><B>金额(元)</B></th>
+						
+						<th data-field="" data-width="80" data-formatter="app.admin.ReportsPayType.otherAcount"><B>笔数</B></th>
+						<th data-field="" data-width="100" data-formatter="app.admin.ReportsPayType.otherAmount"><B>金额(元)</B></th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/reports/paytype/payTypeReports.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/reports.css}">
+<script th:inline="javascript">
+
+var orgCode = [[${orgCode}]];
+var typesJSON = [[${typesJSON}]];
+var beginTime = [[${beginTime}]];
+var endTime = [[${endTime}]];
+app.admin.ReportsPayType.init(orgCode, typesJSON, beginTime, endTime);
+
+</script>

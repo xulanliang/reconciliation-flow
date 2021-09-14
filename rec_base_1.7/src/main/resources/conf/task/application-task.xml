@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+    <bean class="com.yiban.rec.task.TimerTaskJob" init-method="executeTask"/>
+
+    <bean id="jobClient" class="com.yiban.jobclient.JobClientFactoryBean" init-method="start">
+        <property name="clusterName" value="yiban_platform"/>
+        <property name="registryAddress" value="${lts.zk.address}"/>
+        <property name="nodeGroup" value="client_rec"/>
+        <property name="jobCompletedHandler">
+            <bean class="com.yiban.rec.task.JobCompletedHandlerImpl"/>
+        </property>
+        <property name="configs">
+            <props>
+                <prop key="job.fail.store">mapdb</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="taskTracker" class="com.yiban.jobclient.TaskTrackerAnnotationFactoryBean" init-method="start">
+        <property name="jobRunnerClass" value="com.yiban.rec.task.tracker.TaskJobRunner"/>
+        <property name="clusterName" value="yiban_platform"/>
+        <property name="registryAddress" value="${lts.zk.address}"/>
+        <property name="nodeGroup" value="taskTracker_rec"/>
+        <property name="workThreads" value="64"/>
+        <property name="configs">
+            <props>
+                <prop key="job.fail.store">mapdb</prop>
+            </props>
+        </property>
+    </bean>
+
+</beans>

@@ -1,0 +1,132 @@
+<div id="easyui-layout-content" class="easyui-layout"
+	data-options="fit:true">
+
+	<!-- center panel -->
+	<div data-options="region:'center',border:false">
+
+		<table id="serviceMonitor_tbl" class="easyui-datagrid"
+			data-options="fit:true,singleSelect:true"
+			style="width: auto; height: auto" idField="id"
+			th:attr="data-search-url=@{/admin/serviceMonitor/pageList},typesJSON=${typesJSON},orgJSON=${orgJSON}"
+			toolbar="#serviceMonitorToolbar" pagination="true" rownumbers="true"
+			fitColumns="true" singleSelect="true">
+			<thead>
+				<tr>
+					<th field="orgNo" data-options="width:150,align:'center'" formatter="app.admin.serviceMonitor.orgFormatter">机构名称</th>
+					<th field="noticeWayValue" data-options="width:150,align:'center'" >通知方式</th>
+					<th field="noticeWay" data-options="width:150,align:'center',hidden:true" ></th>
+					<th field="email" data-options="width:180,align:'center'">邮箱</th>
+					<th field="contacts" data-options="width:120,align:'center'">手机号</th>
+					<th field="intervalTime" data-options="width:100,align:'center'">时间间隔(s)</th>
+					<th field="isOpen" data-options="width:100,align:'center'" formatter="app.admin.serviceMonitor.formatter">是否开启</th>
+				</tr>
+			</thead>
+		</table>
+		<div id="serviceMonitorToolbar" class="tools_bar"
+			style="border-top: none; margin-bottom: 0px;">
+			<div class="PartialButton">
+				<span class="spanSearch"> <label>所属机构：</label> <input
+					class="easyui-combotree" id="organ_search_org_id" name="organ_search_org_id"
+					data-options="panelHeight:'auto'"
+			        th:attr="url=@{/admin/reconciliation/organizationsList_nopage.json?includeAll=true}"
+					style="width: 256px; height: 30px;" /> <a href="#"
+					class="easyui-linkbutton" iconCls="icon-search"
+					onclick="app.admin.serviceMonitor.onSearch()">查询</a>
+				</span>
+				<div class="contract_Box">
+					<shiro:hasPermission name="serviceMonitor:new">
+						<a onclick="app.admin.serviceMonitor.newserviceMonitor()"
+							class="tools_btn  self-button easyui-linkbutton"
+							iconCls="icon-add" plain="true">新增</a>
+						<div class="tools_separator"></div>
+					</shiro:hasPermission>
+					<shiro:hasPermission name="serviceMonitor:edit">
+						<a onclick="app.admin.serviceMonitor.editserviceMonitor()"
+							class="tools_btn  self-button easyui-linkbutton"
+							iconCls="icon-edit" plain="true">编辑 </a>
+						<div class="tools_separator"></div>
+					</shiro:hasPermission>
+					<shiro:hasPermission name="serviceMonitor:remove">
+						<a onclick="app.admin.serviceMonitor.destroyserviceMonitor()"
+							class="tools_btn  self-button easyui-linkbutton"
+							iconCls="icon-remove" plain="true">删除 </a>
+						<div class="tools_separator"></div>
+					</shiro:hasPermission>
+					<a onclick="app.admin.serviceMonitor.refresh()"
+						class="tools_btn  self-button easyui-linkbutton"
+						iconCls="icon-reload" plain="true">刷新</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end easyui-layout -->
+</div>
+
+
+<div id="serviceMonitor-dlg" class="easyui-dialog" 
+	style="width: 463px; height: 350px; overflow:hidden;padding: 12px 20px 0px" closed="true"
+	buttons="#serviceMonitor-buttons" data-options="resizable:true,modal:true">
+	<form id="serviceMonitor-fm" method="post" novalidate="novalidate"
+		style="height: 300px;">
+		<div class="fitem">
+			<input id="id" name="id" type="hidden" />
+		</div>
+		<div class="fitem">
+			<label>所属机构:</label> <input class="easyui-combotree" id="orgNo"
+				name="orgNo" data-options="panelHeight:'auto'"
+				th:attr="data-list-url=@{/admin/reconciliation/organizationsList_nopage.json}"
+				style="width: 256px; height: 30px;" />
+		</div>
+
+		<div class="fitem">
+			<div class="newWindow">
+				<label>通知方式：</label> <input name="noticeWay" id="noticeWay1" type="checkbox" th:value="1"/>短信
+				<input name="noticeWay" id="noticeWay2" type="checkbox" th:value="2"/>邮件
+			</div>
+		</div>
+
+		<div class="fitem">
+			<div class="newWindow">
+				<label>联系人:</label> <input name="contacts" id="contacts"
+					class="easyui-validatebox"  style="IME-MODE: disabled;width: 252px; height: 30px;" 
+					onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')"
+					validtype="length[1,20]" invalidMessage="有效长度1-20" />
+			</div>
+		</div>
+		
+		<div class="fitem">
+			<div class="newWindow">
+				<label>邮箱:</label> <input name="email" id="email"
+					class="easyui-validatebox"  style="width: 255px; height: 30px;"/>
+			</div>
+		</div>
+		
+		<div class="fitem">
+			<div class="newWindow">
+				<label>间隔时间:</label> <input name="intervalTime" id="intervalTime"
+					class="easyui-validatebox"  style="IME-MODE: disabled;width: 252px; height: 30px;" 
+					onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')"
+					validtype="length[1,20]" /><span style="color:red">s</span>
+			</div>
+		</div>
+		
+		<div class="fitem">
+			<div class="newWindow">
+				<label>是否开启：</label> <input name="isOpen" type="checkbox" th:value="1"/>
+			</div>
+		</div>
+	</form>
+</div>
+<div id="serviceMonitor-buttons">
+	<a href="javascript:void(0)" class="easyui-linkbutton"
+		iconCls="icon-ok" onclick="app.admin.serviceMonitor.save()">确定</a> <a
+		href="javascript:void(0)" class="easyui-linkbutton"
+		iconCls="icon-cancel" onclick="app.admin.serviceMonitor.close()">取消</a>
+</div>
+
+<script type="text/javascript"
+	th:src="@{/assets/js/admin/serviceMonitor.js}"></script>
+<script type="text/javascript">
+	app.admin.serviceMonitor.init();
+</script>
+

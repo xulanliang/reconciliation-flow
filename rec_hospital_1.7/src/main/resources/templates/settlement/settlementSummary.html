@@ -1,0 +1,470 @@
+<link rel="stylesheet" href="assets/css/common.css">
+<link rel="stylesheet" href="assets/css/orderAbnormal.css">
+<!-- <script src="../jquery.min.js"></script> -->
+<link rel="stylesheet" href="assets/byStep/byStep.css" />
+<script src="assets/byStep/byStep.js"></script>
+<script src="assets/js/TabNav.js"></script>
+<div class="m-content-wrapper" id="settlementDiv">
+    <div class="table-content-wrap">
+        <form class="form-inline m-search" id="settlementSearchForm">
+          	<div class="row tool-box-content">
+            	<div class="form-group">
+            		<label class="search-label">所属机构：</label><div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control" data-name="orgCode" id="settlementTree" placeholder="所属机构"/>
+			        </div>
+			    </div>
+			   <div class="form-group">
+	                 <label for="beginTime" class="search-label">选择日期：</label><div class="input-group">
+	                           <div class="input-group-addon">
+	                               <i class="fa fa-calendar"></i>
+	                           </div>
+	                           <input type="text" class="form-control" style="width: 220px;" onmousemove="this.style.cursor='pointer';"
+						id="summaryTime" readonly="readonly"/>
+	                </div>
+	             </div>
+                  <div class="form-group m-btn">
+                  	<button type="button"  class="btn btn-primary"  onclick="app.settlement.settlementSummary.search(this)">查询</button>
+                  	<button type="button" class="btn btn-success" title="导出汇总数据"
+											onclick="app.settlement.settlementSummary.exportSettlementData()">导出</button>
+                  	<button type="button" class="btn btn-success" title="导出异常账单数据"
+											onclick="app.settlement.settlementSummary.exportSettlementExceptionData()">异常账单导出</button>
+                  </div>	
+           	</div>             
+          </form>
+        <div class="row">
+        	<input type="hidden" id="settlementSelectType">
+			<p>
+			<ul class="btn-group tab-nav-settlement" id="settlementFollowTable" default-selected="0" active-class="tradeActive"  trigger="click">
+				
+			</ul>
+			</p>
+		</div>
+        <div class="row">
+        	<input type="hidden" th:value="${orgJSON}" id="settlementOrgNo">
+        	<input type="hidden" th:value="${typesJSON}" id="settlementType">
+        	<input type="hidden" th:value="${accountDate}" id="accountDate">
+			<table class="table table-bordered table-nomal " id="settlementSummaryDataTable" data-striped="false" >
+				<thead>
+					<tr>
+						<th data-field="settleDate" data-sortable="true">日期</th>
+						<th data-field="channelAmount" data-sortable="true" 
+							data-formatter="app.settlement.settlementSummary.thirdFormatter">商户收款金额(元)</th>
+						<th data-field="hisAmount" data-sortable="true"
+							data-formatter="app.settlement.settlementSummary.hisFormatter">HIS当日总金额(元)</th>
+						<th data-field="exceptionAmount" data-sortable="true" 
+							data-formatter="app.settlement.settlementSummary.exceptionFormatter">异常金额(元)</th>
+						<th data-field="hisSettlementAmount" data-sortable="true"
+							data-formatter="app.settlement.settlementSummary.hissettlementFormatter">HIS结账总金额(元)</th>
+						<th data-field="yesterdayAmount" data-sortable="true" data-formatter="app.settlement.settlementSummary.moneyFormat">前一日金额(元)</th>
+						<th data-field="todayUnsettleAmount"data-sortable="true" data-formatter="app.settlement.settlementSummary.moneyFormat">当日结账后金额(元)</th>
+						<th data-field="beforeSettlementAmount"data-sortable="true" data-formatter="app.settlement.settlementSummary.beforeSettlementFormat">结账以前金额(元)</th>
+						<th data-field="omissionAmount"data-sortable="true" data-formatter="app.settlement.settlementSummary.omissionAmountFormat">遗漏结账金额(元)</th>
+						<th data-field="sumAmount" data-sortable="true" data-formatter="app.settlement.settlementSummary.moneyFormat">小计(元)</th>
+						</tr>
+					</thead>
+				</table>
+		  </div>
+	</div>
+</div>
+
+<!-- 商户收款明细模态框 -->
+<div class="modal fade" id="thirdBillDetailDialog" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog" style="width: 900px;">
+		<div class="modal-content order-abnormal">
+			<div class="abnormal border ">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="abnormal-text-nospace">
+					<ul class="detail">
+						<li class=" detail-card border">
+							 <form class="form-inline m-search">
+								<div class="row tool-box-content">
+							        <div class="form-group">
+						                 <label class="control-label">支付方流水号:</label>
+						                 <div class="input-group">
+						                     <input type="text" name="payFlowNo" class="form-control"/>
+						                 </div>
+						             </div>
+						             <div class="form-group" style="display:none;">
+							            <label  class="search-label" >交易类型:</label>
+							            <div class="input-group">
+							            	<select class="selectpicker" name="tradeType" ></select>
+							            </div>
+							        </div>
+						             <input type="hidden" id="thirdTradeDate"/>
+							         <div class="form-group m-btn">
+							          	<button type="button" class="btn btn-primary" 
+							          		onclick="app.settlement.settlementSummary.searchThirdBill(this)">查询</button>
+							         	<button type="button" class="btn btn-success" title="导出商户收款账单"
+											onclick="app.settlement.settlementSummary.exportThirdData()">导出</button>
+											
+							         </div>
+								     <label style="color:#333;font-size:18px;min-width:100px;">总金额(元):</label><label style="color:#ff9c00;font-size:18px;min-width:130px;" id="thirdSumMoney"></label>
+								</div>
+							</form>
+							
+							<table class="table table-bordered table-nomal" id="thirdBillDetailTable" data-striped="false" >
+								<thead>
+									<tr>
+										<th data-field="payFlowNo" data-sortable="true" data-width=280px>支付方流水号</th>
+										<th data-field="payType" data-sortable="true" data-width=100px
+											 data-formatter="app.settlement.settlementSummary.formatter">支付类型</th>
+										<th data-field="payAmount" data-sortable="true" data-width=120px
+											 data-formatter="app.settlement.settlementSummary.orderStateMoneyFormat">交易金额(元)</th>
+										<th data-field="tradeDatatime" data-sortable="true" data-width=170px>交易时间</th>
+										<th data-field="billSource" data-sortable="true" data-width= 100px
+											data-formatter="app.settlement.settlementSummary.formatter">渠道名称</th>
+									</tr>
+								</thead>
+							</table>
+						</li>
+					</ul>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- his当日交易明细模态框 -->
+<div class="modal fade" id="hisBillDetailDialog" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog" style="width: 1000px;">
+		<div class="modal-content order-abnormal">
+			<div class="abnormal border ">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="abnormal-text-nospace">
+					<ul class="detail">
+						<li class=" detail-card border">
+							 <form class="form-inline m-search">
+								<div class="row tool-box-content">
+							        <div class="form-group">
+						                 <label class="search-label">支付方流水号:</label><input type="text"  name="payFlowNo" class="form-control"/>
+						             </div>
+							        <div class="form-group">
+						                 <label class="search-label">HIS流水号:</label><input type="text"  name="hisFlowNo" class="form-control"/>
+						             </div>
+							        <div class="form-group">
+						                 <label class="search-label">患者姓名:</label><input type="text"  name="custName" class="form-control"/>
+						             </div>
+						             <div class="form-group" style="display:none;">
+							            <label  class="search-label" >交易类型:</label>
+							            <div class="input-group">
+							            	<select class="selectpicker" name="tradeType" ></select>
+							            </div>
+							        </div>
+						             <input type="hidden" id="hisTradeDate"/>
+							         <div class="form-group m-btn">
+							          	<button type="button" class="btn btn-primary" 
+							          		onclick="app.settlement.settlementSummary.searchHisBill(this)">查询</button>
+							         	<button type="button" class="btn btn-success" title="导出商户收款账单"
+											onclick="app.settlement.settlementSummary.exportHisData()">导出</button>
+							         </div>
+								     <label style="color:#333;font-size:18px;min-width:100px;">总金额(元):</label><label style="color:#ff9c00;font-size:18px;min-width:130px;" id="hisSumMoney"></label>
+								</div>
+							</form>
+							
+							<table class="table table-bordered table-nomal" id="hisBillDetailTable" data-striped="false" >
+								<thead>
+									<tr>
+										<th data-field="hisFlowNo" data-sortable="true" data-width=200px>HIS流水号</th>
+										<th data-field="payFlowNo" data-sortable="true" data-width=280px>支付方流水号</th>
+										<th data-field="payType" data-sortable="true" data-width=100px
+											 data-formatter="app.settlement.settlementSummary.formatter">支付类型</th>
+										<th data-field="payAmount" data-sortable="true" data-width=120px
+											 data-formatter="app.settlement.settlementSummary.orderStateMoneyFormat">交易金额(元)</th>
+										<th data-field="tradeDatatime" data-sortable="true" data-width=170px>交易时间</th>
+										<th data-field="billSource" data-sortable="true" data-width= 100px
+											data-formatter="app.settlement.settlementSummary.formatter">渠道名称</th>
+										<th data-field="custName" data-sortable="true" data-width=100px>患者姓名</th>
+									</tr>
+								</thead>
+							</table>
+						</li>
+					</ul>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 异常账单明细模态框 -->
+<div class="modal fade" id="exceptionBillDetailDialog" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog" style="width: 900px;">
+		<div class="modal-content order-abnormal">
+			<div class="abnormal border ">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="abnormal-text-nospace">
+					<ul class="detail">
+						<li class=" detail-card border">
+							 <form class="form-inline m-search">
+								<div class="row tool-box-content">
+						             <input type="hidden" id="exceptionTradeDate"/>
+						             <div class="form-group" style="display:none;">
+							            <label  class="search-label" >交易类型:</label>
+							            <div class="input-group">
+							            	<select class="selectpicker" name="tradeType" ></select>
+							            </div>
+							        </div>
+							         <div class="form-group m-btn">
+							         	<button type="button" class="btn btn-success" title="导出异常账单明细"
+											onclick="app.settlement.settlementSummary.exportExceptionData()">导出</button>
+							         </div>
+								     <label style="color:#333;font-size:18px;min-width:100px;">(长款-短款)差异总金额(元):</label>
+								     <label style="color:#ff9c00;font-size:18px;min-width:130px;" id="exceptionSumMoney"></label>
+								</div>
+							</form>
+							
+							<table class="table table-bordered table-nomal" id="exceptionBillDetailTable" data-striped="false" >
+								<thead>
+									<tr>
+										<th data-field="hisFlowNo" data-sortable="true" data-width=200px>HIS流水号</th>
+										<th data-field="businessNo" data-sortable="true" data-width=280px>支付方流水号</th>
+										<th data-field="payName" data-sortable="true" data-width=100px
+											 data-formatter="app.settlement.settlementSummary.formatter">支付类型</th>
+										<th data-field="tradeAmount" data-sortable="true" data-width=120px
+											 data-formatter="app.settlement.settlementSummary.checkStateMoneyFormat">交易金额(元)</th>
+										<th data-field="tradeName" data-sortable="true" data-width=100px
+											 data-formatter="app.settlement.settlementSummary.formatter">交易类型</th>
+										<th data-field="billSource" data-sortable="true" data-width= 100px
+											data-formatter="app.settlement.settlementSummary.formatter">渠道名称</th>
+										<th data-field="tradeTime" data-sortable="true" data-width=170px>交易时间</th>
+										<th data-field="checkState" data-sortable="true" data-width=100px
+											 data-formatter="app.settlement.settlementSummary.checkStateformatter">状态</th>
+										<th data-field="" data-sortable="true" data-width=180px
+											 data-formatter="app.settlement.settlementSummary.remarkformatter">备注</th>
+									</tr>
+								</thead>
+							</table>
+						</li>
+					</ul>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- HIS结账明细模态框 -->
+<div class="modal fade" id="hissettlementBillDetailDialog" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog" style="width: 900px;">
+		<div class="modal-content order-abnormal">
+			<div class="abnormal border ">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="abnormal-text-nospace">
+					<ul class="detail">
+						<li class=" detail-card border">
+							 <form class="form-inline m-search">
+								<div class="row tool-box-content">
+						           <input type="hidden" id="hissettlementDate"/>
+						           <div class="form-group">
+							        	<input type="hidden" id="selectTradeDate" name="selectTradeDate">
+										<p>
+										<ul class="btn-group tab-nav tradedate-tab-nav" id="selectTradeDateTable"
+											 default-selected="0" active-class="tradeActive"  trigger="click">
+										</ul>
+										</p>
+									</div>
+								     <div class="btn-group" style="display:none;">
+								     	<select class="form-control" id="hissettlementOrderState" name="orderState" >
+					                   		<option value="">全部</option>
+											<option value="0156">支付</option>
+											<option value="0256">退费</option>
+					                   	</select>
+									</div>
+									<div class="form-group">
+							            <label  class="search-label" >交易类型:</label>
+							            <div class="input-group">
+							            	<select class="selectpicker" name="tradeType" ></select>
+							            </div>
+							        </div>
+									<div class="form-group">
+									     <label style="color:#333;font-size:18px;min-width:100px;">总金额(元):</label>
+									     <label style="color:#ff9c00;font-size:18px;min-width:130px;" id="hissettlementSumMoney"></label>
+								     </div>
+							         <div class="form-group m-btn">
+							         	<button type="button" class="btn btn-success" title="导出异常账单明细"
+											onclick="app.settlement.settlementSummary.exportHissettlementData()">导出</button>
+							         </div>
+								</div>
+							</form>
+							<table class="table table-bordered table-nomal" id="hissettlementBillDetailTable" data-striped="false" >
+								<thead>
+									<tr>
+										<th data-field="hisOrderNo" data-sortable="true" data-width=200px>HIS流水号</th>
+										<th data-field="payType" data-sortable="true" data-width=100px
+											 data-formatter="app.settlement.settlementSummary.formatter">支付类型</th>
+										<th data-field="amount" data-sortable="true" data-width=120px
+											 data-formatter="app.settlement.settlementSummary.orderTypeMoneyFormat">交易金额(元)</th>
+										<th data-field="orderType" data-sortable="true" data-width=100px
+											 data-formatter="app.settlement.settlementSummary.formatter">交易类型</th>
+										<th data-field="settlementorNum" data-sortable="true" data-width=100px>结账人员</th>
+										<th data-field="payTime" data-sortable="true" data-width=170px>交易时间</th>
+										<th data-field="settlementTime" data-sortable="true" data-width=170px>结账时间</th>
+									</tr>
+								</thead>
+							</table>
+						</li>
+					</ul>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 漏结金额明细模态框 -->
+<div class="modal fade" id="omissionAmountDetailDialog" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog" style="width: 1000px;">
+		<div class="modal-content order-abnormal">
+			<div class="abnormal border ">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="abnormal-text-nospace">
+					<ul class="detail">
+						<li class=" detail-card border">
+							 <form class="form-inline m-search">
+								<div class="row tool-box-content">
+							        <div class="form-group">
+						                 <label class="search-label">支付方流水号:</label><input type="text"  name="payFlowNo" class="form-control"/>
+						             </div>
+							        <div class="form-group">
+						                 <label class="search-label">HIS流水号:</label><input type="text"  name="hisFlowNo" class="form-control"/>
+						             </div>
+							        <div class="form-group">
+						                 <label class="search-label">患者姓名:</label><input type="text"  name="custName" class="form-control"/>
+						             </div>
+						             <div class="form-group">
+							            <label  class="search-label" >交易类型:</label>
+							            <div class="input-group">
+							            	<select class="selectpicker" name="tradeType" ></select>
+							            </div>
+							        </div>
+						             <input type="hidden" id="omissionAmountTradeDate"/>
+							         <div class="form-group m-btn">
+							          	<button type="button" class="btn btn-primary" 
+							          		onclick="app.settlement.settlementSummary.searchOmissionAmountBill(this)">查询</button>
+							         	<button type="button" class="btn btn-success" title="导出商户收款账单"
+											onclick="app.settlement.settlementSummary.exportOmissionAmountData()">导出</button>
+							         </div>
+								     <label style="color:#333;font-size:18px;min-width:100px;">总金额(元):</label><label style="color:#ff9c00;font-size:18px;min-width:130px;" id="omissionAmountSumMoney"></label>
+								</div>
+							</form>
+							
+							<table class="table table-bordered table-nomal" id="omissionAmountDetailTable" data-striped="false" >
+								<thead>
+									<tr>
+										<th data-field="hisFlowNo" data-sortable="true" data-width=200px>HIS流水号</th>
+										<th data-field="payFlowNo" data-sortable="true" data-width=280px>支付方流水号</th>
+										<th data-field="payType" data-sortable="true" data-width=100px
+											 data-formatter="app.settlement.settlementSummary.formatter">支付类型</th>
+										<th data-field="payAmount" data-sortable="true" data-width=120px
+											 data-formatter="app.settlement.settlementSummary.orderStateMoneyFormat">交易金额(元)</th>
+										<th data-field="tradeDatatime" data-sortable="true" data-width=170px>交易时间</th>
+										<th data-field="billSource" data-sortable="true" data-width= 100px
+											data-formatter="app.settlement.settlementSummary.formatter">渠道名称</th>
+										<th data-field="custName" data-sortable="true" data-width=100px>患者姓名</th>
+									</tr>
+								</thead>
+							</table>
+						</li>
+					</ul>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- 结算日以前明细模态框 -->
+<div class="modal fade" id="beforeSettlementBillDetailDialog" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog" style="width: 900px;">
+		<div class="modal-content order-abnormal">
+			<div class="abnormal border ">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="abnormal-text-nospace">
+					<ul class="detail">
+						<li class=" detail-card border">
+							 <form class="form-inline m-search">
+								<div class="row tool-box-content">
+						           <input type="hidden" id="beforeSettlementDate"/>
+						           <div class="form-group">
+							        	<input type="hidden" id="beforeSettlementSelectTradeDate" name="selectTradeDate">
+										<p>
+										<ul class="btn-group tab-nav before-tradedate-tab-nav" id="beforeSettlementSelectTradeDateTable"
+											 default-selected="0" active-class="tradeActive"  trigger="click">
+										</ul>
+										</p>
+									</div>
+								     <div class="btn-group" style="display:none;">
+								     	<select class="form-control" id="beforeSettlementOrderState"  name="orderState" >
+					                   		<option value="">全部</option>
+											<option value="0156">支付</option>
+											<option value="0256">退费</option>
+					                   	</select>
+									</div>
+									<div class="form-group">
+							            <label  class="search-label">交易类型：</label>
+							            <select class="selectpicker" name="tradeType" ></select>
+							        </div>
+									<div class="form-group">
+									     <label style="color:#333;font-size:18px;min-width:100px;">总金额(元):</label>
+									     <label style="color:#ff9c00;font-size:18px;min-width:130px;" id="beforeSettlementSumMoney"></label>
+								     </div>
+							         <div class="form-group m-btn">
+							         	<button type="button" class="btn btn-success" title="导出结算日以前账单明细"
+											onclick="app.settlement.settlementSummary.exportBeforeSettlementData()">导出</button>
+							         </div>
+								</div>
+							</form>
+							<table class="table table-bordered table-nomal" id="beforeSettlementBillDetailTable" data-striped="false" >
+								<thead>
+									<tr>
+										<th data-field="hisOrderNo" data-sortable="true" data-width=200px>HIS流水号</th>
+										<th data-field="payType" data-sortable="true" data-width=100px
+											 data-formatter="app.settlement.settlementSummary.formatter">支付类型</th>
+										<th data-field="amount" data-sortable="true" data-width=120px
+											 data-formatter="app.settlement.settlementSummary.orderTypeMoneyFormat">交易金额(元)</th>
+										<th data-field="orderType" data-sortable="true" data-width=100px
+											 data-formatter="app.settlement.settlementSummary.formatter">交易类型</th>
+										<th data-field="settlementorNum" data-sortable="true" data-width=100px>结账人员</th>
+										<th data-field="payTime" data-sortable="true" data-width=170px>交易时间</th>
+										<th data-field="settlementTime" data-sortable="true" data-width=170px>结账时间</th>
+									</tr>
+								</thead>
+							</table>
+						</li>
+					</ul>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" th:src="@{/assets/js/settlement/settlementSummary.js}"></script>

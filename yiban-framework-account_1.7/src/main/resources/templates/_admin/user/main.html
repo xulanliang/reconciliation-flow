@@ -1,0 +1,139 @@
+<div class="m-content-wrapper" >
+        <div class="table-content-wrap">
+		      <div class="row tool-box-content">
+		            <form class="form-inline" id="usercfgSearchForm">
+	                    <div class="form-group">	                       
+	                        <input type="text" class="form-control" placeholder="姓名" name="name">	                        
+	                    </div>
+	                    <div class="form-group m-btn">
+	                    	<button type="button" class="btn btn-primary"  onclick="app.admin.user.search()">查询</button>
+		                    <button id="btn_add" type="button" class="btn btn-success" onclick="app.admin.user.create()"> 新增 </button>
+	                    </div>	             
+	                </form>
+		        </div>
+		        <div class="row">
+					<table class="table table-bordered table-nomal " id="userDataTable" data-striped="false">
+						<thead>
+							<tr>
+								<th data-formatter="app.admin.user.number" data-align="center" data-width="4%">序号</th>
+								<th data-field="loginName" data-sortable="true" data-width="18%">登录名</th>
+								<th data-field="name" data-sortable="true" data-width="10%">姓名</th>
+<!-- 								<th data-field="email" data-sortable="true">Email</th> -->
+								<th data-field="mobilePhone" data-sortable="true" data-width="13%">手机号</th>
+								<th data-field="gender" data-sortable="true" data-width="7%" data-formatter="app.admin.user.formaterGender">性别</th>
+<!-- 								<th data-field="registerDate" data-width="13%" data-sortable="true">注册日期</th> -->
+								<th data-field="status" data-sortable="true" data-width="7%" data-formatter="app.admin.user.formaterStatus">状态</th>
+								<th data-field="" data-width="39%" data-align="center" data-formatter="app.admin.user.formaterOpt">操作</th>
+							</tr>
+						</thead>
+					</table>
+		        </div>
+	</div>
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="userfgDlg" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="title">新增用户</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form">
+					<input type="hidden"  name="id" />
+					<div class="form-group">
+						<label class="col-sm-2 control-label">组织机构</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="userOrgParentSelect" data-name="orgId"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">用户名</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="loginName" placeholder="请输入用户名"/>
+						</div>
+					</div>
+					<div class="form-group" id="userPasswordDiv">
+						<label class="col-sm-2 control-label">密码</label>
+						<div class="col-sm-10">
+							<input type="password" class="form-control" name="plainPassword" value="123456"/>
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">姓名</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="name" placeholder="请输入姓名"/>
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">手机</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="mobilePhone" placeholder="请输入手机(唯一)"/>
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">邮箱</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="email" placeholder="请输入邮箱(唯一)"/>
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">性别</label>
+						<div class="col-sm-10">
+							<label class="radio-inline"><input type="radio" name="gender" value="1" checked="checked">男</label>
+							<label class="radio-inline"><input type="radio" name="gender" value="0">女</label>
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">出生日期</label>
+						<div class="col-sm-10">
+							 <input type="text" name="birthday" class="form-control pull-right" id="datepicker"/>
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">岗位</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="position" placeholder="请输入岗位"/>
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">备注</label>
+						<div class="col-sm-10">
+							<textarea rows="3" class="form-control" cols="40" name="remark" placeholder="最多100字"></textarea>
+				    	</div>
+					</div>
+					
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" onclick="app.admin.user.save()">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="userRolefgDlg" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">角色授权</h4>
+			</div>
+			<div class="modal-body">
+				<div class="modal-body">
+					<ul id="roleTree" class="ztree"></ul>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" onclick="app.admin.user.rolesave()">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" th:src="@{/assets/js/admin/user/user.js}"></script>
+<script>
+ app.admin.user.init();
+</script>

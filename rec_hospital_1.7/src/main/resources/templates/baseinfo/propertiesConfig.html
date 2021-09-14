@@ -1,0 +1,165 @@
+<style type="text/css">
+.orgClickBc {
+	background: #facd89 !important;
+}
+</style>
+
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row">
+			<form class="form-inline m-search" id="propertiesConfigSearchForm">
+				<div class="row tool-box-content">
+					<div class="form-group">
+						<label class="search-label" for="pkey">属性键 </label>
+						<div class="input-group">
+							<input AUTOCOMPLETE="off" type="text" class="form-control pull-right" placeholder="属性键" name="pkey">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="search-label" for="pkey">描述 </label>
+						<div class="input-group">
+							<input AUTOCOMPLETE="off" type="text" class="form-control pull-right"
+								placeholder="描述" name="description">
+						</div>
+					</div>
+					<div class="form-group m-btn">
+						<button type="button" class="btn btn-primary" onclick="app.admin.propertiesConfig.search(this)">查询</button>
+						<button type="button" class="btn btn-success" onclick="app.admin.propertiesConfig.add()">新增</button>
+						<a data-toggle="collapse" data-parent="#propertiesConfig-search-box" href="#propertiesConfig-search-box"> 高级查询 <i class="fa fa-angle-down"></i></a>
+					</div>
+					<div id="propertiesConfig-search-box" class="panel-collapse collapse ">
+						<div class="form-group">
+							<label class="search-label" for="type">类型 </label>
+							<div class="input-group">
+								<select name="type" class="form-control">
+									<option value="">全部</option>
+									<option value="common">公共</option>
+									<option value="private">医院</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="search-label" for="model">模式 </label>
+							<div class="input-group">
+								<select name="model" class="form-control">
+									<option value="">全部</option>
+									<option value="normal">普通模式</option>
+									<option value="loop">循环模式</option>
+									<option value="timer">定时模式</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="row">
+			<table class="table table-bordered table-nomal "
+				id="propertiesConfigDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-field="pkey" data-formatter="app.admin.propertiesConfig.format">属性键</th>
+						<th data-field="pvalue" data-formatter="app.admin.propertiesConfig.format">属性值</th>
+						<th data-field="defaultValue" data-formatter="app.admin.propertiesConfig.format">默认值</th>
+						<th data-field="description" data-formatter="app.admin.propertiesConfig.format">描述</th>
+						<th data-field="type" data-sortable="true" data-width="5%" 
+							data-formatter="app.admin.propertiesConfig.formatType">类型</th>
+						<th data-field="sort" data-sortable="true" data-width="6%">排序号</th>
+						<th data-field="model" data-sortable="true" data-width="7%"
+							data-formatter="app.admin.propertiesConfig.formatModel">模式</th>
+						<th data-field="isActived" data-sortable="true" data-width="7%"
+							data-formatter="app.admin.propertiesConfig.activation">是否激活</th>
+						<th data-width="10%" data-align="center" data-formatter="app.admin.propertiesConfig.formatOpt">操作</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="propertiesConfigDlg" tabindex="-1"
+	role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<form class="form-horizontal" role="form">
+					<input type="hidden" name="id" />
+					<div>
+						<label class="radio-inline" title="普通模式:可配置普通字符串类型的值">
+							<input type="radio" name="model" value="normal" checked>普通模式
+						</label>
+						<label class="radio-inline" title="循环模式(正整数，单位为分钟):比如每2个小时执行一次，则输入120">
+							<input type="radio" name="model" value="loop">循环模式
+						</label>
+						<label class="radio-inline" title="定时模式(格式为HH:mm:ss):比如每天11点30分定时执行，则选择时间11:30:00">
+							<input type="radio" name="model" value="timer">定时模式
+						</label>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label">属性键</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="pkey"	placeholder="属性键" />
+						</div>
+					</div>
+					<div class="config-input"> 
+						<div class="form-group">
+							<label class="col-sm-2 control-label">属性值</label>
+							<div class="col-sm-10 config-input-pvalue">
+								<input type="text" class="form-control" name="pvalue" placeholder="属性值" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">默认值</label>
+							<div class="col-sm-10 config-input-defaultValue">
+								<input type="text" class="form-control" name="defaultValue" placeholder="请输入默认值">
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">描述</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="description" placeholder="描述">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">类型</label>
+						<div class="col-sm-10">
+							<select  name="type" id="type" class="form-control">
+								<option value="common">公共</option>
+								<option value="private">医院</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">排序号</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="sort" placeholder="排序号">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">是否激活</label>
+						<div class="col-sm-10">
+							<select  name="isActived" id="isActived" class="form-control">
+								<option value="1">激活</option>
+								<option value="0">禁用</option>
+							</select>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary"
+					onclick="app.admin.propertiesConfig.saveOrUpdate()">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript"
+	th:src="@{/assets/js/baseinfo/propertiesConfig.js}"></script>
+<script>
+	app.admin.propertiesConfig.init();
+</script>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title th:inline="text">登录 - [[${beans.appConfig.name}]]</title>
+    <link rel="stylesheet" th:href="@{${beans.appConfig.uiHost}+'/bst1.0/plugins/bootstrap/css/bootstrap.min.css'}"/>
+    <link rel="stylesheet" th:href="@{${beans.appConfig.uiHost}+'/bst1.0/dist/css/AdminLTE.min.css'}"/>
+    <link rel="stylesheet" th:href="@{${beans.appConfig.uiHost}+'/bst1.0/dist/css/base.css'}"/>
+    <link rel="stylesheet" th:href="@{${beans.appConfig.uiHost}+'/bst1.0/plugins/iCheck/all.css'}"/>
+    <link rel="stylesheet" href="/assets/css/base/main.css"/>
+    <link rel="shortcut icon" th:href="@{/assets/img/favicon.ico}"/>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="http://192.168.35.50:9000/bst1.0/plugins/html5shiv/html5shiv.min.js"></script>
+    <script src="http://192.168.35.50:9000/bst1.0/plugins/respond/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="hold-transition login-page">
+<div class="login-box-outer">
+    <div class="login-box login-box-left"></div>
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="#" th:inline="text"><b class="banner" style="font-size: 36px;color: #333">[[${beans.appConfig.name}]]</b></a>
+            <!--<a href="#" th:inline="text"><b class="banner" style="font-size: 36px;color: #333">综合支付平台</b></a>-->
+        </div>
+        <div class="login-box-body">
+            <!-- <p class="login-box-msg">Sign in to start your session</p> -->
+            <form action="/passport/login" method="POST" id="loginForm"
+                  onsubmit="return doLogin()">
+                <div class="form-group">
+                    <i class="login-user"></i>
+                    <input type="text" class="form-control" placeholder="账号"
+                           id="user_name" name="username"/>
+                </div>
+                <div class="form-group has-feedback">
+                    <i class="login-psw"></i>
+                    <input type="password" class="form-control"
+                           placeholder="密码" id="user_password" name="password"/>
+                </div>
+                <div class="form-group has-feedback messageVerifyCodeDiv" style="display: none">
+                    <div id="verifyCodeDiv" class="" style="border-bottom: 1px solid #ccc">
+                        <i class="login-psw"></i>
+                        <input type="text" class="form-control" style="border-bottom:0px ; width: 49%; float: left"
+                               placeholder="验证码"
+                               id="user_message_verify" name="messageVerifyCode"/>
+                        <a style="width: 51%" class="btn" id="btn" onclick="applyVerifyCode()">获取验证码</a>
+                    </div>
+                </div>
+                <!--<div class="form-group has-feedback messageVerifyCodeDiv" style="display: none">
+                    <i class="login-psw"></i>
+                    <input type="password" class="form-control"
+                           placeholder="验证码" id="user_message_verify" name="messageVerifyCode"/>
+                </div>-->
+                <div class="my-danger">
+                    <div class="alert alert-danger" role="alert" id="errorMsgBox" style="display: none;"></div>
+                    <div class="alert alert-danger" role="alert" id="loginErrorInfo"
+                         th:if="${shiroLoginFailure}" th:text="${shiroLoginFailure}"></div>
+                </div>
+                <div class="row m-login-submit">
+                    <div class="col-xs-12">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">登录</button>
+                    </div>
+                </div>
+            </form>
+            <!--<div class="form-group has-feedback remenber-psw">
+                <input type="checkbox" class="flat-blue checkbox" name="rememberMe"/>
+                <span class="my-rememberMe">记住密码</span>
+            </div>-->
+        </div>
+        <!-- 		<div class="copyright" th:inline="text">[[${beans.appConfig.name}]]</div> -->
+    </div>
+</div>
+
+<script th:src="@{${beans.appConfig.uiHost}+'/bst1.0/plugins/jQuery/jquery-2.2.3.min.js'}"></script>
+<!-- Bootstrap 3.3.6 -->
+<script th:src="@{${beans.appConfig.uiHost}+'/bst1.0/plugins/bootstrap/js/bootstrap.min.js'}"></script>
+<script th:src="@{${beans.appConfig.uiHost}+'/bst1.0/plugins/iCheck/icheck.min.js'}"></script>
+<script type="text/javascript">
+    // 是否需要短信验证码
+    var apiUrl = '/api/message/verify/code';
+    $.ajax({
+        url: apiUrl + "",
+        type: "GET",
+        data: {},
+        dataType: "json",
+        success: function (result) {
+            if (result.code == 0) {
+                $(".messageVerifyCodeDiv").show()
+            } else {
+                $(".messageVerifyCodeDiv").hidden;
+            }
+        }
+    });
+
+    function applyVerifyCode() {
+        var username = $("#user_name").val();
+        if (username == '') {
+            $("#errorMsgBox").text('登录账户不能为空').show();
+            return false;
+        }
+        $.ajax({
+            url: apiUrl + "/get",
+            type: "POST",
+            data: JSON.stringify({"userName": username}),
+            dataType: "json",
+            contentType: 'application/json;charset=UTF-8',
+            success: function (result) {
+                if (result.code != 0) {
+                    $(".messageVerifyCodeDiv").show()
+                    $("#errorMsgBox").text(result.message).show();
+                } else {
+                    // 限制按钮倒计时
+                    var count = 60 * 3;
+                    var countdown = setInterval(CountDown, 1000);
+
+                    function CountDown() {
+                        $("#btn").attr("disabled", true);
+                        $("#btn").text("验证码已发送 " + count + "s");
+                        if (count == 0) {
+                            $("#btn").text("获取验证码").removeAttr("disabled");
+                            clearInterval(countdown);
+                            $('#btn').attr('onclick', "applyVerifyCode()");//去掉a标签中的onclick事件
+                            return;
+                        } else {
+                            // 去掉a标签中的onclick事件
+                            $('#btn').removeAttr('onclick');
+                        }
+                        count--;
+                    }
+                }
+            }
+        });
+    }
+
+    $('input[type="checkbox"].flat-blue, input[type="radio"].flat-blue').iCheck({
+        checkboxClass: 'icheckbox_flat-blue',
+        radioClass: 'iradio_flat-blue'
+    });
+    // 光标定位
+    $('#user_name').focus();
+
+    function doLogin() {
+        if ($("#loginErrorInfo")) {
+            $("#loginErrorInfo").hide();
+        }
+        $("#errorMsgBox").hide();
+        var username = $("#user_name").val();
+        var password = $("#user_password").val();
+        if (username == "") {
+            $("#errorMsgBox").text('登录账户不能为空').show();
+            return false;
+        }
+        if (password == "") {
+            $("#errorMsgBox").text('密码不能为空').show();
+            return false;
+        }
+        return true;
+    }
+
+</script>
+</body>
+</html>
+
+<style>
+    .login-box-outer {
+        width: 800px;
+        height: 500px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -225px 0 0 -400px;
+        display: inline;
+        box-shadow: 0px 10px 30px rgb(231, 234, 237, 0.5);
+    }
+
+    .login-box {
+        width: 400px;
+        height: 500px;
+        border-radius: 0px;
+        background: #ffffff;
+        margin-top: 0px;
+        float: right;
+        position: relative;
+    }
+
+    .login-box-left {
+        float: left;
+        width: 400px;
+        background-image: url("/assets/img/login/login.png");
+    }
+
+    .login-page {
+        background-color: #eff2f6;
+    }
+
+    .login-box-body {
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 70px;
+    }
+
+    .form-control {
+        border-radius: 0px;
+        position: relative;
+        border-left: 0px;
+        border-top: 0px;
+        border-right: 0px;
+        /*background-color: #fff;*/
+        height: 35px;
+        /*background-image: url("/assets/img/icons/icon_accout.png");*/
+        /*background: url("/assets/img/icons/icon_accout.png") no-repeat;*/
+        /*background-color: white;*/
+        /*background-position: 3px*/
+        padding-left: 30px;
+    }
+
+    .form-control:focus {
+        background-color: #fff;
+        border-bottom: 1px solid #3071ea;
+    }
+
+    .login-user {
+        position: absolute;
+        left: 0;
+        z-index: 10000;
+        background-image: url("/assets/img/icons/icon_accout.png");
+        background-repeat: no-repeat; /*设置图片不重复*/
+        background-position: 0px 0px; /*图片显示的位置*/
+        width: 26px; /*设置图片显示的宽*/
+        height: 26px; /*图片显示的高*/
+        margin-top: 10px;
+        margin-left: 4px;
+    }
+
+    .login-psw {
+        position: absolute;
+        left: 0;
+        z-index: 10000;
+        background-image: url("/assets/img/icons/icon_password.png");
+        background-repeat: no-repeat; /*设置图片不重复*/
+        background-position: 0px 0px; /*图片显示的位置*/
+        width: 26px; /*设置图片显示的宽*/
+        height: 26px; /*图片显示的高*/
+        margin-top: 10px;
+        margin-left: 4px;
+    }
+
+    .form-group {
+        position: relative;
+    }
+
+    .m-login-submit {
+        margin-top: 60px !important;
+    }
+
+    .remenber-psw {
+        position: absolute;
+        bottom: 20px;
+        margin-left: 112px;
+        margin-bottom: 20px !important;
+    }
+
+    /*#clear_checkbox{*/
+    /*	width: 50px;*/
+    /*}*/
+    /*icheckbox_flat-blue iradio_flat-blue*/
+    .icheckbox_flat-blue, .iradio_flat-blue {
+        width: 14px;
+        height: 14px;
+        border-radius: 1px;
+        border: 1px solid #d9d9d9;
+        background-color: #fff;
+        background: url("") no-repeat;
+    }
+
+    .my-rememberMe {
+        font-size: 14px;
+        color: #333;
+    }
+</style>
+

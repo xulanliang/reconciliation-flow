@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title th:inline="text">登录 - [[${beans.appConfig.name}]]</title>
+<link rel="stylesheet" th:href="@{${beans.appConfig.uiHost}+'/bst1.0/plugins/bootstrap/css/bootstrap.min.css'}"/>
+<link rel="stylesheet" th:href="@{${beans.appConfig.uiHost}+'/bst1.0/dist/css/AdminLTE.min.css'}" />
+<link rel="stylesheet" th:href="@{${beans.appConfig.uiHost}+'/bst1.0/dist/css/base.css'}" />
+<link rel="stylesheet" th:href="@{${beans.appConfig.uiHost}+'/bst1.0/plugins/iCheck/all.css'}"/>
+<link rel="stylesheet" href="/assets/css/base/main.css" />
+<link rel="shortcut icon" th:href="@{/assets/img/favicon.ico}" />
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+    <script src="http://192.168.35.50:9000/bst1.0/plugins/html5shiv/html5shiv.min.js"></script>
+    <script src="http://192.168.35.50:9000/bst1.0/plugins/respond/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="hold-transition login-page">
+	<div class="login-box">
+		<div class="login-logo">
+			<img class="img-responsive img-circle m-profile-user-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsSAAALEgHS3X78AAAFFklEQVR42u3ba4hUZRjA8f+c98ys6+au66w6WuZ6aclNJV0zDcw085YEIoYKKyRS+iEK+tQNgwKDwCgUjAwJLO2LHyoktbxUoCmbJOaNcL2t7ro7s9t62Z3LeU8fjs46rTo5T1nG84dlDzPnPWfmxznvmbPshFIp30crOOfffgF3ewooTAGFKaAwBRSmgMIUUJgCClNAYQooTAGFKaAwBRSmgMIUUJgCClNAYQooTAGFKaAwBRSmgMIUUJgCClNAYQooTAGFKaAwBRSmgMIUUJgCClNAYW6hAw8fh0++gENHoTPZ/fl3X4WJNTB3UYbkJUvY81ixIszY8Tff5dFvL7Lj7XMkzycJ22CM63m41mZ/Jq6p4v55/XLGnf+6mboXDuN1WgBiM6I8+vno7PNN2+LsXXiw2/6ccIjSkb0Y8doQ+k3tc+cAd++Ft1aBteCEYNSDEInkrlNWGvzOOA6Zq8e5DYVuud3tH8Rpj/uEjSFa1YOyqMF4FmM9jO9jrKWof6TbuBPrGrJ4AI3b4nQ2JukRKwIgEg3Td3J5zhibtCT2tdN2oJ09839hzOoR3L8wdmcAP9oQ4AEsWQC1826+rncbgK2/gzUGgHHL+lM9pyzva0m3Z0jsbct90Iem7QkG1w4AoLymlMc2P9xt7PH3T3HknRMAHHuvviDAgubAhsau5eGV+dcPEB18bg2Ycl1SxpA2Bj8P9rUu7Ehg093/T/78lua8Y8seuie7fOVUZyEUd+4i4jkOfh6TtDFZxHxH67Uatiay65ZWl2Qfb/m+Nee0/qcq+CJSSPmOwKQxWBO86a9WJdixJo7reYStzV5MHn99IJXTegfb83wadrbhOQ5Yy4g3hnHgxSOk4mm8TkvzrgSxmRU33d/l+o7sco8BRf99wHylXBfPDU7HlIGI0/0Iuv7Ubtp3kSvtFtdxcEsM/aaUE5se5fTGYI5p/KaF2MwK2g9fpn7d2ZzteEnLuS+7TvOhS+/9HwAakwWc80ovxk3vecv1T3/XRsYJZqFB0/rgRBxis/tmAZu2J8CHjrOdnPz03A23EYmGqXp5MMOWD7r7AdOuS9oEgDaUf3qu33kxCzhwVhSAflP6ECo2+B0enY1JWn9up2JSb6bVTSAVT/PTooMkW9JAMGdO2jIWt1fhDAVdRAb271o+Xv/3AaaMIe26wVzo3Hq+TJxI0nwqTcYYbMQw8Mngc54pdqiYGs1eWJq2xTHFhpLKYsprSpmwaTTh0gCs/fBl6pYdwfcK/7ZbqJDvym3dDStXg+8HH6Srq6DoT3Pw0oVQ/QDMXwYXWoLHhld2fcC+vtq5PmNGhXh+eZqm0xkinsfQ+3wqevuEPS+4I7l6ZzLluTKGjO/J/vVxflzZQNhaKif0ZM6Gquz26jc2UffSMYy1lI8s4Yldj+Tsr+WHVvY8exCbCubYQQtijF09Av7ahT+ngo7dGZOhpCd8thl+OwmHjnVfZ/7Twe/ltfDhemhtC9a9UbOnBK988WKXtWvhYgucOOtx5qRHkWeJZDyKMgFszTPBm66v68CURzDWo3JW7m3YgKf6YKIRjGe5dDaZc1cCUDGpnHEfV7N/ya/4ns+ZTY30iBVR/ebQ27Yo6AjUutK/xghTQGEKKEwBhSmgMAUUpoDCFFCYAgpTQGEKKEwBhSmgMAUUpoDCFFCYAgpTQGEKKEwBhSmgMAUUpoDCFFCYAgpTQGEKKEwBhSmgMAUUpoDCFFCYAgr7A3UBrl1WmW+RAAAAAElFTkSuQmCC" width="100" />
+			<a href="#" th:inline="text"><b>[[${beans.appConfig.name}]]</b></a>
+		</div>
+		<div class="login-box-body">
+			<!-- <p class="login-box-msg">Sign in to start your session</p> -->
+			<form action="/passport/login" method="POST" id="loginForm"
+				onsubmit="return doLogin()">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="账号"
+						id="user_name" name="username" />
+				</div>
+				<div class="form-group has-feedback">
+					<input type="password" class="form-control"
+						placeholder="密码" id="user_password" name="password"/>
+				</div>
+				<div class="form-group has-feedback">
+					<input type="checkbox" class="flat-blue checkbox" name="rememberMe"/>
+					<span class="my-rememberMe">记住密码</span>
+				</div>
+				<div class="my-danger">
+					<div class="alert alert-danger" role="alert" id="errorMsgBox"
+						style="display: none;"></div>
+					<div class="alert alert-danger" role="alert" id="loginErrorInfo"
+						th:if="${shiroLoginFailure}" th:text="${shiroLoginFailure}"></div>
+				</div>
+				<div class="row m-login-submit">
+					<div class="col-xs-12">
+						<button type="submit" class="btn btn-primary btn-block btn-flat">登录</button>
+					</div>
+				</div>
+			</form>
+		</div>
+<!-- 		<div class="copyright" th:inline="text">[[${beans.appConfig.name}]]</div> -->
+	</div>
+
+
+
+
+	<script
+		th:src="@{${beans.appConfig.uiHost}+'/bst1.0/plugins/jQuery/jquery-2.2.3.min.js'}"></script>
+	<!-- Bootstrap 3.3.6 -->
+	<script
+		th:src="@{${beans.appConfig.uiHost}+'/bst1.0/plugins/bootstrap/js/bootstrap.min.js'}"></script>
+	<script
+		th:src="@{${beans.appConfig.uiHost}+'/bst1.0/plugins/iCheck/icheck.min.js'}"></script>
+	<script type="text/javascript">
+		 $('input[type="checkbox"].flat-blue, input[type="radio"].flat-blue').iCheck({
+	         checkboxClass: 'icheckbox_flat-blue',
+	         radioClass: 'iradio_flat-blue'
+	     });
+		 // 光标定位
+		 $('#user_name').focus();
+		function doLogin() {
+			if($("#loginErrorInfo")){
+				$("#loginErrorInfo").hide();
+			}
+			$("#errorMsgBox").hide();
+			var username = $("#user_name").val();
+			var password = $("#user_password").val();
+			if (username == "") {
+				$("#errorMsgBox").text('登录账户不能为空').show();
+				return false;
+			}
+			if (password == "") {
+				$("#errorMsgBox").text('密码不能为空').show();
+				return false;
+			}
+			return true;
+		}
+	</script>
+</body>
+</html>
+

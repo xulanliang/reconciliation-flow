@@ -1,0 +1,105 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row tool-box-content">
+			<form class="form-inline" id="healthCareOfficialSearchForm">
+				<div style="min-width:1550px;" class="row tool-box-content">
+					<div class="form-group">
+						<div class="form-group">
+							<label>所属机构:</label>
+						</div>
+						<div class="form-group">
+							<input type="text" class="form-control" data-name="orgNo" name="orgNoTree" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="form-group">
+							<label>选择日期:</label>
+						</div>
+						<div class="form-group">
+							<input AUTOCOMPLETE="off" type="text" class="form-control pull-right"
+								id="healthCareOfficialTime" readonly="readonly">
+						</div>
+					</div>
+					<div class="form-group m-btn">
+						<button type="button" class="btn btn-primary"
+							onclick="app.admin.healthCareOfficial.search(null,null, this)">查询</button>
+						<button id="btn_add" type="button" class="btn btn-success"
+							onclick="app.admin.healthCareOfficial.exportData()">导出</button>
+						<a data-toggle="collapse" data-parent="#healthCareOfficial-search-box" 
+							href="#healthCareOfficial-search-box">高级查询 <i class="fa fa-angle-down"></i>
+						</a>
+					</div>
+					<div id="healthCareOfficial-search-box" class="panel-collapse collapse ">
+						<div class="form-group">
+							<label>支付类型：</label> <select class="form-control"
+								name="operationType" class="selectpicker"  multiple="multiple"></select>
+						</div>
+						<div class="form-group">
+							<label>医保类型：</label> <select class="form-control"
+								name="healthcareTypeCode" class="selectpicker"  multiple="multiple"></select>
+						</div>
+						<div class="form-group">
+							<label>支付方流水号:</label> <input type="text" class="form-control"
+								name="payFlowNo">
+						</div>
+						<div class="form-group">
+							<label>业务周期号:</label> <input type="text" class="form-control"
+								name="businessCycleNo">
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="row">
+			<input type="hidden" th:value="${orgJSON}" id="healthCareOfficialOrgNo"> 
+			<input type="hidden" th:value="${typesJSON}" id="healthCareOfficialType">
+			<table class="table table-bordered table-nomal" id="healthCareOfficialDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-formatter="app.admin.healthCareOfficial.number">序号</th>
+						<th data-field="tradeDatatime">账单日期</th>
+						<th data-field="orgNo"
+							data-formatter="app.admin.healthCareOfficial.orgFormatter">机构名称</th>
+						<th data-field="operationType"
+							data-formatter="app.admin.healthCareOfficial.formatter">操作类型</th>
+						<th data-field="payFlowNo" >支付方流水号</th>
+						<th data-field="healthcareTypeCode"
+							data-formatter="app.admin.healthCareOfficial.formatter">医保类型</th>
+						<th data-field="businessCycleNo">业务周期号</th>
+						<th data-field="costAll" data-formatter="app.admin.healthCareOfficial.moneyFormat">医疗费总额</th>
+						<th data-field="costBasic" data-formatter="app.admin.healthCareOfficial.moneyFormat">基本医疗费用</th>
+						<th data-field="costAccount" data-formatter="app.admin.healthCareOfficial.moneyFormat">账户支付金额</th>
+						<th data-field="costCash" data-formatter="app.admin.healthCareOfficial.moneyFormat">现金支付金额</th>
+						<th data-field="costWhole" data-formatter="app.admin.healthCareOfficial.moneyFormat">统筹支付金额</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="healthCareOfficialLoading" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">提示</h4>
+			</div>
+			<div class="modal-body">请稍候。。。</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" th:src="@{/assets/js/recon/healthCareOfficial.js}"></script>
+<script th:inline="javascript">
+
+////获取后台传递的值
+var typesJSON = [[${typesJSON}]];
+var orgJSON = [[${orgJSON}]];
+var accountDate = [[${accountDate}]];
+
+
+//初始化
+app.admin.healthCareOfficial.init(typesJSON,orgJSON,accountDate);
+ 
+ 
+</script>

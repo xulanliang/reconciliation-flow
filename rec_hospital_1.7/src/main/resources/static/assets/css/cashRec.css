@@ -1,0 +1,165 @@
+@charset "UTF-8";
+.cash-order {
+  /*分段：结束*/
+  /*圆圈图标*/
+  /*左边样式*/
+  /*右边样式*/
+  /*自助机-窗口*/ }
+  .cash-order .segment3 {
+    padding: 10px 0;
+    white-space: nowrap; }
+  .cash-order .segmen3::after {
+    content: "";
+    display: block;
+    clear: both; }
+  .cash-order .segment3 > * {
+    float: left;
+    height: 100%;
+    position: relative;
+    /* 兼容子元素的定位布局 */
+    width: 33.3%;
+    /* width 的值应为: segNum/100 */
+    }
+  .cash-order .segment3 > *:before{
+  	content:" ";
+  	border-color: #dde4e9;
+    border-width: 1px;
+    border-style: none none none solid; 
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    margin: 20px 0;
+  }
+  .cash-order .segment2>.left {
+    border-left-style: none; }
+  .cash-order .segment2 {
+    padding: 30px 0;
+    white-space: nowrap; }
+  .cash-order .segmen2::after {
+    content: "";
+    display: block;
+    clear: both; }
+  .cash-order .segment2 > * {
+    float: left;
+    height: 100%;
+    position: relative;
+    /* 兼容子元素的定位布局 */
+    width: 50%;
+    /* width 的值应为: segNum/100 */
+    border-color: #dde4e9;
+    border-width: 1px;
+    border-style: none none none solid; }
+  .cash-order .segment3 > *:first-child:before {
+    border-left-style: none; }
+  .cash-order .cash {
+    position: relative;
+    /*height: 140px;*/
+    width: 900px; }
+  .cash-order .cash-list {
+    /*width: 300px;*/
+    height: 120px;
+    float: left;
+    position: relative; }
+  .cash-order .list-content {
+    height: 100%; }
+  .cash-order .cash-list .left {
+    width: 58px;
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 40px;
+    position: relative; }
+  .cash-order .cash-list .circle {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-image: url("../img/rec/ssz.png"); }
+    
+  .cash-order .cash-list .circle-allamount {
+    background-image: url("../img/rec/ssz.png"); }
+  .cash-order .cash-list .circle-his {
+    background-image: url("../img/rec/ysz.png"); }
+  .cash-order .cash-list .circle-dif {
+    background-image: url("../img/rec/cyz.png"); }
+    
+  .cash-order .cash-list .right {
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+
+  }
+  /*.cash-order .right .title {*/
+    /*margin-bottom: 16px; }*/
+  .cash-order .cash-list .num {
+    color: #333333;
+    font-size: 18px; }
+  .cash-order .self-service {
+    width: 100%;
+    height: 250px;
+    margin: 0 0 50px 0;
+  }
+  .cash-order .self-service .left .content {
+    padding-left: 30px; }
+  .cash-order .line {
+    width: 2em;
+    height: 4px;
+    background: #3071ea;
+    margin-top: 5px;
+    margin-bottom: 15px; }
+  .cash-order .earning {
+    width: 100%; }
+  .cash-order .earning li {
+    width: 33.3%;
+    float: left; }
+  .cash-order .earning-title {
+    width: 60px;
+    height: 24px;
+    background: #eef2f7;
+    border-radius: 20px;
+    line-height: 24px;
+    text-align: center;
+    margin-bottom: 20px; }
+  .cash-order .earning-list {
+    width: 100%;
+    margin-bottom: 10px; }
+  .cash-order .earning-left {
+    width: 6em;
+    display: inline-block; }
+  .cash-order .earning-right {
+    display: inline-block; }
+  .cash-order .self-service .right .content {
+    padding-left: 80px; }
+
+/*# sourceMappingURL=cashOrder.css.map */
+
+
+
+.payAllAmount {
+  font-size: 18px;
+  color: #3071ea;
+}
+
+.hisAllAmount{
+	color: #3071ea;
+}
+
+.cash .hisAllAmount, .cash .tradeDiffAmount {
+  font-size: 18px;
+}
+.cash .tradeDiffAmount{
+	color:#ec639f;
+}
+
+
+
+.cash-order .cash-list .right .title {
+  margin-bottom: 10px;
+}
+
+.cash-order .cash-list .right .title.payAllAmount, .cash-order .cash-list .right .title.hisAllAmount, .cash-order .cash-list .right .title.tradeDiffAmount {
+  margin-bottom: 20px;
+}

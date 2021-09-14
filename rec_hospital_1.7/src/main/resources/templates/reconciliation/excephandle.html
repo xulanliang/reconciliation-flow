@@ -1,0 +1,58 @@
+<div class="modal fade" id="exceporderDiv" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="title">异常现金订单退费</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" id="excephandleDataTable">
+					<div class="form-group">
+						<label class="col-sm-2 control-label">流水号 :</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" placeholder=" 请输入支付方流水号" id="excep_payFlowNo" name="excep_payFlowNo">
+						</div>
+					</div>
+					<div class="form-group" id="applyIdDiv">
+						<label class="col-sm-2 control-label">登录密码 :</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" placeholder=" 请输入登录密码" id="password" name="password">
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">患者姓名  :</label>
+						<div class="col-sm-10">
+							<span class="form-control" id="patientName"></span>
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">就诊卡号  :</label>
+						<div class="col-sm-10">
+							<span class="form-control" id="patientCardNo"></span>
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">身份证号  :</label>
+						<div class="col-sm-10">
+							<span class="form-control" id="patientIdCard"></span>
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">金额 (元) :</label>
+						<div class="col-sm-10">
+							<span class="form-control" id="payAmount"></span>
+				    	</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" onclick="app.admin.excephandle.search()">查询</button>
+				<!-- <button type="button" class="btn btn-primary" onclick="app.admin.excephandle.doRefund()">退费</button> -->
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/admin/excephandle.js}"></script>
+<script type="text/javascript">
+app.admin.excephandle.init()
+</script>

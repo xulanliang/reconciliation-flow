@@ -1,0 +1,63 @@
+
+<div id="easyui-layout-content" class="easyui-layout" data-options="fit:true">
+	<div data-options="region:'center',border:false" class="layout-datagrid">
+		  <!-- 分页列表DIVdatagrid -->
+		  <table id="trade_dg" class="easyui-datagrid"
+			          data-options="fit:true,singleSelect:true,pageSize:25,pageList:[25,50,75,100,125]"
+			          th:attr="statusJSON=${statusJSON}, typesJSON=${typesJSON},orgJSON=${orgJSON}"
+			           toolbar="#tradeToolbar" pagination="true" rownumbers="true" fitColumns="false" singleSelect="true">
+	          <thead>
+	             <tr>  
+	                <th field="tradeDatatime" data-options="width:150,align:'center'">账单时间</th>  
+	                <th field="orgNo" data-options="width:100,align:'center'" formatter="app.admin.trade.orgFormatter">机构名称</th>  
+	                <th field="orderState" data-options="width:100,align:'center'" formatter="app.admin.trade.formatter">订单状态</th> 
+	                <th field="hisState" data-options="width:100,align:'center'" formatter="app.admin.trade.formatter">his状态</th>   
+	                <th field="tradeCode" data-options="width:100,align:'center'" formatter="app.admin.trade.formatter">交易类型</th>  
+	                <th field="payBusinessType" data-options="width:100,align:'center'" formatter="app.admin.trade.formatter">业务类型</th>  
+	                <th field="payType" data-options="width:100,align:'center'" formatter="app.admin.trade.formatter">支付类型</th>  
+	                <th field="paySource" data-options="width:100,align:'center'" formatter="app.admin.trade.formatter">支付来源</th>  
+	                <th field="paySerNo" data-options="width:100,align:'center'">支付终端号</th>  
+	                <th field="payTermNo" data-options="width:100,align:'center'">设备编码</th>  
+	                <th field="custName" data-options="width:100,align:'center'">客户名称</th>  
+	                <th field="custIdentifyType" data-options="width:100,align:'center'" formatter="app.admin.trade.formatter">客户标识</th>  
+	                <th field="businessFlowNo" data-options="width:100,align:'center'" >his交易流水号</th>
+	                <th field="payAccount" data-options="width:100,align:'center'" >支付账号</th>
+	                <th field="payAmount" data-options="width:100,align:'center'">金额(元)</th>
+	                <th field="payBatchNo" data-options="width:100,align:'center'">支付批次号</th>  
+	                <th field="payFlowNo" data-options="width:100,align:'center'">支付流水号</th>
+	                <th field="tradeTo" data-options="width:100,align:'center'" formatter="app.admin.trade.formatter">交易目的</th>  
+                </tr>
+	          </thead>
+	        </table>
+	        <!-- tools_bar -->
+	        <div id="tradeToolbar" data-options="fit:true">
+	        <div class="PartialButton tools_bara"> 
+		        <span class="easyui-panel spanSearch panel-body" style="margin-bottom:2px;margin-top:5px;overflow:hidden;">
+					 <div class="search_input"><label>机构:</label><input class="easyui-combotree" id="trade_search_org" name="trade_search_org" 
+					       data-options="panelHeight:'auto'" th:value="${flag}"
+					       th:attr="data-list-url=@{/admin/reconciliation/organizationsList_nopage.json?includeAll=true}"
+					       style="width: 180px; height: 25px;" /></div>
+					<div class="search_input"><label>交易类型:</label> <input class="easyui-combobox"  id="trade_tradeType" name="trade_tradeType" panelHeight='auto' style="width: 156px;" data-options="editable:true,multiple:true,valueField:'id',textField:'value',url:'/admin/reconciliation/typeValue?typeValue=Trade_Code'"/></div>
+					<div class="search_input"><label>业务类型:</label> <input class="easyui-combobox" th:value="${flag}" id="trade_businessType" name="trade_businessType" panelHeight='auto' style="width: 156px;" data-options="editable:false,valueField:'id',textField:'value',url:'/admin/reconciliation/typeValue?typeValue=Pay_Business_Type&amp;isIncludeAll=true'"/></div> 
+					<div class="search_input"><label>支付类型:</label> <input class="easyui-combobox"  id="trade_payType" name="trade_payType" panelHeight='auto' style="width: 156px;" data-options="editable:true,multiple:true,valueField:'id',textField:'value',url:'/admin/reconciliation/typeValue?typeValue=Pay_Type'"/></div> 
+					<div class="search_input"><label>设备编码:</label> <input type="text" id="trade_payTermNo" name="trade_payTermNo" style="width: 156px;" /></div> 
+					<div class="search_input"><label>支付来源:</label> <input class="easyui-combobox" th:value="${flag}" panelHeight='auto' id="trade_paySource" name="trade_paySource" style="width: 156px;" data-options="editable:false,valueField:'id',textField:'value',url:'/admin/reconciliation/typeValue?typeValue=Pay_Source&amp;isIncludeAll=true'"/></div>
+					<div class="search_input"><label>支付流水号:</label> <input type="text" id="trade_sysSerial" name="trade_sysSerial" style="width: 156px;" /></div>
+					<input type="hidden" id="trade_dataSource" name="trade_dataSource" panelHeight='auto' th:value="${org}" style="width: 156px;" />
+					<div class="search_input"><label>开始日期:</label> <input class="Wdate" th:value="${accountStartDate}"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'%y-%M-{%d}'})" type="text" data-options="required:false,showSeconds:false,editable:true" id="trade_startDate" name="trade_startDate" style="width: 156px;" /></div>
+					<div class="search_input"><label>结束日期:</label> <input class="Wdate" th:value="${accountEndDate}"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'%y-%M-{%d}'})" type="text" data-options="required:false,showSeconds:false,editable:true" id="trade_endDate" name="trade_endDate" style="width: 156px;" /></div>
+					<div class='contract_Box'>
+						<a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="app.admin.trade.search()" >搜索</a>
+						<a href="#" class="easyui-linkbutton" iconCls="icon-daochu" onclick="app.admin.trade.exportData()" >导出</a>
+						<a onclick="app.admin.trade.refresh()" class="easyui-linkbutton" iconCls="icon-reload" plain="true">刷新</a>
+			   		</div>
+				</span>
+		   		</div>
+		   </div>
+	</div>  
+</div>
+<!-- end north -->
+<script type="text/javascript" th:src="@{/assets/js/admin/trade.js}"></script>
+<script type="text/javascript">
+	app.admin.trade.init();
+</script>

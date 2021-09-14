@@ -1,0 +1,102 @@
+<!-- 统一666门户绑定页面-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <title th:inline="text">登录 - 综合支付平台</title>
+    <link th:href="@{/assets/css/login.css}" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/zzsc.css}" />
+
+    <script src="/assets/lib/html5shiv/r29/html5.min.js"></script>
+    <script src="/assets/lib/respond.js/1.4.2/respond.min.js"></script>
+
+</head>
+<body class="Loginbody">
+
+<div id="rightArrow" style=""><a href="javascript:;" title="在线客户"></a></div>
+<div id="floatDivBoxs">
+    <div class="floatDtt">在线客服</div>
+    <div class="floatShadow">
+
+        <div class="floatDtxt" style="margin-top: -10px">热线电话</div>
+        <div class="floatDtel">
+            <span style="font-size:12px ; color:#212121;width: 124px;height: 40px;">罗福标:</span><br/>
+            <span style="font-size:14px ; color:#ff0000;width: 126px;height: 40px;border-bottom: 1px dotted #000000;font-weight: bold">185-6586-9231</span><br/>
+
+            <span style="font-size:12px ; color:#212121;width: 124px;height: 40px;">钟定斌:</span><br/>
+            <span style="font-size:14px ; color:#ff0000;width: 126px;height: 40px;border-bottom: 1px dotted #000000;font-weight: bold">136-5243-0913</span><br/>
+            <span style="font-size:12px ; color:#212121;width: 124px;height: 40px;">李云庆:</span><br/>
+            <span style="font-size:14px ; color:#ff0000;width: 126px;height: 40px;font-weight: bold">131-458-19831</span>
+        </div>
+    </div>
+    <div class="floatDbg"></div>
+</div>
+<div class="floatDbg"></div>
+
+<div class="middle">
+    <div class="middle-wrap w-1200">
+        <div class="middle-text">
+            <h2>综合支付平台</h2>
+            <p>CLEAR Product operation monitoring platform management software</p>
+
+
+            <div style="margin-top: 100px">
+                <h1>绑定成功！</h1>
+            </div>
+        </div>
+
+        <div class="middle-login-wrap">
+            <div class="middle-top" >
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="footer">深圳市巨鼎医疗设备有限公司 Copyright © 2015-2017
+    <a style="display: inline-block;text-align:center; margin: 0px;padding: 0px; " href="http://sw.bos.baidu.com/sw-search-sp/software/611fd6cbd2fb1/ChromeStandalone_59.0.3071.86_Setup.exe">推荐使用chrome谷歌浏览器,点击下载</a>
+</div>
+<script th:src="@{/assets/lib/jquery/1.11.1/jquery.min.js}"></script>
+<script>
+    function check($this){
+        var Err=$(".err") ;
+        var username=$('input[name="username"]',$this);
+        var pwd=$('input[name="password"]',$this);
+
+        if(username.val()==""){
+            alert("1111");
+            Err.append('用户名不能为空');  return false;
+        }else if(pwd.val()==""){
+            Err.append('密码不能为空');return false;
+        }else{
+            Err.css("display","none")
+        }
+        return true;
+    }
+
+    var flag=1;
+    $('#rightArrow').click(function(){
+        if(flag==1){
+            $("#floatDivBoxs").animate({right: '-175px'},300);
+            $(this).animate({right: '0px'},300);
+            $(this).css('background-position','0px 0');
+            flag=0;
+        }
+        else if(flag==0){
+            $("#floatDivBoxs").animate({right: '0'},300);
+            $(this).animate({right: '138px'},300);
+            $(this).css('background-position','0px 0');
+            flag=1;
+        }
+    });
+</script>
+
+</body>
+</html>

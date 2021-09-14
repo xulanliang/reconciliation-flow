@@ -1,0 +1,167 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<form class="form-inline m-search" id="onlinerefundSearchForm">
+
+			<div class="row tool-box-content">
+				<div class="form-group">
+					<label class="search-label">所属机构：</label><div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control"
+							data-name="orgNo" name="orgNoTree" id="detailParentSelect" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="startTime">开始日期：</label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input type="text" class="form-control" style="width: 220px;" onmousemove="this.style.cursor='pointer';"
+						id="refundRecordTime" readonly="readonly"/>
+					</div>
+				</div>
+				
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary"
+						onclick="app.admin.onlinerefund.search(this)">查询</button>
+					<button id="btn_add" type="button" class="btn btn-success"
+						onclick="app.admin.onlinerefund.exportData()">导出</button>
+					<!-- <a data-toggle="collapse" data-parent="#refundRecord-search-box"
+						href="#refundRecord-search-box"> 高级查询 <i
+						class="fa fa-angle-down"></i></a> -->
+				</div>
+				<div>
+					<!-- <div class="form-group">
+						<label class="search-label">支付类型：</label><select
+							style="width: 220px" class="form-control" name="businessType"
+							class="selectpicker"></select>
+					</div> -->
+ 					<div class="form-group">
+						<label class="search-label">状态：</label><select
+							style="width: 220px" class="form-control" id="formState" name="state">
+							<option value="">全部</option>
+							<option value="1">待审核</option>
+							<option value="2">已驳回</option>
+							<option value="3">已退费</option>
+							</select>
+					</div>
+					<div class="form-group">
+						<label class="search-label">支付方流水号：</label>
+						<div class="input-group">
+							<input type="text"
+								class="form-control" placeholder="请输入支付方流水号"
+								name="paymentRequestFlow" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<input type="hidden" th:value="${roleType}" id="roleType">
+		<input type="hidden" th:value="${fileLocation}" id="fileLocation">
+		<input type="hidden" th:value="${startDate}" id="startDate">
+		<input type="hidden" th:value="${state}" id="initState">
+		<input type="hidden" th:value="${orgNo}" id="initOrgNo">
+		
+		<div class="row">
+			<table class="table table-bordered table-nomal "
+				id="onlinerefundDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th class="text-center" 
+							data-formatter="app.admin.onlinerefund.SerialNumberFormat" data-width="4%">序号</th>
+						<th data-field="orgNo" data-sortable="true" class="text-center"
+							data-formatter="app.admin.onlinerefund.orgFormatter" data-width="11%">机构名称</th>
+						<th data-field="handleDateTime" class="text-center" data-sortable="true" data-width="9%">申请时间</th>
+						<th data-field="userName" class="text-center" data-width="7%" data-sortable="true">申请人</th>
+						<th data-field="paymentRequestFlow" class="text-center" data-sortable="true" data-width="14%" data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">支付方流水号</th>
+						<th data-field="patientName" class="text-center" data-width="8%" data-sortable="true">患者姓名</th>
+						<th data-field="patientNo" class="text-center" data-width="7%" data-sortable="true">病人号</th>
+						<th data-field="tradeAmount" class="text-center" data-width="10%" data-sortable="true" 
+							data-formatter="app.admin.onlinerefund.moneyFormat">退款金额(元)</th>
+						<th data-field="state" data-sortable="true" class="text-center" data-width="6%" data-formatter="app.admin.onlinerefund.formatState">状态</th>
+						<th data-field="id" class="text-left"
+							data-align="center"
+							data-formatter="app.admin.onlinerefund.formatHandler" data-width="220px">操作</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<!--详情  -->
+<div class="modal fade" id="refundDetails" tabindex="-1" role="dialog"
+	data-backdrop="false">
+	<div class="modal-dialog"  style="width: 40%;min-width: 630px;">
+		<div class="modal-content" >
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">详情</h4>
+			</div>
+			<div class="modal-body">
+				<div class="col-md-3">
+					<h3 class="modal-title" id="detailsTitle">待审核</h3>
+				</div>
+			</div>
+			<hr style="margin-top: 0px;margin-bottom: 0px;">
+			<div id="detailsDiv"></div>
+			<div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button></div>
+		</div>
+	</div>
+</div>
+<!--审核以及驳回  -->
+<div class="modal fade" id="rejectOrExamine" tabindex="-1" role="dialog"
+	data-backdrop="false">
+	<div class="modal-dialog" style="width: 40%;min-width: 630px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="tName">审核</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" id="rejectOrExamineForm">
+					<input type="hidden" name="id" id="id"/>
+					<input type="hidden" name="state" id="state"/>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">退款金额:</label>
+						<div class="col-sm-10">
+							<label class="control-label" id="tAmount">11.11</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" id="tReason">审核原因:</label>
+						<div class="col-sm-10">
+							<textarea rows="4" class="form-control" cols="40"  name="reason" id="reason"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">上传图片:</label>
+						<div class="col-sm-10">
+							<input class="control-label" type="file" name="file" id="file"/><label class="control-label">图片大小限制:2M,格式限制：bmp.png jpeg.jpg.gif</label>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="refundRecordButton" onclick="app.admin.onlinerefund.updateData()">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"
+	th:src="@{/assets/js/recon/refundRecord.js}"></script>
+<script th:inline="javascript">
+
+////获取后台传递的值
+var typesJSON = [[${typesJSON}]];
+var orgJSON = [[${orgJSON}]];
+var statusJSON = [[${statusJSON}]];
+var accountDate = [[${accountDate}]];
+var allDate = [[${allDate}]];
+
+
+/////初始化
+app.admin.onlinerefund.init(typesJSON,orgJSON,statusJSON,accountDate);
+
+</script>

@@ -1,0 +1,232 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<form class="form-inline m-search" id="hisPayDedailedSearchForm">
+			<div class="row tool-box-content">
+				<div class="form-group">
+					<label class="search-label">所属机构：</label>
+					<div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control"
+							data-name="code" id="hisPayDedailedTree" placeholder="所属机构" />
+					</div>
+				</div>
+				<!-- <div class="form-group">
+						<label>交易状态:</label>
+						<select class="form-control" id="hisOrderState" name="hisOrderState"></select>
+					</div> -->
+				<div class="form-group">
+					<label class="search-label" for="beginTime">选择时间：</label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input type="text" class="form-control" style="width: 330px;"
+							onmousemove="this.style.cursor='pointer';" id="hisPayDetailTime"
+							readonly="readonly" />
+					</div>
+				</div>
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary"
+						onclick="app.admin.hisPayDedailed.search(this)">查询</button>
+					<button id="btn_add" type="button" class="btn btn-success"
+						onclick="app.admin.hisPayDedailed.exportData()">导出</button>
+					<a data-toggle="collapse" data-parent="#hisPayDedailed-search-box"
+						href="#hisPayDedailed-search-box"> 高级查询 <i
+						class="fa fa-angle-down"></i></a>
+				</div>
+
+				<div id="hisPayDedailed-search-box" class="panel-collapse collapse ">
+					<div class="more-collapse-plan">
+						<div class="form-group">
+							<label class="search-label">支付方流水号：</label><input type="text"
+								class="form-control" id="hisPayDedailed_sysSerial"
+								name="hisPayDedailed_sysSerial" placeholder="支付方流水号" />
+						</div>
+						<div class="form-group">
+							<label class="search-label">支付账号：</label><input type="text"
+								class="form-control" id="payAccount"
+								name="payAccount" placeholder="支付账号" />
+						</div>
+						<div class="form-group">
+							<label class="search-label">证件号：</label><input type="text"
+								class="form-control" id="hisCredentialsNo"
+								name="hisCredentialsNo" placeholder="证件号" />
+							<!-- <select class="form-control" id="hisCredentialsType_payType" name="hisCredentialsType_payType" style="display: none;"></select> -->
+						</div>
+						<div class="form-group">
+							<!-- <label>订单号：</label>
+							<input type="text" class="form-control" id="hisOriPayFlowNo" name="hisOriPayFlowNo" placeholder="订单号" /> -->
+							<label class="search-label">收费员：</label><input type="text"
+								class="form-control" id="cashier" name="cashier"
+								placeholder="收费员" />
+						</div>
+						<div class="form-group">
+							<label class="search-label">发票号：</label><input type="text"
+								class="form-control" id="hisInvoiceNo" name="hisInvoiceNo"
+								placeholder="发票号" />
+						</div>
+						<div class="form-group">
+							<label class="search-label">住院号：</label><input type="text"
+								class="form-control" id="hisPatCode" name="hisPatCode"
+								placeholder="住院号" />
+						</div>
+						<div class="form-group">
+							<label class="search-label">门诊号：</label><input type="text"
+								class="form-control" id="hisMzCode" name="hisMzCode"
+								placeholder="门诊号" />
+						</div>
+						<div class="form-group">
+							<label class="search-label">支付类型：</label><select
+								class="form-control" style="width: 220px"
+								id="hisPayDedailed_payType" name="hisPayDedailed_payType"></select>
+						</div>
+						<div class="form-group">
+							<label class="search-label">门诊/住院：</label><select
+								class="form-control" style="width: 220px"
+								id="hisPayDedailed_patType" name="hisPayDedailed_patType"></select>
+						</div>
+						<div class="form-group">
+							<label class="search-label">渠道名称：</label><select
+								class="form-control" style="width: 220px"
+								id="hisPayDedailed_billSource" name="hisPayDedailed_billSource"></select>
+						</div>
+						<div class="form-group">
+							<label class="search-label">商户流水号：</label><input type="text"
+								class="form-control" id="businessFlowNo" name="businessFlowNo"
+								placeholder="商户流水号" />
+						</div>
+						<!-- 潮州人民医院专用筛选条件，请勿删除 -->
+						<div class="form-group">
+							<label class="search-label">订单状态：</label><select
+								class="form-control" style="width: 220px"
+								id="hisPayDedailed_orderState" name="hisPayDedailed_orderState">
+								<option value="">全部</option>
+								<option value="0256">退费</option>
+								<option value="0156">缴费</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="row" id="hisCount" style="display: none;">
+			<div class="summary-amount-line">
+				<span class="title">交易总金额:</span><span class="text" id="hisAllAmount"></span>
+			</div>
+			<div class="summary-amount-line">
+				<span class="title">交易总笔数:</span><span class="text" id="hisAllNum"></span>
+			</div>
+		</div>
+		<div class="row">
+			<input type="hidden" th:value="${orgJSON}" id="hisPayDedailedOrgNo">
+			<input type="hidden" th:value="${typesJSON}" id="hisPayDedailedType">
+			<input type="hidden" th:value="${isDisplay}" id="hisIsDisplay">
+			<table class="table table-bordered table-nomal "
+				id="hisPayDedailedDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-formatter="app.admin.hisPayDedailed.number"
+							data-width="50">序号</th>
+						<th data-field="orgNo" data-sortable="true"
+							data-formatter="app.admin.hisPayDedailed.orgFormatter">机构名称</th>
+						<th data-field="tradeDatatime" data-sortable="true">交易时间</th>
+						<th data-field="billSource" data-sortable="true"
+							data-formatter="app.admin.hisPayDedailed.formatter">渠道名称</th>
+<!--						<th data-field="patId" data-sortable="true"-->
+<!--							data-formatter="app.admin.hisPayDedailed.patIdFormatter">患者ID</th>-->
+						 <th data-field="custName"  data-sortable="true">患者姓名</th>
+						<!-- <th data-field="cashier"  data-sortable="true">收费员</th> -->
+						<!-- <th data-field="payFlowNo"  data-sortable="true">支付方流水号</th> -->
+						<th data-field="hisFlowNo" data-sortable="true">his流水号</th>
+<!--						<th data-field="payAccount" data-sortable="true">支付账号</th>-->
+						<th data-field="payBusinessType" data-sortable="true"
+							data-formatter="app.admin.hisPayDedailed.payBusinessTypeFormatter">业务类型</th>
+						<th data-field="businessFlowNo" data-sortable="true"
+							data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">商户流水号</th>
+						<th data-field="payType" data-sortable="true"
+							data-formatter="app.admin.hisPayDedailed.formatter">支付类型</th>
+						<!-- <th data-field="orderState" data-sortable="true" data-formatter="app.admin.hisPayDedailed.formatter">订单状态</th>
+						<th data-field="credentialsNo"  data-sortable="true">证件号</th>
+						<th data-field="patCode" data-sortable="true">住院号</th>
+						<th data-field="mzCode"  data-sortable="true">门诊号</th>
+						<th data-field="patCode"  data-sortable="true">就诊卡号</th>
+						<th data-field="patType"  data-sortable="true" data-formatter="app.admin.hisPayDedailed.formatterPatType">患者ID</th>
+						<th data-field="cashier"  data-sortable="true">收费员</th>
+						<th data-field="invoiceNo"  data-sortable="true">发票号</th> -->
+						<th data-field="orderState" data-sortable="true"
+							data-formatter="app.admin.hisPayDedailed.formatter">订单状态</th>
+						<th data-field="payAmount" data-sortable="true"
+							data-formatter="app.admin.hisPayDedailed.moneyFormat">金额(元)</th>
+						<th data-field="" data-width="100" data-align="center"
+							data-formatter="app.admin.hisPayDedailed.formatOpt">操作</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="hisPayDedailedDlg" tabindex="-1"
+	role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">详情</h4>
+			</div>
+			<div class="modal-body m-form-detail-body" style="height: 500px;">
+				<dl class="dl-horizontal" form="detail">
+					<dt>交易时间</dt>
+					<dd data-name="tradeDatatime"></dd>
+					<dt>机构名称</dt>
+					<dd data-name="orgNo"></dd>
+					<dt>患者姓名</dt>
+					<dd data-name="custName"></dd>
+					<dt>就诊卡号</dt>
+					<dd data-name="visitNumber"></dd>
+					<dt>支付方流水号</dt>
+					<dd data-name="payFlowNo"></dd>
+					<dt>his流水号</dt>
+					<dd data-name="hisFlowNo"></dd>
+					<dt>商户流水号</dt>
+					<dd data-name="businessFlowNo"></dd>
+					<dt>支付类型</dt>
+					<dd data-name="payType"></dd>
+					<dt>订单状态</dt>
+					<dd data-name="orderState"></dd>
+					<dt>证件号</dt>
+					<dd data-name="credentialsNo"></dd>
+					<dt>住院号</dt>
+					<dd data-name="patCode"></dd>
+					<dt>门诊号</dt>
+					<dd data-name="mzCode"></dd>
+					<dt>住院/门诊</dt>
+					<dd data-name="patType"></dd>
+					<dt>收费员</dt>
+					<dd data-name="cashier"></dd>
+					<dt>发票号</dt>
+					<dd data-name="invoiceNo"></dd>
+					<dt>金额(元)</dt>
+					<dd data-name="payAmount"></dd>
+				</dl>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript"
+	th:src="@{/assets/js/recon/hisPayDedailed.js}"></script>
+<script th:inline="javascript">
+ // 获取后台传递的值
+ var accountDate = [[${accountDate}]];
+ app.admin.hisPayDedailed.init(accountDate);
+</script>
+<style>
+	#hisPayDedailedSearchForm.m-search .search-label{
+		width: 100px;
+	}
+</style>

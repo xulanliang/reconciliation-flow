@@ -1,0 +1,112 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row tool-box-content">
+               <form class="form-inline" id="organConfigSearchForm">
+               	   <div class="form-group">
+               	   		<label>所属机构:</label>
+               	   </div>
+                   <div class="form-group">
+                       <input type="text" class="form-control" name="parent1" id="organConfigParentSelect"/>
+                   </div>
+                   <div class="form-group">
+                     <button type="button" class="btn btn-primary" onclick="app.admin.organConfig.search()">查询</button>
+                     <button id="btn_add" type="button" class="btn btn-success"	onclick="app.admin.organConfig.create()"> 新增 </button>
+                   </div>
+               </form>
+           </div>
+		<div class="row" style="min-width: 1300px;">
+			<table class="table table-bordered table-nomal" id="organConfigDataTable" data-striped="false">
+				<thead> 
+					<tr> 
+						<th data-field="orgNo" data-width="200" data-formatter="app.admin.organConfig.orgFormatter" >机构名称</th>
+						<th data-field="recTime" data-width="120">对账账期(T-n)</th>
+						<th data-field="recType" data-width="120" data-formatter="app.admin.organConfig.formatter" >对账类型</th>
+						<th data-field="isCashRec" data-width="120" data-formatter="app.admin.organConfig.formatter" >是否现金对账</th>
+						<th data-field="payModel" data-width="120" data-formatter="app.admin.organConfig.self" >支付途径</th>
+						<th data-field="" data-width="150" data-align="center" data-formatter="app.admin.organConfig.formatOpt">操作</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="organConfigDlg" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">新增</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form">
+					<input type="hidden"  name="id" />
+					<div class="form-group">
+						<label class="col-sm-3 control-label">所属机构：</label>
+						<div class="col-sm-9">
+						    <input type="text" class="form-control" data-name="orgNo" id="organConfigDlgParentSelect"/>
+						</div>
+					</div>
+				
+					<div class="form-group">
+						<label class="col-sm-3 control-label">对账时间：</label>
+						<div class="col-sm-9">
+                           <input type="text" class="form-control" placeholder="输入时间" name="recTime">
+				    	</div>
+					</div>
+				   <div class="form-group">
+						<label class="col-sm-3 control-label">对账类型</label>
+						<div class="col-sm-9">
+						   <select class="form-control" name="recType" class="selectpicker" ></select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">是否现金对账</label>
+						<div class="col-sm-9">
+						   <select class="form-control" name="isCashRec" class="selectpicker" ></select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">支付途径</label>
+						<div class="col-sm-9">
+						   <select class="form-control" id='isSelf' name="payModel" >
+						   		<option value="self">巨鼎</option>
+						   		<option value="third">第三方</option>
+						   </select>
+						</div>
+					</div>
+					
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" onclick="app.admin.organConfig.save()">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="organConfigLoading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">提示</h4>
+      </div>
+      <div class="modal-body">
+        请稍候。。。
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" th:src="@{/assets/js/admin/organConfig.js}"></script>
+<script th:inline="javascript">
+
+//////获取所有组织和字典信息
+var typesJSON = [[${typesJSON}]];
+var orgJSON = [[${orgJSON}]];
+/////初始化
+ app.admin.organConfig.init(typesJSON,orgJSON);
+ 
+</script>
+

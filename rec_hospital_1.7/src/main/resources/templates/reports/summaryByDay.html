@@ -1,0 +1,106 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row tool-box-content">
+               <form class="form-inline" id="summaryByDaySearchForm">
+                   <div class="form-group">
+               	   		<label>所属机构:</label>
+               	   </div>
+                   <div class="form-group">
+                       <input type="text" style="width:280px;" class="form-control" data-name="orgCode" id="summaryByDayOrgSelect"/>
+                   </div>
+                   <div class="form-group">
+						<div class="form-group">
+							<label>开始时间:</label>
+						</div>
+						<div class="input-group">
+							<input AUTOCOMPLETE="off" type="text" class="form-control pull-right"
+								placeholder="开始时间" id="summaryByPayTypeBeginTime" name="beginTime">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="endTime">结束时间：</label>
+						<div class="input-group">
+							<input AUTOCOMPLETE="off" type="text" style="width: 200px"
+								class="form-control pull-right" placeholder="结束时间" name="endTime" >
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<input type="radio" name="dateType" value="year">年统计
+							<input type="radio" name="dateType" value="month">月统计
+							<input type="radio" name="dateType" value="day">日统计
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<a href="javascript:void(0);" onclick="app.admin.summaryByDay.getPreThMonth()">最近三个月</a>&nbsp;&nbsp;
+							<a href="javascript:void(0);" onclick="app.admin.summaryByDay.get7DaysBefore()">最近一周</a>
+						</div>
+					</div>
+                   <div class="form-group">
+                     <button type="button" class="btn btn-primary" onclick="app.admin.summaryByDay.search()">查询</button>
+                     <button type="button" class="btn btn-primary" onclick="app.admin.summaryByDay.exportList()">导出</button>
+                   </div>
+               </form>
+        </div>
+		<div class="row">
+			<table class="table table-bordered table-nomal" id="summaryByDayDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-valign="middle" data-align="center" colspan="26" data-width="2850" name="tableTitle"></th>
+					</tr>
+					<tr class="success">
+						<th data-valign="middle" data-width="100"></th>
+						<th data-valign="middle" data-align="center" colspan="5" data-width="550">HIS</th>
+						<th data-valign="middle" data-align="center" colspan="5" data-width="550">微信</th>
+						<th data-valign="middle" data-align="center" colspan="5" data-width="550">支付宝</th>
+						<th data-valign="middle" data-align="center" colspan="5" data-width="550">银行卡</th>
+						<th data-valign="middle" data-align="center" colspan="5" data-width="550">其他</th>
+					</tr>
+					<tr>
+						<th data-field="tradeTime" data-align="center" data-width="100" >日期</th>
+						
+						<th data-field="hisRegisterAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">挂号</th>
+					    <th data-field="hisRechargeAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">充值</th>
+						<th data-field="hisPayAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">缴费</th>
+					    <th data-field="hisOtherAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">其他</th>
+						<th data-field="hisAllAmount" data-width="150" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">合计</th>
+						
+						<th data-field="wechatRegisterAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">挂号</th>
+					    <th data-field="wechatRechargeAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">充值</th>
+						<th data-field="wechatPayAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">缴费</th>
+					    <th data-field="wechatOtherAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">其他</th>
+						<th data-field="wechatAllAmount" data-width="150" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">合计</th>
+						
+						<th data-field="aliRegisterAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">挂号</th>
+					    <th data-field="aliRechargeAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">充值</th>
+						<th data-field="aliPayAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">缴费</th>
+					    <th data-field="aliOtherAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">其他</th>
+						<th data-field="aliAllAmount" data-width="150" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">合计</th>
+						
+						<th data-field="bankRegisterAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">挂号</th>
+					    <th data-field="bankRechargeAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">充值</th>
+						<th data-field="bankPayAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">缴费</th>
+					    <th data-field="bankOtherAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">其他</th>
+						<th data-field="bankAllAmount" data-width="150" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">合计</th>
+						
+						<th data-field="otherRegisterAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">挂号</th>
+					    <th data-field="otherRechargeAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">充值</th>
+						<th data-field="otherPayAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">缴费</th>
+					    <th data-field="" data-align="center" data-width="100" data-formatter="app.admin.summaryByDay.otherMoneyFormat">其他</th>
+						<th data-field="otherAllAmount" data-width="150" data-align="center" data-formatter="app.admin.summaryByDay.moneyFormat">合计</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/reports/summaryByDay.js}"></script>
+<script th:inline="javascript">
+
+var orgNo = [[${orgNo}]];
+var tradeDate = [[${tradeDate}]];
+
+app.admin.summaryByDay.init(orgNo,tradeDate);
+
+</script>

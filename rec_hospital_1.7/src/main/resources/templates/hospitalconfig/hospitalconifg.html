@@ -1,0 +1,77 @@
+<style>
+	.control-label pull-right{
+		
+	}
+</style>
+<div class="m-content-wrapper" style="margin-top:0px;">
+	<div class="table-content-wrap" style="margin-top: 0px;">
+<!-- 		<div class="row tool-box-content"> -->
+<!-- 			<form class="form-inline"> -->
+<!-- 				<div class="form-group m-btn"></div> -->
+<!-- 			</form> -->
+<!-- 		</div> -->
+		<div class="row">
+			<div class="panel-group" id="webconfigaccordinon"
+				th:attr="appConfigJson=${webConfig}">
+				<form class="form-horizontal" role="form">
+					<div class="panel panel-default" th:each="configMeta:${metaList}" 
+						style="width: 50%; float: left; margin-top: 0px; height: 580px;">
+						<div class="panel-heading">
+							<h4 class="panel-title" data-toggle="collapse"
+								data-parent="#webconfigaccordinon"
+								th:text="${configMeta.groupName}"
+								th:href="@{'#config_collapse_'+${configMeta.id}}"></h4>
+						</div>
+						<div class="panel-collapse collapse in" 
+							th:id="@{'#config_collapse_'+${configMeta.id}}">
+							<div class="panel-body">
+								<div class="form-group" th:each="item:${configMeta.metaList}">
+									<div class="col-sm-5">
+										<label class="control-label pull-right" th:text="${item.name}"></label>
+									</div>
+									<div class="col-sm-5" th:switch="${item.type}">
+										<input th:case="text" class="form-control" type="text" th:attr="name=${item.key}" /> 
+										<select th:case="select"
+											class="form-control" th:attr="name=${item.key}">
+											<option th:value="${op[0]}" th:text="${op[1]} "
+												th:each="options:${item.options}"
+												th:with="op=${options.split(':')}"></option>
+										</select> 
+										<span th:case="radio"> 
+										<label class="radio-inline" 
+											th:each="options:${item.options}"
+											th:with="op=${options.split(':')}"> 
+											<input type="radio" th:value="${op[0]}" th:attr="name=${item.key}">
+											<span th:text="${op[1]}"></span>
+										</label>
+										</span> 
+										<span th:case="checkbox" class="configCheckbox" 
+											th:attr="checkbox_name=${item.key}"> 
+											<label class="checkbox-inline" 
+												style="margin-left: 0px;margin-right: 10px;"
+												th:each="options:${item.options}"
+												th:with="op=${options.split(':')}"> 
+												<input type="checkbox" th:value="${op[0]}" th:attr="name=${item.key}">
+												<span th:text="${op[1]}"></span>
+										</label>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group" 
+						style="text-align: center; width: 100%; float: left; margin-top: 20px;">
+						<button type="button" class="btn btn-primary"
+							onclick="app.admin.hospitalConfig.save()" id="webconfig_save_bt">保存</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"
+	th:src="@{/assets/js/hospitalconfig/hospitalConfig.js}"></script>
+<script type="text/javascript">
+	app.admin.hospitalConfig.init();
+</script>

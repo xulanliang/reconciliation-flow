@@ -1,0 +1,105 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row tool-box-content">
+			<form class="form-inline m-search" id="gatherSearchForm">
+				<div class="form-group">
+					<label class="search-label">所属机构：</label><div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control"
+							name="parent1" id="gatherParentSelect" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="searchDate">日期：</label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input AUTOCOMPLETE="off" type="text"
+							class="form-control pull-right" placeholder="开始时间"
+							name="searchDate">
+					</div>
+				</div>
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary"
+						onclick="app.admin.gather.search()">查询</button>
+					<button type="button" class="btn btn-success"
+						onclick="app.admin.gather.exportData()">导出</button>
+				</div>
+			</form>
+		</div>
+		<div class="row">
+			<h4>合计</h4>
+			<!-- <div class="header">
+				<span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;合计
+			</div> -->
+			<table class="table table-bordered table-nomal "
+				id="gatherDataTableAll" data-striped="false">
+				<thead class="bordered-darkorange">
+					<tr>
+						<th data-field="dataSource" 
+							data-formatter="app.admin.gather.formatter">数据来源</th>
+						<th data-field="paySum" >实收笔数</th>
+						<th data-field="payAmount"  
+							data-formatter="app.admin.gather.moneyFormat">实收金额(元)</th>
+						<th data-field="refundSum" >退费笔数</th>
+						<th data-field="refundAmount" 
+							data-formatter="app.admin.gather.moneyFormat">退费金额(元)</th>
+						<th data-field="receiptSum" 
+							data-formatter="app.admin.gather.receiptFormatter">净收笔数</th>
+						<th data-field="receiptAmount" 
+							data-formatter="app.admin.gather.receiptAmountFormatter">净收金额(元)</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+
+		<div class="row">
+			<!-- <div class="header ">
+				<span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;单边帐
+			</div> -->
+			<h4>单边帐</h4>
+			<table class="table table-bordered table-nomal "
+				id="gatherDataTableOne" data-striped="false">
+				<thead class="bordered-darkorange">
+					<tr>
+						<th data-field="count" data-sortable="true">笔数</th>
+						<th data-field="platformAmount" data-sortable="true"
+							data-formatter="app.admin.gather.moneyFormat">金额(元)</th>
+						<th data-field="" data-sortable="true" data-align="center"
+							data-formatter="app.admin.gather.formatOpt">操作</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+
+		<!-- <div class="row">
+			<div class="well with-header ">
+                <div class="header ">
+                	<span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;合计
+                </div>
+                <table class="table table-hover" id="gatherDataTableCount" data-striped="false">
+					<thead class="bordered-darkorange" > 
+						<tr> 
+							<th data-field="dataSource" data-formatter="app.admin.gather.formatter"  >数据来源</th>
+							<th data-field="paySum" >实收笔数</th>
+							<th data-field="payAmount" data-formatter="app.admin.gather.moneyFormat">实收金额(元)</th>
+							<th data-field="receiptSum" data-formatter="app.admin.gather.receiptFormatter" >净收笔数</th>
+							<th data-field="receiptAmount" data-formatter="app.admin.gather.receiptAmountFormatter" >净收金额(元)</th>
+						</tr>
+					</thead>
+				</table>
+            </div>
+		</div>  -->
+	</div>
+</div>
+
+<script type="text/javascript" th:src="@{/assets/js/recon/gather.js}"></script>
+<script th:inline="javascript">
+
+//////获取所有组织和字典信息
+var typesJSON = [[${typesJSON}]];
+var accountDate = [[${accountDate}]]; 
+
+////// 初始化
+ app.admin.gather.init(typesJSON,accountDate);
+</script>

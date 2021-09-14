@@ -1,0 +1,102 @@
+<style type="text/css">
+.orgClickBc{
+	background: #facd89 !important;
+}
+</style>
+
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row">
+			<form class="form-inline">
+			   <div class="form-group">
+					<input type="text" class="form-control" id="searchOrgName" placeholder="机构名称">
+				</div>
+				<div class="form-group m-btn">
+					<div class="toolbar pull-left">
+					    <button type="button" class="btn btn-primary" onclick="app.admin.organization.search()">查询</button>
+						<button type="button" class="btn btn-success" onclick="app.admin.organization.create()">新增</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="row">
+	 	<table class="table table-bordered table-nomal " id="organizationDataTable" data-striped="false">
+			<thead>
+				<tr>
+					<th data-width="20%" data-sortable="true" data-field="name" data-formatter="">名称</th>
+					<th data-width="10%" data-sortable="true" data-field="code">编码</th>
+					<th data-width="12%" data-sortable="true" data-field="contactUser">联系人</th>
+					<th data-width="15%" data-sortable="true" data-field="contactPhone">电话</th>
+					<th data-width="15%" data-sortable="true" data-field="description">描述</th>
+					<th data-width="25%" data-field="" data-align="center" data-formatter="app.admin.organization.formatOpt">操作</th>
+				</tr>
+			</thead>
+		</table> 
+        </div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="organizationDlg" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">新增机构</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form">
+					<input type="hidden"  name="id" />
+					<div class="form-group">
+						<label class="col-sm-2 control-label">名称</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="name" placeholder="请输入名称"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">机构编码 </label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="code" placeholder="从运维管理平台获取，如果有分院，在总院的后面追加01，02等"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">上级机构</label>
+						<div class="col-sm-10">
+						   <input type="text" class="form-control" id="organizationParentSelect" data-name="parent"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">联系人</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="contactUser">
+				    	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">电话</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="contactPhone" placeholder="固话或手机"/>
+				    	</div>
+					</div>
+				   
+					<div class="form-group">
+						<label class="col-sm-2 control-label">描述</label>
+						<div class="col-sm-10">
+							<textarea rows="3" class="form-control" cols="40" name="description"></textarea>
+				    	</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" onclick="app.admin.organization.save()">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<script type="text/javascript" th:src="@{/assets/js/admin/organization/organization.js}"></script>
+<script>
+  app.admin.organization.init();
+</script>

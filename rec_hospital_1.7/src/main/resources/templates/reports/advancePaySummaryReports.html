@@ -1,0 +1,127 @@
+<!-- 市二 预收款报表-->
+<div class="m-content-wrapper">
+    <div class="table-content-wrap">
+        <div class="row tool-box-content">
+            <form class="form-inline" id="billDataReportsSearchForm">
+                <div class="form-group">
+                    <label>所属机构:</label>
+                    <div class="form-group">
+                        <input type="text" style="width:280px;" class="form-control" data-name="orgCode"
+                               id="summaryByPayBusinessTypeOrgSelect"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group">
+                        <label>选择日期:</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" style="width: 220px;"
+                               onmousemove="this.style.cursor='pointer';"
+                               id="billDataTime" readonly="readonly"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="search-label">渠道名称 </label>
+                    <div class="form-group no-margin">
+                        <select class="form-control" style="width: 220px;" name="billSource">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group m-btn">
+                    <button type="button" class="btn btn-primary"
+                            onclick="app.admin.ReportsPayBusinessType.search(this)">查询
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <div class="tableTitleArea"><span style="font-size: 18px;">预收款汇总报表<span style="font-size: 14px;"
+                                                                                    id="remark"></span></span></div>
+            <table class="table table-bordered table-nomal" id="advancePaySumDataTable" data-striped="false">
+                <thead>
+                <tr>
+                    <!--<th data-field="Cashiera" data-width="100" data-formatter="app.admin.ReportsPayBusinessType.normal">收费员(渠道)</th>-->
+                    <th data-field="orgNoName" data-width="100"
+                        data-formatter="app.admin.ReportsPayBusinessType.blodFormatter">院区
+                    </th>
+                    <th data-field="billSourceName" data-width="100"
+                        data-formatter="app.admin.ReportsPayBusinessType.normal">渠道
+                    </th>
+                    <th data-field="increSumAmount" data-width="100"
+                        data-formatter="app.admin.ReportsPayBusinessType.increAmountFormatter">增加款（元）
+                    </th>
+                    <th data-field="reduceSumAmount" data-width="100"
+                        data-formatter="app.admin.ReportsPayBusinessType.reduceAmountFormatter">减少款（元）
+                    </th>
+                    <th data-field="sum" data-width="100" data-formatter="app.admin.ReportsPayBusinessType.moneyFormatter">合计（元）
+                    </th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!--临时数据存储-->
+<input type="hidden" id="billSource">
+<input type="hidden" id="billSourceName">
+<input type="hidden" id="orgCode">
+<!--详情类型  1：增加款明细   0：减少款明细-->
+<input type="hidden" id="detailType">
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="advancePaySummaryDlg" tabindex="-1" role="dialog"
+     data-backdrop="false">
+    <div class="modal-dialog" style="width: 1200px; height: 850px; overflow: auto">
+        <div class="modal-content order-abnormal">
+            <div class="abnormal border ">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">
+                    </button>
+                    <h4 class="modal-title">预收款明细查询-<span id="detailTypeName"></span></h4>
+                </div>
+                <div class="abnormal-text" style="padding:20px;">
+
+                    <div class="form-group m-btn">
+                        <button type="button" class="btn btn-success"
+                                onclick="app.admin.ReportsPayBusinessType.exportList()">导出
+                        </button>
+                    </div>
+
+                    <table class="table table-bordered table-nomal" id="advancePaySumDetail"
+                           data-striped="false" style="width:100%; ">
+                        <thead>
+                        <tr>
+                            <th data-field="orgNoName" data-width=60px
+                                data-formatter="app.admin.ReportsPayBusinessType.blodFormatter">院区</th>
+                            <th data-field="billSourceName" data-width=80px data-formatter="app.admin.ReportsPayBusinessType.normal">渠道</th>
+                            <th data-field="payFlowNo" data-sortable="true" data-width=120px>支付方流水号</th>
+                            <th data-field="payTypeName" data-sortable="true" data-width=80px>支付方式</th>
+                            <th data-field="amount" data-sortable="true" data-width=80px
+                                data-formatter="app.admin.ReportsPayBusinessType.moneyFormatter">支付金额（元）</th>
+                            <th data-field="payTime" data-width=80px>支付时间</th>
+                            <th data-field="serverDate" data-width=80px>His就诊时间</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" th:src="@{/assets/lib/loading/PerfectLoad.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/reports/advancePaySummaryReports.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/reports.css}">
+<script th:inline="javascript">
+
+    var orgCode = [[${orgCode}]];
+    var beginTime = [[${beginTime}]];
+    var endTime = [[${endTime}]];
+    app.admin.ReportsPayBusinessType.init(orgCode, beginTime, endTime);
+
+</script>

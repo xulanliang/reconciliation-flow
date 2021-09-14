@@ -1,0 +1,126 @@
+<div class="m-content-wrapper" >
+	<div class="table-content-wrap">
+	    <form class="form-inline m-search" id="orderLogSearchForm">
+			<div class="row tool-box-content">
+		    	<div class="form-group">
+	                 <label for="requestDateTime" class="search-label">请求时间：</label><div class="input-group">
+		                 <div class="input-group-addon">
+		                     <i class="fa fa-calendar"></i>
+		                 </div>
+		                 <input type="text" class="form-control" style="width: 220px;" 
+		                 	id="requestDateTime" name="requestDateTime"/>
+	                </div>
+	             </div>
+	             <div class="form-group">
+			            <label class="search-label">支付平台订单号：</label><input type="text" class="form-control" 
+							placeholder="支付平台订单号" name="orderNo"/>
+				</div>
+	              <div class="form-group m-btn">
+		          	<button type="button" class="btn btn-primary" 
+		          		onclick="app.admin.order.log.search()">查询</button>
+		          	<a data-toggle="collapse" data-parent="#orderLogSearch-search-box" href="#orderLogSearch-search-box"> 高级查询 <i class="fa fa-angle-down"></i></a>
+		         </div>
+		         <div id="orderLogSearch-search-box" class="panel-collapse collapse">
+					<div class="form-group">
+			            <label class="search-label">业务系统订单号：</label><input type="text" class="form-control" 
+							placeholder="业务系统订单号" name="outTradeNo"/>
+					</div>
+			        <div class="form-group">
+			            <label class="search-label">第三方平台订单号：</label><input type="text" class="form-control" 
+							placeholder="第三方平台订单号" name="tsn"/>
+					</div>
+				</div>
+			</div>
+	    </form>
+	<div class="row">
+		<table class="table table-bordered table-nomal " 
+			id="orderLogDataTable" data-striped="false" >
+			<thead>
+				<tr>	
+					<th data-formatter="app.admin.order.log.number" class="text-center" data-width="50">序号</th>
+					<th data-field="id" data-sortable="true" data-align="center">ID</th>
+					<th data-field="url" data-sortable="true" data-align="center">请求URL</th>
+					<th data-field="ip" data-sortable="true" data-align="center">请求IP</th>
+					<th data-field="requestDateTime" data-sortable="true" data-align="center">请求时间</th>
+					<th data-field="responseDateTime" data-sortable="true" data-align="center">响应时间</th>
+					<th data-field="orderNo" data-sortable="true" data-align="center">支付平台订单号</th>
+					<th data-field="outTradeNo" data-sortable="true" data-align="center">业务系统订单号</th>
+					<th data-field="tsn" data-sortable="true" data-align="center">第三方平台订单号</th>
+					<th data-field="proceedTime" data-sortable="true" data-align="center">请求处理时间</th>
+					<th data-field="" data-align="center" data-sortable="true"
+						data-formatter="app.admin.order.log.formaterOpt">操作</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="orderLogInfoDlg" tabindex="-1" 
+	role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" 
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">日志详情</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form">
+					<div class="form-group">
+						<label class="col-sm-3 control-label">业务系统订单号</label>
+						<div class="col-sm-9">
+							<label class="control-label" id="info_outTradeNo"></label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">支付平台订单号</label>
+						<div class="col-sm-9">
+							<label class="control-label" id="info_orderNo"></label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">第三方平台订单号</label>
+						<div class="col-sm-9">
+							<label class="control-label" id="info_tsn"></label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">请求时间</label>
+						<div class="col-sm-9">
+							<label class="control-label" id="info_requestDateTime"></label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">请求入参</label>
+						<div class="col-sm-9">
+							<textarea rows="6" readonly="readonly" 
+								class="form-control" id="info_requestParameters">
+							</textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">响应时间</label>
+						<div class="col-sm-9">
+							<label class="control-label" id="info_responseDateTime"></label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">响应出参</label>
+						<div class="col-sm-9">
+							<textarea rows="6" readonly="readonly" 
+								class="form-control" id="info_responseParameters">
+							</textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" 
+					data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div> 
+<script type="text/javascript" th:src="@{/assets/js/admin/order.log.js}"></script>

@@ -1,0 +1,212 @@
+
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row tool-box-content" >
+			<form class="form-inline m-search" id="selfHelpSearchForm">
+			<div class="form-group">
+					<label class="search-label">所属机构：</label><div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control"
+							data-name="orgCode" id="selfhelpOrgSelect" placeholder="所属机构" />
+					</div>
+				</div>
+				<!-- <div class="form-group">
+					<label>所属机构：</label>
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control" data-name="orgCode"
+						id="selfhelpOrgSelect" />
+				</div> -->
+
+				<!-- <div class="form-group">
+                       <label>设备编号:</label>
+                       <select class="form-control"  placeholder="设备编号" name="deviceNos" class="selectpicker"  multiple="multiple" id="selfhelpDeviceNoSelect">
+					  </select>
+                   </div>
+                    <div class="form-group">
+						<label>结算状态:</label>
+						<select class="form-control" name="checkOut" onchange="app.admin.selfhelp.checkOutChange(this)">
+						    <option value="0">未结算</option>
+						    <option value="1">已结算</option>
+						</select>
+					</div>
+                   	<div class="form-group">
+						<label>患者类型:</label>
+						<select class="form-control" name="patType">
+						    <option value="">不限</option>
+						    <option value="zy">住院</option>
+						    <option value="mz">门诊</option>
+						</select>
+					</div> -->
+				<!-- <div class="form-group">
+					<label for="beginTime">开始时间：</label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input type="text" class="form-control pull-right"
+							placeholder="开始时间" name="beginTime" id="selfHelpBeginTime">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="endTime">结束时间：</label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input type="text" class="form-control pull-right"
+							placeholder="结束时间" name="endTime" id="selfHelpEndTime">
+					</div>
+				</div> -->
+				<div class="form-group">
+					<label class="search-label" for="beginTime">开始时间：</label><div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input AUTOCOMPLETE="off" type="text" id="selfHelpBeginTime"
+							class="form-control pull-right" placeholder="开始时间"
+							name="beginTime">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="endTime">结束时间：</label><div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input AUTOCOMPLETE="off" type="text" id="selfHelpEndTime"
+							class="form-control pull-right" placeholder="结束时间"
+							name="endTime">
+					</div>
+				</div> 
+
+				<div class="form-group">
+					<button type="button" class="btn btn-primary"
+						onclick="app.admin.selfhelp.search()">查询</button>
+					<button type="button" class="btn btn-primary"
+						id="selfhelp_machine_settlement"
+						onclick="app.admin.selfhelp.doSettlement()">结账</button>
+					<button type="button" class="btn btn-primary"
+						onclick="app.admin.selfhelp.exportList()">导出明细</button>
+					<button type="button" class="btn btn-primary"
+						onclick="app.admin.selfhelp.exportTotal()"
+						id="selfhelp_machine_export_all" disabled="disabled">导出汇总</button>
+					<button type="button" class="btn btn-primary"
+						onclick="app.admin.selfhelp.exportSingle()"
+						id="selfhelp_machine_export_single" disabled="disabled">导出单台</button>
+					<a data-toggle="collapse" data-parent="#selfhelp-search-box"
+						href="#selfhelp-search-box"> 高级查询 <i class="fa fa-angle-down"></i></a>
+				</div>
+				<div id="selfhelp-search-box"
+					class="panel-collapse collapse">
+					<div class="form-group">
+						<label class="search-label">设备编号：</label><select class="form-control" placeholder="设备编号" name="deviceNos"
+							class="selectpicker" multiple="multiple" style="width: 220px"
+							id="selfhelpDeviceNoSelect">
+						</select>
+						
+					</div>
+					<div class="form-group">
+						<label class="search-label">结算状态：</label><select class="form-control" name="checkOut" style="width: 220px"
+							onchange="app.admin.selfhelp.checkOutChange(this)">
+							<option value="0">未结算</option>
+							<option value="1">已结算</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label class="search-label">患者类型：</label><select class="form-control" name="patType" style="width: 220px">
+							<option value="">不限</option>
+							<option value="zy">住院</option>
+							<option value="mz">门诊</option>
+						</select>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="row" >
+			<input type="hidden" th:value="${orgNo}" id="selfHelpOrgNoInit">
+			<table class="table table-bordered table-nomal"
+				id="selfHelpDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-valign="middle" data-width="2550" data-align="center"
+							colspan="26" name="tableTitle"></th>
+					</tr>
+					<tr class="success">
+						<th data-valign="middle" data-width="50" data-align="center"></th>
+						<th data-valign="middle" data-width="100" data-align="center"></th>
+						<th data-valign="middle" data-width="100" data-align="center"></th>
+						<th data-valign="middle" data-width="100" data-align="center"></th>
+						<th data-valign="middle" data-width="100" data-align="center"></th>
+						<th data-valign="middle" data-width="500" data-align="center" colspan="5">微信</th>
+						<th data-valign="middle" data-width="500" data-align="center" colspan="5">支付宝</th>
+						<th data-valign="middle" data-width="300" data-align="center" colspan="3">银联</th>
+						<th data-valign="middle" data-width="300" data-align="center" colspan="3">现金</th>
+						<th data-valign="middle" data-width="300" data-align="center" colspan="3">医保</th>
+						<th data-valign="middle" data-width="100" data-align="center"></th>
+						<th data-valign="middle" data-width="100" data-align="center"></th>
+					</tr>
+
+					<tr>
+						<th data-field="checkStatus" data-width="50" data-align="center" data-checkbox="true">选择</th>
+						<th data-field="deviceNo" data-align="center" data-width="100">设备编号</th>
+						<th data-field="rechargeCount" data-align="center" data-width="100">充值/人次</th>
+						<th data-field="payCount" data-align="center" data-width="100">缴费/人次</th>
+						<th data-field="advanceAmount" data-align="center" data-width="100">预交金</th>
+
+						<th data-field="wxRechargeCount" data-align="center" data-width="100"
+							data-cell-style="app.admin.selfhelp.wetChatCellStyle">充值/人次</th>
+						<th data-field="wxPayCount" data-align="center" data-width="100"
+							data-cell-style="app.admin.selfhelp.wetChatCellStyle">缴费/人次</th>
+						<th data-field="wxAmount" data-align="center" data-width="100"
+							data-cell-style="app.admin.selfhelp.wetChatCellStyle">收入</th>
+						<th data-field="wxRefund" data-align="center" data-width="100"
+							data-cell-style="app.admin.selfhelp.wetChatCellStyle">退款</th>
+						<th data-field="wxTotal" data-align="center" data-width="100"
+							data-cell-style="app.admin.selfhelp.wetChatCellStyle">合计</th>
+
+						<th data-field="aliRechargeCount" data-align="center"
+							data-width="100" data-cell-style="app.admin.selfhelp.aliCellStyle">充值/人次</th>
+						<th data-field="aliPayCount" data-align="center" data-width="100"
+							data-cell-style="app.admin.selfhelp.aliCellStyle">缴费/人次</th>
+						<th data-field="aliAmount" data-align="center" data-width="100"
+							data-cell-style="app.admin.selfhelp.aliCellStyle">收入</th>
+						<th data-field="aliRefund" data-align="center" data-width="100"
+							data-cell-style="app.admin.selfhelp.aliCellStyle">退款</th>
+						<th data-field="aliTotal" data-align="center" data-width="100"
+							data-cell-style="app.admin.selfhelp.aliCellStyle">合计</th>
+
+						<th data-field="bankAmount" data-align="center" data-width="100"
+							data-cell-style="app.admin.selfhelp.bankCellStyle">收入</th>
+						<th data-field="bankRefund" data-align="center" data-width="100"
+							data-cell-style="app.admin.selfhelp.bankCellStyle">退款</th>
+						<th data-field="bankTotal" data-align="center" data-width="100"
+							data-cell-style="app.admin.selfhelp.bankCellStyle">合计</th>
+
+						<th data-field="cashAmount" data-align="center" data-width="100"
+							data-cell-style="app.admin.selfhelp.cashCellStyle">收入</th>
+						<th data-field="cashRefund" data-align="center" data-width="100"
+							data-cell-style="app.admin.selfhelp.cashCellStyle">退款</th>
+						<th data-field="cashTotal" data-align="center" data-width="100"
+							data-cell-style="app.admin.selfhelp.cashCellStyle">合计</th>
+
+						<th data-field="yibaoProvinceAmount" data-align="center" data-width="100"
+							data-cell-style="app.admin.selfhelp.yibaoCellStyle">省医保</th>
+						<th data-field="yibaoCityAmount" data-align="center" data-width="100"
+							data-cell-style="app.admin.selfhelp.yibaoCellStyle">市医保</th>
+						<th data-field="yibaoTotal" data-align="center" data-width="100"
+							data-cell-style="app.admin.selfhelp.yibaoCellStyle">合计</th>
+
+						<th data-field="createTime" data-align="center" data-width="300"
+							data-formatter="app.admin.selfhelp.formatTime">结算时间</th>
+						<th data-field="" data-align="center" data-width="100"
+							data-formatter="app.admin.selfhelp.formaterOpt">操作</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"
+	th:src="@{/assets/js/admin/self_help_machine.js}"></script>
+<script>
+	app.admin.selfhelp.init();
+</script>

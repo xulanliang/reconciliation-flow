@@ -1,0 +1,99 @@
+<div class="m-content-wrapper">   <!-- main-box -->
+	<div class="table-content-wrap electron-order" id="electronic-data-div">
+		<form class="form-inline m-search" id="citizenCardBillSearchForm">
+			<div class="row tool-box-content">
+				<div class="form-group">
+					<label class="search-label">机构选择 </label>
+					<div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control"
+							   data-name="code" id="citizenCardBillOrgTree" placeholder="所属机构" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="startTime">对账日期 </label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input AUTOCOMPLETE="off" type="text" style="width:190px;"
+							class="form-control pull-right" placeholder="账单日期"
+							name="startTime" id="citizenCardBillRecTime" readonly="readonly">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="payFlowNo">终端流水号 </label>
+					<div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control"
+							name="payFlowNo" placeholder="支付方流水号" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="orderState">交易类型 </label>
+					<div class="form-group no-margin">
+						<select type="text" style="width: 220px;" class="form-control"
+							name="orderState" placeholder="请选择交易类型" >
+							<option value=''>全部</option>
+							<option value="10011">充值</option>
+							<option value="10021">消费</option>
+							<option value="30011">退款</option>
+							<option value="10031">提现</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary"
+						onclick="app.admin.citizenCardBill.search(this)">查询</button>
+					<button type="button" class="btn btn-success" title="导出一账通账单"
+						onclick="app.admin.citizenCardBill.exportData()">导出</button>
+				</div>
+			</div>
+		</form>
+		<div class="row" id="citizenCardBillSummary">
+			
+		</div>
+		<input type="hidden" th:value="${typesJSON}" id="citizenCardBillType">
+		<div class="row">
+			<table class="table table-bordered table-nomal"
+				   id="citizenCardBillDataTable" data-striped="false">
+				<thead>
+				<tr>
+					<th data-field="orderNo" data-width="8%" data-sortable="true"
+						data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">平台流水号
+					</th>
+					<th data-field="payFlowNo" data-width="8%" data-sortable="true"
+						data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">终端流水号
+					</th>
+					<th data-field="payTermNo" data-width="8%" data-sortable="true"
+						data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">终端号
+					</th>
+					<th data-field="payAccount" data-width="8%" data-sortable="true"
+						data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">卡号
+					</th>
+					<th data-field="orderState" data-formatter="app.admin.citizenCardBill.formatterState"
+						data-sortable="true" data-width="7%">交易类型
+					</th>
+					<th data-field="payAmount" data-sortable="true"
+						data-formatter="app.admin.citizenCardBill.moneyFormat" data-width="8%">交易金额(元)
+					</th>
+					<th data-field="tradeDatatime" data-sortable="true" data-width="11%">交易时间</th>
+					<!-- <th data-field="id" data-sortable="false"
+						data-formatter="app.admin.citizenCardBill.formatHandler"
+						data-width="10%">操作
+					</th> -->
+				</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"
+	th:src="@{/assets/js/recon/citizenCardBill.js}"></script>
+
+<script th:inline="javascript">
+//获取后台传递的值
+var orgJSON = [[${orgJSON}]];
+var typesJSON=[[${typesJSON}]];
+var startDate = [[${startDate}]];
+var endDate = [[${endDate}]];
+app.admin.citizenCardBill.init(orgJSON,startDate, endDate);
+</script>

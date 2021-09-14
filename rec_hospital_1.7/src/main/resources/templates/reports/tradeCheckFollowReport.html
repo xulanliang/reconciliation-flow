@@ -1,0 +1,79 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row tool-box-content">
+			<form class="form-inline" id="tradeCheckFollowReportsSearchForm">
+				<div class="form-group">
+					<input type="text" style="width: 150px;" class="form-control" data-name="code" id="tradeCheckFollowReportsTree" placeholder="所属机构" />
+				</div>
+				<div class="form-group">
+					<label for="beginTime">开始时间:</label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input type="text" class="form-control pull-right" placeholder="开始时间" name="beginTime">
+					</div>
+					<label for="endTime">结束时间:</label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input type="text" class="form-control pull-right" placeholder="结束时间" name="endTime">
+					</div>
+				</div>
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary" onclick="app.admin.tradeCheckFollowReports.search()">查询</button>
+					<button type="button" class="btn btn-primary" onclick="app.admin.tradeCheckFollowReports.exportReport()">导出</button>
+				</div>
+			</form>
+		</div>
+		<div  class="row" id="thrid">
+					<table  class="table table-bordered table-nomal " id="thridTradeCheckFollowReportsDataTable" data-striped="false">
+						<thead>
+							<tr>
+								<th data-formatter="app.admin.tradeCheckFollowReports.numberTwo">序号</th>
+								<!-- <th data-field="id"  data-formatter="app.admin.thridFollowing.formatHandler">处理</th> -->
+								<th data-field="orgNo" data-formatter="app.admin.tradeCheckFollowReports.orgFormatter">院区</th>
+								<th data-field="payFlowNo">支付商户流水号</th>
+								<th data-field="payType" data-formatter="app.admin.tradeCheckFollowReports.formatter">支付类型</th>
+								<th data-field="orderState" data-formatter="app.admin.tradeCheckFollowReports.formatter">订单状态</th>
+								<th data-field="orgAmount">his金额</th>
+								<th data-field="platformAmount" data-formatter="app.admin.tradeCheckFollowReports.moneyFormat">平台金额</th>
+								<th data-field="thirdAmount" data-formatter="app.admin.tradeCheckFollowReports.moneyFormat">支付渠道金额</th>
+								<th data-field="custName">患者名称</th>
+								<th data-field="reconciliationDate">交易时间</th>
+								<th data-field="payBusinessType" data-formatter="app.admin.tradeCheckFollowReports.formatter">业务类型</th>
+							</tr>
+						</thead>
+					</table>
+	    </div>
+	    <input type="hidden" th:value="${orgJSON}" id="hisPayDedailedOrgNo">
+		<input type="hidden" th:value="${typesJSON}" id="hisPayDedailedType">
+		<input type="hidden" th:value="${recType}" id="recType">
+		<div class="row" id="second">
+			<table class="table table-bordered table-nomal " id="tradeCheckFollowReportsDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-formatter="app.admin.tradeCheckFollowReports.number">序号</th>
+						<th data-field="orgNo" data-formatter="app.admin.tradeCheckFollowReports.orgFormatter">机构名称</th>
+						<!-- <th data-field="patientNo">登记号</th> -->
+						<th data-field="patientName">客户名称</th>
+						<!-- <th data-field="equipmentNo">代码</th> -->
+						<!-- <th data-field="tradeName">交易标志</th> -->
+						<th data-field="paymentAccount" data-formatter="app.admin.tradeCheckFollowReports.formatterPaymentAccount">付款方账号</th>
+						<th data-field="tradeTime">HIS交易时间</th>
+						<th data-field="createdDate">异常处理时间</th>
+						<th data-field="tradeAmount" data-formatter="app.admin.tradeCheckFollowReports.moneyFormat">金额(元)</th>
+						<th data-field="businessNo">支付商户流水号</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/reports/tradeCheckFollowReports.js}"></script>
+<script th:inline="javascript">
+	//获取后台传递的值
+	var accountDate = [[${accountDate}]];
+	app.admin.tradeCheckFollowReports.init(accountDate);
+</script>

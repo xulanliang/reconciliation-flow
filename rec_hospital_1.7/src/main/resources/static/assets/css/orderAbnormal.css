@@ -1,0 +1,231 @@
+@charset "UTF-8";
+.order-abnormal {
+  /*HIS订单信息*/
+  /*底部按钮*/
+  /*分段：结束*/
+  /*圆圈图标*/
+  /*左边样式*/
+  /*右边样式*/
+  /*自助机-窗口*/ }
+  .order-abnormal .abnormal {
+    width: 100%;
+    position: relative;
+    margin: 50px auto; }
+  .order-abnormal .toast-title {
+    width: 100%;
+    height: 35px;
+    line-height: 35px;
+    padding-left: 20px; }
+  .order-abnormal .abnormal-text {
+    position: relative;
+    margin: 20px 30px;
+   }
+    /** modal框边缘去掉间隔空隙**/
+  .order-abnormal .abnormal-text-nospace {
+    position: relative;
+    margin: 0 auto;
+    margin-top: -30px;}
+  .order-abnormal .text-title {
+    height: 58px;
+    position: relative;
+    background: url("../img/abnormal.png") left center no-repeat;
+    background-size: 58px 58px;
+    margin-left: 20px; }
+  .order-abnormal .title-right {
+    position: absolute;
+    left: 80px; }
+  .order-abnormal .abnormal-title {
+    line-height: 20px;
+    height: 20px;
+    font-size: 20px;
+    margin-bottom: 10px; }
+  .order-abnormal .detail {
+    width: 100%; }
+  .order-abnormal .detail-title {
+    font-size: 16px;
+    line-height: 16px;
+    margin-bottom: 10px; 
+   }
+  .order-abnormal .detail .detail-card {
+    width: 100%;
+    margin: 30px auto;
+    background: #f9f9f9;
+    padding: 20px 20px 13px;
+   }
+   
+  .order-abnormal .detail-list {
+    width: 100%;
+    position: relative; }
+  .order-abnormal .detail-text-list {
+    line-height: 26px;
+    white-space:nowrap;
+  }
+  .order-abnormal .list-top {
+    margin-bottom: 15px; }
+  .order-abnormal .list-left {
+    height: 100%;
+    min-width: 6em;
+    white-space: nowrap; 
+    display: inline-block;
+    margin-bottom: 0;
+    text-align: right;
+    font-size: 12px;
+  }
+  .order-abnormal .list-right {
+    display: inline-block;
+    margin-bottom: 0;
+    height: 100%;
+    white-space: nowrap;
+    font-size: 12px;
+  }
+  .order-abnormal .toast-bottom {
+    height: 60px;
+    width: 100%;
+    position: relative;
+    border-top: solid 1px #dde4e9; }
+  .order-abnormal .toast-btn {
+    width: 60px;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    right: 60px; }
+  .order-abnormal .segment3 {
+    padding: 10px 0;
+    white-space: nowrap; }
+  .order-abnormal .segmen3::after {
+    content: "";
+    display: block;
+    clear: both; }
+  .order-abnormal .segment3 > * {
+    float: left;
+    height: 100%;
+    position: relative;
+    /* 兼容子元素的定位布局 */
+    width: 33.3%;
+    /* width 的值应为: segNum/100 */
+    border-color: #dde4e9;
+    border-width: 1px;
+    border-style: none none none solid; }
+  .order-abnormal .segment2 > *:first-child {
+    border-left-style: none; }
+  .order-abnormal .segment2 {
+    padding: 20px 0;
+    white-space: nowrap; }
+  .order-abnormal .segmen2::after {
+    content: "";
+    display: block;
+    clear: both; }
+  .order-abnormal .segment2 > * {
+    float: left;
+    height: 100%;
+    position: relative;
+    /* 兼容子元素的定位布局 */
+    width: 50%;
+    /* width 的值应为: segNum/100 */
+    border-color: #dde4e9;
+    border-width: 1px;
+    border-style: none none none solid; }
+  .order-abnormal .segment3 > *:first-child {
+    border-left-style: none; }
+  .order-abnormal .cash {
+    position: relative;
+    height: 140px;
+    width: 900px; }
+  .order-abnormal .cash-list {
+    /*width: 300px;*/
+    height: 120px;
+    float: left;
+    position: relative; }
+  .order-abnormal .list-content {
+    height: 100%; }
+  .order-abnormal .cash-list .left {
+    width: 58px;
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 40px;
+    position: relative; }
+  .order-abnormal .cash-list .circle {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #12ce8a;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); }
+  .order-abnormal .cash-list .right {
+    display: inline-block;
+    vertical-align: middle; }
+  .order-abnormal .right .title {
+    margin-bottom: 10px; }
+  .order-abnormal .cash-list .num {
+    color: #333333;
+    font-size: 20px; }
+  .order-abnormal .self-service {
+    width: 1600px;
+    height: 225px;
+    margin: 30px auto; }
+  .order-abnormal .self-service .left .content {
+    padding-left: 10px; }
+  .order-abnormal .line {
+    width: 2em;
+    height: 4px;
+    background: #3071ea;
+    margin-top: 5px;
+    margin-bottom: 15px; }
+  .order-abnormal .earning {
+    width: 100%; }
+  .order-abnormal .earning li {
+    width: 33.3%;
+    float: left; }
+  .order-abnormal .earning-title {
+    width: 60px;
+    height: 24px;
+    background: #dde4e9;
+    border-radius: 20px;
+    line-height: 24px;
+    text-align: center;
+    margin-bottom: 20px; }
+  .order-abnormal .earning-list {
+    width: 100%;
+    margin-bottom: 10px; }
+  .order-abnormal .earning-left {
+    width: 60%;
+    display: inline-block; }
+  .order-abnormal .earning-right {
+    width: 39%;
+    display: inline-block; }
+  .order-abnormal .self-service .right .content {
+    padding-left: 20px; }
+  .order-abnormal .step-card {
+    margin: 60px 20px;
+    height: 50px; }
+
+
+#unusualBillDlg .order-abnormal .fixed-table-container,
+#electronicDlg .order-abnormal .fixed-table-container{
+	margin-bottom:0px;
+}
+#unusualBillDlg .detail-list-plan,
+.order-abnormal .detail-list-plan{
+	display: flex;
+	font-size: 12px;
+	margin: 0 -1em;
+}
+.order-abnormal .detail-text{
+	flex: 1;
+	width: 25%;
+}
+.order-abnormal .detail-text-list p{
+	margin-bottom: 0px;	
+}
+.handle-description,
+.cash-handle-description,
+.electronic-handle-description{
+	margin-top: 10px;
+}
+#unusualBillDlg .order-abnormal .detail .detail-card,
+#electronicDlg .order-abnormal .detail .detail-card{
+	margin: 10px auto;   
+}
+/*# sourceMappingURL=orderAbnormal.css.map */

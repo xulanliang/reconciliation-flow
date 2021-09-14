@@ -1,0 +1,207 @@
+<link rel="stylesheet" type="text/css" href="assets/css/common.css">
+<link rel="stylesheet" type="text/css" href="assets/css/home.css">
+
+<div class="m-content-wrapper  home " id="startPage" >
+	<input type="hidden" th:value="${typesJSON}" id="startPagePayType">
+	<input type="hidden" name="autoRecJobTime" th:value="${autoRecJobTime}">
+	<!--机构选择-->
+	<form class="form-horizontal">
+		<div class="form-inline">
+			<div class="form-group">
+				<label class="search-label">所属机构：</label>
+				<div class="form-group no-margin">
+					<input type="text" style="width: 220px;" class="form-control" data-name="orgSelect" id="welcomeOrgSelect" />
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<!--对帐-->
+	<div class="cont" >
+		<p class="title">电子对账</p>
+
+        <div class="center-ele top-line">
+            <div class="cont-content">
+                <p class="date-bar">
+                    <button type="button" class="date-left" onclick="app.admin.startPage.nextDate('-1')">◀︎</button>
+                    <span class="date-value" id="dateValue">2018-00-00</span>
+                    <button class="date-right" onclick="app.admin.startPage.nextDate('1')">▶︎</button>
+                </p>
+                <div class="cont-tabs">
+                    <div class="details-area">
+                        <div class="details-ele  text-center">
+                            <p class="finan-situ"  role="group" aria-label="...">账务情况</p>
+                            <!-- 财务情况 -->
+                            <table id="zwqk" class="details-box">
+                                <tr>
+                                    <td class="item income">
+                                        <p class="key color-th" >收入金额（元）
+                                            <span name="payTypeDialog" class="icon-bg info-ctnr" data-html=true   data-placement="right" >
+                            		</span>
+                                        </p>
+                                        <p name="third" class="value color-warning a-link" onclick="app.admin.startPage.handlerPageLinkToElectronic('电子对账')"></p>
+                                    </td>
+                                    <td class="item exception">
+                                        <p class="key color-th">异常金额（元）</p>
+                                        <p name="diffAmount" class="value color-danger a-link" onclick="app.admin.startPage.handlerPageLinkToElectronic('电子对账')" ></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="item his-income">
+                                        <p class="key color-th">应收金额（元）</p>
+                                        <p name="his" class="value color-warning a-link" onclick="app.admin.startPage.handlerPageLinkToElectronic('电子对账')" ></p>
+                                    </td>
+                                    <td class="item his-total">
+                                        <!--                                     <p class="key color-th">HIS应收金额(结算日)（元）</p> -->
+                                        <!--                                     <p name="settlement" class="value color-primary a-link" onclick="app.admin.startPage.handlerPageLinkToElectronic('电子对账')" ></p> -->
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="graph-area">
+                        <div class="graph-ele">
+                            <!--长短款图表-->
+                            <div name="welcomeExeDiv" style="display:none" class="chart-area block-center-v">
+                                <div id="exceptionPie" class="doughnut-chart">加载中...</div>
+                                <div class="data-details">
+                                    <p class="pay-source color-th info-ctnr"  >获取支付来源
+                                        <span name="payTypeExceptionDialog" class="icon-bg info-ctnr" data-toggle="tooltip" data-placement="left" >
+                         		</span>
+                                    </p>
+                                    <table class="abnormal-bill">
+                                        <tr>
+                                            <td class="btn-td">异常账单</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="item amount">
+                                                <p class="key color-main">短款<span class="color-muted-home"></span>
+                                                </p>
+                                                <p name="his_trade_amount" class="value color-warning a-link" onclick="app.admin.startPage.handlerPageLinkToElectronic('电子对账')" ></p>
+                                            </td>
+                                            <td class="item count">
+                                                <p class="key color-th">笔数</p>
+                                                <p name="his_trade_acount" class="value color-main a-link" onclick="app.admin.startPage.handlerPageLinkToElectronic('电子对账')" ></p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="item amount">
+                                                <p class="key color-main">长款<span class="color-muted-home"></span>
+                                                </p>
+                                                <p name="thrid_trade_amount" class="value color-warning a-link" onclick="app.admin.startPage.handlerPageLinkToElectronic('电子对账')" ></p>
+                                            </td>
+                                            <td class="item count">
+                                                <p class="key color-th">笔数</p>
+                                                <p name="thrid_trade_acount" class="value color-main a-link" onclick="app.admin.startPage.handlerPageLinkToElectronic('电子对账')" ></p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                            </div>
+                            <!--倒计时-->
+
+                            <div name="welcomeDownTime" style="display:block" class="clocker-area block-center-hv">
+                                <p class="clocker-header color-main">距离对账还有</p>
+                                <ul class="clocker">
+                                    <li class="item">
+                                        <p name="welcomeHour" class="number color-link">00</p>
+                                        <p class="unit color-pholder">时</p>
+                                    </li>
+
+                                    <li class="item">
+                                        <p name="welcomeMin" class="number color-link">00</p>
+                                        <p class="unit color-pholder">分</p>
+                                    </li>
+
+                                    <li class="item">
+                                        <p name="welcomeSecond" class="number color-link">00</p>
+                                        <p class="unit color-pholder">秒</p>
+                                    </li>
+                                </ul>
+                                <p class="clocker-footer color-th">对账时间
+                                    <span class="time color-link">
+                                <p th:text="${autoRecJobTime}">11:20:00</p>
+                                </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+	</div>
+
+	<!--底部-->
+	<div class="cont order-information">
+		<p class="title">订单信息（近3个月）</p>
+        <div class="center-ele top-line">
+            <div class="cont-content">
+                <ul class="order-detail">
+                    <li class="first">
+                        <div class="order-item-ele left abnormal">
+                            <p class="order-title">交易异常订单</p>
+                            <p class="order-number">
+                                <a name="nodeal_count" onclick="app.admin.startPage.handlerPageLinkOrderExcetion('交易明细查询')" class="number a-link"></a>(笔)
+                            </p>
+                        </div>
+                    </li>
+                    <li class="second">
+                        <div class="order-item-ele center uncheck">
+                            <p class="order-title">退款待审核订单</p>
+                            <p class="order-number">
+                                <a name="wait_count" onclick="app.admin.startPage.handlerPageLinkRefund('退款管理','1')" class="number a-link"></a>(笔)
+                            </p>
+                        </div>
+                    </li>
+                    <li class="three">
+                        <div class="order-item-ele right reject">
+                            <p class="order-title">退款驳回订单</p>
+                            <p class="order-number">
+                                <a name="return_count" onclick="app.admin.startPage.handlerPageLinkRefund('退款管理','2')" class="number a-link"></a>(笔)
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+	</div>
+	<div class="cont">
+		<p class="title">近七天收入分布情况</p>
+
+
+        <div class="center-ele top-line">
+            <div class="cont-content">
+                <div class="distribution-drawing" id="payTypeOf7Day"></div>
+            </div>
+        </div>
+
+
+	</div>
+	<div class="cont">
+		<p class="title">近七天业务收入汇总</p>
+
+        <div class="center-ele top-line">
+            <div class="cont-content">
+                <div class="operation-drawing">
+                    <div id="bussinessOf7DayLineChart" class="line-chart"></div>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+
+<script type="text/javascript" th:src="@{/assets/js/admin/startPage.js}"></script>
+<script type="text/javascript" th:src="@{/bst1.0/plugins/echarts/echarts.common.min.js}"></script>
+
+<script th:inline="javascript">
+	var dateList = [[${dateList}]];
+	var orgCode = [[${orgCode}]];
+	var metaData = $.parseJSON([[${typesJSON}]]);
+	app.admin.startPage.init();
+</script>

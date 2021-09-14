@@ -1,0 +1,82 @@
+<div class="m-content-wrapper" >
+	<div class="table-content-wrap">
+	<div class="row tool-box-content">
+	    <form class="form-inline" id="yylogSearchForm">
+	    	<div class="form-group">
+	            <label class="control-label">机构：</label>
+	            <div class="form-group">
+	               <input type="text" class="form-control" id="yylogOrgSelect" data-name="orgNo"/>
+	            </div>
+	        </div>
+	        <div class="form-group">
+	            <label>业务类型：</label>
+	            <select  class="selectpicker" name="businessType"></select>
+	        </div>
+	        <div class="form-group">
+	            <label>支付类型：</label>
+	            <select  class="selectpicker" name="payType" ></select>
+	        </div>
+	        <div class="form-group">
+	            <label>支付来源：</label>
+	            <select  class="selectpicker" name="paySource"></select>
+	        </div>
+	        <div class="form-group">
+	            <label>终端号：</label>
+				<input type="text" class="form-control"  placeholder="终端号" name="payTermNo"/>
+			</div>
+	        <div class="form-group">
+	            <label>支付方流水号：</label>
+				<input type="text" class="form-control"  placeholder="流水号" name="sysSerial"/>
+			</div>
+	        <div class="form-group">
+                 <label for="beginTime">开始日期:</label>
+                 <div class="input-group">
+                           <div class="input-group-addon">
+                               <i class="fa fa-calendar"></i>
+                           </div>
+                           <input AUTOCOMPLETE="off" type="text" class="form-control"  id="yylogOrderDate_start" name="startDate"  th:value="${accountStartDate}"/>
+                </div>
+             </div>
+             <div class="form-group">
+                 <label for="beginTime">结束日期:</label>
+                   <div class="input-group">
+                           <div class="input-group-addon">
+                               <i class="fa fa-calendar"></i>
+                           </div>
+                           <input AUTOCOMPLETE="off" type="text" class="form-control"  id="yylogOrderDate_end" name="endDate" th:value="${accountEndDate}"/>
+                </div>
+             </div>
+	         <div class="form-group m-btn">
+	          	<button type="button" class="btn btn-primary" onclick="app.admin.yylog.search()">查询</button>
+	          	<button type="button" class="btn btn-primary" onclick="app.admin.yylog.exportExcel()">导出</button>
+	         </div>
+	    </form>
+	</div>
+	<div class="row">
+		<table class="table table-bordered table-nomal " id="yylogDataTable" data-striped="false" 
+		th:attr="typesJSON=${typesJSON},orgJSON=${orgJSON}">
+			<thead>
+				<tr>
+				    <th data-field="tradeDatatime" data-align="center">账单时间</th>  
+	                <th data-field="orgNo" data-align="center" data-formatter="app.admin.yylog.formatOrg" >机构名称</th>  
+	                <th data-field="tradeCode" data-align="center" data-formatter="app.admin.yylog.formatType">交易类型</th>  
+	                <th data-field="payBusinessType" data-align="center"  data-formatter="app.admin.yylog.formatType">业务类型</th>  
+	                <th data-field="payType" data-align="center" data-formatter="app.admin.yylog.formatType">支付类型</th>  
+	                <th data-field="paySource" data-align="center" data-formatter="app.admin.yylog.formatType">支付来源</th>  
+	                <th data-field="tradeTo" data-align="center" >交易目的</th>  
+	                <th data-field="custName" data-align="center">客户名称</th>  
+	                <th data-field="custIdentifyType" data-align="center">客户标识</th>  
+	                <th data-field="businessFlowNo" data-align="center">his交易流水号</th>
+	                <th data-field="payAccount" data-align="center" >支付账号</th>
+	                <th data-field="payAmount" data-align="center">金额(元)</th>
+	                <th data-field="payTermNo" data-align="center">终端号</th>  
+	                <th data-field="payBatchNo" data-align="center">支付批次号</th>  
+	                <th data-field="payFlowNo" data-align="center">支付方流水号</th>
+	                <th data-field="orderState" data-align="center" data-formatter="app.admin.yylog.formatType">订单状态</th> 
+				</tr>
+			</thead>
+		</table>
+	</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/admin/yylog.js}"></script>

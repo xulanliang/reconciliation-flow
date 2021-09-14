@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head th:include="header :: BASE_CSS">
+</head>
+<body class="hold-transition skin-blue-light sidebar-mini fixed">
+	<div class="wrapper">
+		<header class="main-header">
+			<!-- 站点logo -->
+			<span class="logo"> <span class="logo-lg"><img
+					class="logo-img"
+					th:src="@{${appConfig.uiHost}+'/bst1.0/dist/img/logo.png'}"
+					width="60" alt=""></img><b th:text="${appConfig.name}"></b></span>
+			</span>
+			<!-- 顶部工具条-->
+			<nav class="navbar navbar-static-top">
+				<a href="#" class="sidebar-toggle" data-toggle="offcanvas"
+					role="button"> <span class="sr-only">Toggle navigation</span>
+				</a>
+				<div class="navbar-custom-menu">
+					<ul class="nav navbar-nav">
+						<!-- 登录用户信息 -->
+
+						<li class="dropdown user user-menu"><a href="#"
+							class="dropdown-toggle" data-toggle="dropdown"> <img
+								th:src="@{${appConfig.uiHost}+'/bst1.0/dist/img/avatar/avatar_60.png'}"
+								class="user-image" alt="User Image"></img> <span
+								class="hidden-xs" th:text="${currentUser}"></span> <span
+								class="fa fa-angle-down"></span>
+						</a>
+							<ul class="dropdown-menu m-dropdown-menu"
+								aria-labelledby="dropdownUserOperation">
+								<ul class="menu m-user-menu-list">
+									<li><a class="m-user-menu-list-item"
+										href="javascript:resetPassword()"> <i
+											class="fa fa-edit text-aqua"></i> 修改密码
+									</a></li>
+									<li><a class="m-user-menu-list-item"
+										href="javascript:logout()"> <i
+											class="fa  fa-sign-out text-yellow"></i> 退出系统
+									</a></li>
+								</ul>
+							</ul></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+
+		<!-- 左边导航菜单 -->
+		<aside class="main-sidebar">
+			<section class="sidebar">
+				<div class="user-panel m-border-botton">
+					<small class="label pull-left  m-tag" th:text="${roleName}">未知</small>
+					<img
+						class="profile-user-img img-responsive img-circle m-profile-user-img"
+						th:src="@{${appConfig.uiHost}+'/bst1.0/dist/img/avatar/avatar_120.png'}"
+						alt="User picture" width='72'></img>
+					<h3 class="profile-username text-center" th:text="${currentUser}"></h3>
+				</div>
+				<ul class="sidebar-menu" id="sidebar-menu">
+
+				</ul>
+			</section>
+		</aside>
+		<!-- end 左边导航菜单 -->
+
+		<!-- 中间内容-->
+		<div class="content-wrapper">
+			<!-- Main content -->
+			<section class="content">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="nth-tabs" id="editor-tabs-menu"></div>
+					</div>
+				</div>
+			</section>
+		</div>
+		<!-- end 中间内容 -->
+		<!--导航菜单模式切换-->
+		<span class="m-aside-collapse" data-toggle="offcanvas"><i
+			class="fa fa-chevron-right"></i></span>
+		<!-- 页脚-->
+		<!-- <footer class="main-footer">
+			<strong>Copyright &copy; <span th:inline="text">[[${beans.appConfig.startYear}]]</span>
+				<span th:inline="text">[[${beans.appConfig.name}]]</span>.
+			</strong> All rights reserved.
+		</footer> -->
+		<!-- end 页脚 -->
+	</div>
+
+	<!-- 修改密码对话框 -->
+	<div class="modal fade" id="resetPasswordDlg" tabindex="-1"
+		role="dialog" data-backdrop="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title">修改密码</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form" id="resetPasswordForm"
+						action="/admin/account" method="put">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">当前密码</label>
+							<div class="col-sm-10">
+								<input type="password" class="form-control"
+									name="currentPassword" placeholder="旧密码"></input>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">新密码</label>
+							<div class="col-sm-10">
+								<input type="password" class="form-control" name="newPassword"
+									placeholder="新密码"></input>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">确认密码</label>
+							<div class="col-sm-10">
+								<input type="password" class="form-control"
+									name="comfirmPassword" placeholder="密码确认"></input>
+							</div>
+
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary"
+						onclick="submitPassword()">保存</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="footer:: BASE_SCRIPT"></div>
+</body>
+</html>

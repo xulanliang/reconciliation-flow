@@ -1,0 +1,398 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<form class="form-inline m-search" id="thirdTradeSearchForm">
+			<div class="row tool-box-content">
+				<div class="form-group">
+					<label class="search-label">所属机构:</label>
+					<div class="form-group no-margin">
+						<input type="text" class="form-control" data-name="code"
+							id="thirdTradeTree" placeholder="所属机构" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="beginTime" class="search-label">选择日期：</label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input type="text" class="form-control" style="width: 330px;"
+							onmousemove="this.style.cursor='pointer';" id="thirdtradeTime"
+							readonly="readonly" />
+					</div>
+				</div>
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary"
+						onclick="app.admin.thirdTrade.search(this)">查询</button>
+					<button id="btn_add" type="button" class="btn btn-success"
+						onclick="app.admin.thirdTrade.exportData()">导出</button>
+					<a data-toggle="collapse"
+						data-parent="#thirdtradeSearch-search-box"
+						href="#thirdtradeSearch-search-box"> 高级查询 <i
+						class="fa fa-angle-down"></i></a>
+				</div>
+				<div id="thirdtradeSearch-search-box"
+					class="panel-collapse collapse ">
+					<div class="more-collapse-plan">
+						<div class="form-group">
+							<label class="search-label">支付方流水号：</label><input type="text"
+								class="form-control" id="thirdtrade_sysSerial"
+								name="thirdtrade_sysSerial" placeholder="支付方流水号" />
+						</div>
+						<div class="form-group">
+							<label class="search-label">支付账号：</label><input type="text"
+								class="form-control" id="payAccount" placeholder="支付账号" />
+						</div>
+						<div class="form-group">
+							<label class="search-label">支付类型：</label><select
+								class="form-control" id="thirdtrade_payType"
+								name="thirdtrade_payType"></select>
+						</div>
+						<div class="form-group">
+							<label class="search-label">渠道名称：</label><select
+								class="form-control" id="thirdtrade_billSource"
+								name="thirdtrade_billSource"></select>
+						</div>
+						<div class="form-group">
+							<label class="search-label">商户流水号：</label><input type="text"
+								class="form-control" id="thirdtrade_businessFlowNo"
+								name="businessFlowNo" placeholder="商户流水号" />
+						</div>
+						<!-- 潮州人民医院专用筛选条件，请勿删除 -->
+						<div class="form-group">
+							<label class="search-label">订单状态：</label><select
+								class="form-control" style="width: 220px"
+								id="thirdtrade_orderState" name="thirdtrade_orderState">
+								<option value="">全部</option>
+								<option value="0256">退费</option>
+								<option value="0156">缴费</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+
+		<div class="row" id="thirdTradeCount" style="display: none;">
+			<div class="pay-type-amount-box">
+				<div class="pay-type-amount-title-line">
+					<img src="/assets/img/rec/zh-icon.png">
+					<span>总金额</span>
+				</div>
+				<div class="pay-type-amount-line">
+					<span>总金额</span><span id="tradeAllAmount"></span>
+				</div>
+				<!-- <div class="pay-type-amount-line">
+					<span>总笔数</span><span id="tradeAllNum"></span>
+				</div> -->
+			</div>
+
+			<div class="pay-type-amount-box">
+				<div class="pay-type-amount-title-line">
+					<img src="/assets/img/rec/wx.png">
+					<span>微信</span>
+				</div>
+				<div class="pay-type-amount-line">
+					<span>总金额</span><span id="wechatAllAmount"></span>
+				</div>
+				<!-- <div class="pay-type-amount-line">
+					<span>总笔数</span><span id="wechatAllNum"></span>
+				</div> -->
+			</div>
+
+			<div class="pay-type-amount-box">
+				<div class="pay-type-amount-title-line">
+					<img src="/assets/img/rec/zfb.png">
+					<span>支付宝</span>
+				</div>
+				<div class="pay-type-amount-line">
+					<span>总金额</span><span id="aliAllAmount"></span>
+				</div>
+				<!-- <div class="pay-type-amount-line">
+					<span>总笔数</span><span id="aliAllNum"></span>
+				</div> -->
+			</div>
+
+			<div class="pay-type-amount-box">
+				<div class="pay-type-amount-title-line">
+					<img src="/assets/img/rec/zgyh.png">
+					<span>建设银行</span>
+				</div>
+				<div class="pay-type-amount-line">
+					<span>总金额</span><span id="ccbAllAmount"></span>
+				</div>
+				<!-- <div class="pay-type-amount-line">
+					<span>总笔数</span><span id="jdBankAllNum"></span>
+				</div> -->
+			</div>
+
+			<div class="pay-type-amount-box">
+				<div class="pay-type-amount-title-line">
+					<img src="/assets/img/rec/jhzf.png">
+					<span>聚合支付</span>
+				</div>
+				<div class="pay-type-amount-line">
+					<span>总金额</span><span id="jhAllAmount"></span>
+				</div>
+				<!-- <div class="pay-type-amount-line">
+					<span>总笔数</span><span id="cashAllNum"></span>
+				</div> -->
+			</div>
+
+			<div class="pay-type-amount-box">
+				<div class="pay-type-amount-title-line">
+					<img src="/assets/img/rec/icon-pf.png">
+					<span>浦发银行</span>
+				</div>
+				<div class="pay-type-amount-line">
+					<span>总金额</span><span id="pfAllAmount"></span>
+				</div>
+				<!-- <div class="pay-type-amount-line">
+					<span>总笔数</span><span id="thridBankAllNum"></span>
+				</div> -->
+			</div>
+			<div class="pay-type-amount-box">
+				<div class="pay-type-amount-title-line">
+					<img src="/assets/img/rec/wx.png">
+					<span>金蝶微信</span>
+				</div>
+				<div class="pay-type-amount-line">
+					<span>总金额</span><span id="jdwechatAllAmount"></span>
+				</div>
+				<!-- <div class="pay-type-amount-line">
+					<span>总笔数</span><span id="thridjdWechatAllNum"></span>
+				</div> -->
+			</div>
+			<!-- <div style="display:inline-block;">
+						<label style="min-width:100px;">医保中心账户支付总金额:</label><label style="color:#F00;min-width:130px;" id="yibaoAllAmount"></label><br></br>
+			         	<label style="min-width:100px;">医保中心账户支付总笔数:</label><label style="color:#F00;min-width:130px;" id="yibaoAllNum"></label>
+					</div> -->
+		</div>
+		<div class="row" th:if="${thirdtradeSummaryDisplay}">
+			<div class="summary-amount-line">
+				<span class="title">电子支付交易总金额:</span><span class="text" id="elecAmount"></span>
+			</div>
+			<div class="summary-amount-line">
+				<span class="title">电子支付交易总笔数:</span><span class="text" id="elecCount"></span>
+			</div>
+		</div>
+		<div class="row" th:if="${thirdtradeSummaryDisplay}">
+			<div class="summary-amount-line">
+				<span class="title">医保交易总金额:</span><span class="text" id="healthcareAmount"></span>
+			</div>
+			<div class="summary-amount-line">
+				<span class="title">医保交易总笔数:</span><span class="text" id="healthcareCount"></span>
+			</div>
+		</div>
+		<div class="row" th:if="${thirdtradeSummaryDisplay}">
+			<div class="summary-amount-line">
+				<span class="title">现金交易总金额:</span><span class="text" id="cashAmount"></span>
+			</div>
+			<div class="summary-amount-line">
+				<span class="title">现金交易总笔数:</span><span class="text" id="cashCount"></span>
+			</div>
+		</div>
+		<div class="row">
+			<input type="hidden" th:value="${orgJSON}" id="thirdTradeOrgNo">
+			<input type="hidden" th:value="${typesJSON}" id="thirdTradeType">
+			<input type="hidden" th:value="${accountDate}" id="accountDate">
+			<input type="hidden" th:value="${isDisplay}" id="thirdTradeIsDisplay">
+			<input type="hidden" th:value="${thirdtradeSummaryDisplay}" id="thirdtradeSummaryDisplay">
+			<table class="table table-bordered table-nomal "
+				id="thirdTradeDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-formatter="app.admin.thirdTrade.number"
+							class="text-center" data-width="50">序号</th>
+						<th data-field="billSource" data-sortable="true"
+							data-formatter="app.admin.thirdTrade.formatter">渠道名称</th>
+						<th data-field="orgNo"
+							data-formatter="app.admin.thirdTrade.orgFormatter"
+							data-sortable="true">机构名称</th>
+						<th data-field="payFlowNo" data-width="220"
+							data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">支付方流水号</th>
+						<th data-field="businessFlowNo" data-sortable="true"
+							data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">商户流水号</th>
+						<th data-field="payAccount" data-sortable="true"
+							data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">支付账号</th>
+						<th data-field="orderState"
+							data-formatter="app.admin.thirdTrade.formatter"
+							data-sortable="true">订单状态</th>
+						<th data-field="payType"
+							data-formatter="app.admin.thirdTrade.formatter"
+							data-sortable="true">支付类型</th>
+						<!-- <th data-field="paySource" data-formatter="app.admin.thirdTrade.formatter">支付来源</th>
+				                <th data-field="payTermNo">支付终端号</th>  
+				                <th data-field="payAccount">支付账号</th> -->
+						<th data-field="payAmount"
+							data-formatter="app.admin.thirdTrade.moneyFormat"
+							data-sortable="true">金额(元)</th>
+						<!--  <th data-field="payBatchNo">支付批次号</th>   -->
+						<th data-field="tradeDatatime" data-sortable="true">账单日期</th>
+						<th data-field="id" data-width="100" data-align="center"
+							data-formatter="app.admin.thirdTrade.formatOpt">操作</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<!-- 渠道详情 -->
+<div class="modal fade" id="billData" tabindex="-1" role="dialog"
+	data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">详情</h4>
+			</div>
+			<div class="modal-body m-form-detail-body" style="height: 500px;">
+				<dl class="dl-horizontal" form="detail">
+					<dt>支付方流水号</dt>
+					<dd data-name="payFlowNo"></dd>
+					<dt>机构名称</dt>
+					<dd data-name="orgNo"></dd>
+					<dt>订单状态</dt>
+					<dd data-name="orderState"></dd>
+					<dt>明细类型</dt>
+					<dd data-name="payType"></dd>
+					<dt>支付来源</dt>
+					<dd data-name="paySource"></dd>
+					<dt>支付终端号</dt>
+					<dd data-name="payTermNo"></dd>
+					<dt>支付账号</dt>
+					<dd data-name="payAccount"></dd>
+					<dt>金额(元)</dt>
+					<dd data-name="payAmount"></dd>
+					<dt>支付批次号</dt>
+					<dd data-name="payBatchNo"></dd>
+					<dt>账单日期</dt>
+					<dd data-name="tradeDatatime"></dd>
+					<dt>商户流水号</dt>
+					<dd data-name="shopFlowNo"></dd>
+					<dt>患者名称</dt>
+					<dd data-name="custName"></dd>
+					<dt>就诊卡号</dt>
+					<dd data-name=patientCardNo></dd>
+				</dl>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 医保详情 -->
+<div class="modal fade" id="yibaoData" tabindex="-1" role="dialog"
+	data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">详情</h4>
+			</div>
+			<div class="modal-body m-form-detail-body" style="height: 500px;">
+				<dl class="dl-horizontal" form="detail">
+					<dt>账单日期</dt>
+					<dd data-name="tradeDatatime"></dd>
+					<dt>机构名称</dt>
+					<dd data-name="orgNo"></dd>
+					<dt>操作类型</dt>
+					<dd data-name="operationType"></dd>
+					<dt>支付方流水号</dt>
+					<dd data-name="payFlowNo"></dd>
+					<dt>医保类型</dt>
+					<dd data-name="healthcareTypeCode"></dd>
+					<dt>业务周期号</dt>
+					<dd data-name="businessCycleNo"></dd>
+					<dt>医疗费总额</dt>
+					<dd data-name="costAll"></dd>
+					<dt>基本医疗费用</dt>
+					<dd data-name="costBasic"></dd>
+					<dt>账户支付金额</dt>
+					<dd data-name="costAccount"></dd>
+					<dt>现金支付金额</dt>
+					<dd data-name="costCash"></dd>
+					<dt>统筹支付金额</dt>
+					<dd data-name="costWhole"></dd>
+					<dt>救助基金支付金额</dt>
+					<dd data-name="costRescue"></dd>
+					<dt>补助支付金额</dt>
+					<dd data-name="costSubsidy"></dd>
+					<dt>商户流水号</dt>
+					<dd data-name="shopFlowNo"></dd>
+				</dl>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 现金详情 -->
+<div class="modal fade" id="cashData" tabindex="-1" role="dialog"
+	data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">详情</h4>
+			</div>
+			<div class="modal-body m-form-detail-body" style="height: 500px;">
+				<dl class="dl-horizontal" form="detail">
+					<dt>账单日期</dt>
+					<dd data-name="tradeDatatime"></dd>
+					<dt>机构名称</dt>
+					<dd data-name="orgNo"></dd>
+					<dt>交易类型</dt>
+					<dd data-name="tradeCode"></dd>
+					<dt>业务类型</dt>
+					<dd data-name="payBusinessType"></dd>
+					<dt>支付类型</dt>
+					<dd data-name="payType"></dd>
+					<!-- 					<dt>客户名称</dt><dd data-name="patientName"></dd> -->
+					<dt>患者名称</dt>
+					<dd data-name="patientName"></dd>
+					<dt>客户标识</dt>
+					<dd data-name="custIdentifyType"></dd>
+					<dt>支付方流水号</dt>
+					<dd data-name="payFlowNo"></dd>
+					<dt>金额(元)</dt>
+					<dd data-name="payAmount"></dd>
+					<dt>收费员</dt>
+					<dd data-name="cashier"></dd>
+					<dt>支付来源</dt>
+					<dd data-name="paySource"></dd>
+					<dt>商户流水号</dt>
+					<dd data-name="businessFlowNo"></dd>
+				</dl>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="thirdTradeLoading" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">提示</h4>
+			</div>
+			<div class="modal-body">请稍候。。。</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"
+	th:src="@{/assets/js/recon/weinanthirdtrade.js}"></script>
+<script>
+	app.admin.thirdTrade.init();
+</script>
+<style>
+	#thirdTradeSearchForm.m-search .search-label{
+		width: 100px;
+	}
+</style>

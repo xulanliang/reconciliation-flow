@@ -1,0 +1,88 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row tool-box-content">
+               <form class="form-inline" id="summaryByPayBusinessTypeSearchForm">
+                   <div class="form-group">
+               	   		<label>所属机构:</label>
+               	   </div>
+                   <div class="form-group">
+                       <input type="text" style="width:280px;" class="form-control" data-name="orgCode" id="summaryByPayBusinessTypeOrgSelect"/>
+                   </div>
+                   <div class="form-group">
+						<div class="form-group">
+							<label>开始时间:</label>
+						</div>
+						<div class="input-group">
+							<input AUTOCOMPLETE="off" type="text" class="form-control pull-right"
+								placeholder="开始时间" id="summaryByPayTypeBeginTime" name="beginTime">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="endTime">结束时间：</label>
+						<div class="input-group">
+							<input AUTOCOMPLETE="off" type="text" style="width: 200px"
+								class="form-control pull-right" placeholder="结束时间" name="endTime" >
+						</div>
+					</div>
+                   <div class="form-group">
+                     <button type="button" class="btn btn-primary" onclick="app.admin.summaryByPayBusinessType.search()">查询</button>
+                     <button type="button" class="btn btn-primary" onclick="app.admin.summaryByPayBusinessType.exportList()">导出</button>
+                   </div>
+               </form>
+        </div>
+		<div class="row">
+			<table class="table table-bordered table-nomal" id="summaryByPayBusinessTypeDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th>&nbsp;</th>
+						<th data-valign="middle" data-align="center" data-width="1400" colspan="14" name="tableTitle"></th>
+					</tr>
+					<tr class="success">
+						<th data-valign="middle" data-width="100">&nbsp;</th>
+						<th data-valign="middle" data-align="center" data-width="200" colspan="2" >挂号</th>
+						<th data-valign="middle" data-align="center" data-width="200" colspan="2" >预约挂号</th>
+						<th data-valign="middle" data-align="center" data-width="200" colspan="2" >缴费</th>
+						<th data-valign="middle" data-align="center" data-width="200" colspan="2" >门诊充值</th>
+						<th data-valign="middle" data-align="center" data-width="200" colspan="2" >住院预交金</th>
+						<th data-valign="middle" data-align="center" data-width="200" colspan="2" >其他</th>
+						<th data-valign="middle" data-align="center" data-width="200" colspan="2" >合计</th>
+					</tr>
+					
+					<tr>
+						<th data-field="terminalNo" data-align="center" data-formatter="app.admin.summaryByPayBusinessType.normal">收费员</th>
+						
+					    <th data-field="registerAcount" data-width="100" data-align="center" data-formatter="app.admin.summaryByPayBusinessType.normal">笔数</th>
+						<th data-field="registerAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByPayBusinessType.moneyFormat">金额</th>
+						
+					    <th data-field="makeAppointmentAcount" data-width="100" data-align="center" data-formatter="app.admin.summaryByPayBusinessType.normal">笔数</th>
+						<th data-field="makeAppointmentAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByPayBusinessType.moneyFormat">金额</th>
+						
+						<th data-field="payAcount" data-align="center" data-width="100" data-formatter="app.admin.summaryByPayBusinessType.normal">笔数</th>
+						<th data-field="payAmount" data-align="center" data-width="100" data-formatter="app.admin.summaryByPayBusinessType.moneyFormat">金额</th>
+						
+						<th data-field="clinicAcount" data-align="center" data-width="100" data-formatter="app.admin.summaryByPayBusinessType.normal">笔数</th>
+						<th data-field="clinicAmount" data-align="center" data-width="100" data-formatter="app.admin.summaryByPayBusinessType.moneyFormat">金额</th>
+						
+						<th data-field="prepaymentForHospitalizationAcount" data-width="100" data-align="center" data-formatter="app.admin.summaryByPayBusinessType.normal">笔数</th>
+						<th data-field="prepaymentForHospitalizationAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByPayBusinessType.moneyFormat">金额</th>
+						
+						<th data-field="" data-width="100" data-align="center" data-formatter="app.admin.summaryByPayBusinessType.otherAcount">笔数</th>
+						<th data-field="" data-width="100" data-align="center" data-formatter="app.admin.summaryByPayBusinessType.otherAmount">金额</th>
+						
+						<th data-field="allAcount" data-width="100" data-align="center" data-formatter="app.admin.summaryByPayBusinessType.normal">笔数</th>
+						<th data-field="allAmount" data-width="100" data-align="center" data-formatter="app.admin.summaryByPayBusinessType.moneyFormat">金额</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/reports/summaryByPayBusinessType.js}"></script>
+<script th:inline="javascript">
+
+var orgNo = [[${orgNo}]];
+var tradeDate = [[${tradeDate}]];
+
+app.admin.summaryByPayBusinessType.init(orgNo,tradeDate);
+
+</script>

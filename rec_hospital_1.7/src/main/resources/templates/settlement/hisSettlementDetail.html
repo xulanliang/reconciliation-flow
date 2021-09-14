@@ -1,0 +1,137 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+	    <form class="form-inline m-search" id="hisSettlementDetailSearchForm">
+			<div class="row tool-box-content">
+		    	<div class="form-group">
+		            <label class="search-label">所属机构：</label>
+		            <div class="form-group no-margin">
+		             	<input type="text" class="form-control" id="hisSettlementDetailOrgSelect" data-name="orgCode"/>
+		            </div>
+		        </div>
+		       <div class="form-group">
+	                 <label for="beginTime" class="search-label">结账日期：</label>
+	                 <div class="input-group">
+	                           <div class="input-group-addon">
+	                               <i class="fa fa-calendar"></i>
+	                           </div>
+	                           <input type="text" class="form-control" style="width: 220px;" 
+	                          	 onmousemove="this.style.cursor='pointer';"	id="hisSettlementDetailTime" readonly="readonly"/>
+	                </div>
+	             </div>
+		         <div class="form-group m-btn">
+		          	<button type="button" class="btn btn-primary" onclick="app.admin.hisSettlementDetail.search(this)">查询</button>
+		          	<button type="button" class="btn btn-success" onclick="app.admin.hisSettlementDetail.exportData()">导出</button>
+		          	<a data-toggle="collapse" data-parent="#hisSettlementDetailSearch-search-box" href="#hisSettlementDetailSearch-search-box"> 高级查询 <i class="fa fa-angle-down"></i></a>
+		         </div>
+		        <div id="hisSettlementDetailSearch-search-box" class="panel-collapse collapse ">
+			        <div class="more-collapse-plan">
+						<div class="form-group">
+				            <label class="search-label" >结账序号：</label>
+				            <input type="text" class="form-control"  placeholder="结账序号" name="settlementSerialNo"/>
+						</div>
+						<div class="form-group">
+				            <label class="search-label" >支付方流水号：</label>
+				            <input type="text" class="form-control"  placeholder="支付方流水号" name="tnsOrderNo"/>
+						</div>
+						<div class="form-group">
+				            <label class="search-label" >HIS流水号：</label>
+				            <input type="text" class="form-control"  placeholder="HIS流水号" name="hisOrderNo"/>
+						</div>
+						<div class="form-group">
+				            <label class="search-label" >商户流水号：</label>
+				            <input type="text" class="form-control"  placeholder="商户流水号" name="outTradeNo"/>
+						</div>
+				        <div class="form-group">
+				            <label  class="search-label" >渠道名称：</label>
+				            <select  class="selectpicker" name="billSource" ></select>
+				        </div>
+				        <div class="form-group">
+				            <label  class="search-label" >支付类型：</label>
+				            <select class="selectpicker" name="payType" ></select>
+				        </div>
+				        <div class="form-group">
+				            <label  class="search-label" >交易类型：</label>
+				            <select class="selectpicker" name="tradeType" ></select>
+				        </div>
+				        <div class="form-group">
+				            <label  class="search-label" >支付业务类型：</label>
+				            <select class="selectpicker" name="payBusinessType" ></select>
+				        </div>
+					</div>
+				</div>
+			</div>
+	    </form>
+	    <div class="row" id="hisSettlementDetailSum">
+			<div class="summary-amount-line">
+				<span class="title">总笔数:</span>
+				<span class="text" id="hisSettlementDetailBillsCount"></span>
+			</div>
+			<div class="summary-amount-line">
+	         	<span class="title">总金额(元):</span>
+	         	<span class="text" id="hisSettlementDetailBillsAmount"></span><br></br>
+			</div>
+		</div>
+		<div class="row">
+			<input type="hidden" th:value="${accountDate}" id="hisSettlementDate">
+			<table class="table table-bordered table-nomal" id="hisSettlementDetailDataTable" data-striped="false"
+				  th:attr="typesJSON=${typesJSON},orgJSON=${orgJSON}">
+				<thead>
+					<tr>
+						<th data-field="orgCode" data-sortable="true" data-formatter="app.admin.hisSettlementDetail.formatOrg">机构名称</th>
+						<th data-field="patientId" data-sortable="true">患者ID</th>
+						<th data-field="patientName" data-sortable="true">姓名</th>
+						<th data-field="outTradeNo" data-sortable="true">商户流水号</th>
+						<th data-field="amount" data-sortable="true" data-formatter="app.admin.hisSettlementDetail.moneyFormat">金额(元)</th>
+						<th data-field="settlementSerialNo" data-sortable="true">结账序号</th>
+						<th data-field="settlementDate" data-sortable="true">结账日期</th>
+						<th data-field="payType" data-width="100" data-sortable="true" data-align="center" data-formatter="app.admin.hisSettlementDetail.formatType">支付类型</th>
+						<th data-field="billSource" data-width="100" data-sortable="true" data-formatter="app.admin.hisSettlementDetail.formatType">渠道名称</th>
+						<th data-field="id" data-width="100" data-align="center" data-formatter="app.admin.hisSettlementDetail.formatOpt">操作</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="hisSettlementDetailInfoDlg" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">详情</h4>
+			</div>
+			<div class="modal-body m-form-detail-body">
+				<div style="margin-top:5px;">
+					<dl class="dl-horizontal" form="detail">
+						<dt>患者ID：</dt><dd data-name="patientId"></dd>
+						<dt>姓名：</dt><dd data-name="patientName"></dd>
+						<dt>HIS流水号：</dt><dd data-name="hisOrderNo"></dd>
+						<dt>商户流水号：</dt><dd data-name="outTradeNo"></dd>
+						<dt>支付方流水号：</dt><dd data-name="tnsOrderNo"></dd>
+						<dt>金额(元)：</dt><dd data-name="amount"></dd>
+						<dt>支付类型：</dt><dd data-name="payType"></dd>
+						<dt>交易类型：</dt><dd data-name="orderType"></dd>
+						<dt>结账序号：</dt><dd data-name="settlementSerialNo"></dd>
+						<dt>渠道名称：</dt><dd data-name="billSource"></dd>
+						<dt>交易时间：</dt><dd data-name="payTime"></dd>
+						<dt>结账时间：</dt><dd data-name="settlementTime"></dd>
+						<dt>结账日期：</dt><dd data-name="settlementDate"></dd>
+						<dt>支付业务类型：</dt><dd data-name="payBusinessType"></dd>
+					</dl>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div> 
+
+<script type="text/javascript" th:src="@{/assets/js/settlement/hisSettlementDetail.js}"></script>
+<style>
+	#hisSettlementDetailSearchForm.m-search .search-label{
+		width: 100px;
+	}
+</style>

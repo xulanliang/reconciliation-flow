@@ -1,0 +1,54 @@
+<style>
+	.control-label pull-right{
+		
+	}
+</style>
+<div class="m-content-wrapper" style="margin-top:0px;">
+	<div class="table-content-wrap" style="margin-top: 0px;">
+<!-- 		<div class="row tool-box-content"> -->
+<!-- 			<form class="form-inline"> -->
+<!-- 				<div class="form-group m-btn"></div> -->
+<!-- 			</form> -->
+<!-- 		</div> -->
+		<div class="row">
+			<div class="panel-group" id="billconfigaccordinon">
+				<form class="form-horizontal" role="form">
+					<div class="panel panel-default" 
+						style="width: 100%; float: left; margin-top: 0px;">
+						<div class="panel-heading">
+							<h4 class="panel-title" data-toggle="collapse">一卡通配置</h4>
+						</div>
+						<div class="panel-collapse collapse in">
+							<div class="panel-body">
+								<div class="form-group">
+									<div class="col-sm-5">
+										<span> 
+											<label class="radio-inline"> 
+												<input type="radio" name="type" value="1">
+												<span>启动</span>
+											</label> 
+											<label class="radio-inline"> 
+												<input type="radio" name="type" value="0">
+												<span>关闭</span>
+											</label>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group" 
+						style="text-align: center; width: 100%; float: left; margin-top: 20px;">
+						<button type="button" class="btn btn-primary"
+							onclick="app.admin.payCard.save()" id="billconfig_save_bt">保存</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"
+	th:src="@{/assets/js/customized/payCard.js}"></script>
+<script type="text/javascript">
+	app.admin.payCard.init();
+</script>

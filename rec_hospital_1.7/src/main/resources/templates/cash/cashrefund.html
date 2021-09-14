@@ -1,0 +1,77 @@
+<div class="m-content-wrapper" >
+        <div class="table-content-wrap">
+		      <div class="row tool-box-content">
+		            <form class="form-inline" id="cashrefundSearchForm">
+		            	<div class="form-group">
+							<input type="text" style="width: 280px;" class="form-control" data-name="code" id="cashrefundTree" placeholder="所属机构"/>
+				        </div> 
+	                    <div class="form-group">
+	                    	<!-- <label>业务类型:</label><select class="form-control" id="cashrefund_businessType" name="cashrefund_businessType"></select> -->	                       
+	                    	<!-- <label>支付方流水号:</label><input type="text" class="form-control" id="cashrefund_sysSerial" name="cashrefund_sysSerial" placeholder="平台流水号"/> -->
+		                </div>
+		                <div class="form-group">
+	                    	<label for="beginTime">开始时间:</label>
+	                        <div class="input-group">
+	                           <div class="input-group-addon">
+	                               <i class="fa fa-calendar"></i>
+	                           </div>
+	                           <input AUTOCOMPLETE="off" type="text" class="form-control pull-right" placeholder="开始时间" name="beginTime">
+	                        </div>
+	                         <label for="endTime">结束时间:</label>
+	                       		<div class="input-group">
+		                           <div class="input-group-addon">
+		                               <i class="fa fa-calendar"></i>
+		                           </div>
+		                           <input AUTOCOMPLETE="off" type="text" class="form-control pull-right"  placeholder="结束时间" name="endTime">
+		                       </div>
+		                </div>
+	                    <div class="form-group m-btn">
+	                    	<button type="button" class="btn btn-primary"  onclick="app.admin.cashrefund.search()">查询</button>
+	                    	<a class="btn btn-primary" onclick="app.admin.cashrefund.cashRec()" >对账</a>
+	                    	<a onclick='app.admin.cashrefund.exportData()' class="btn btn-primary">导出</a>
+	                    </div>	             
+	                </form>
+		        </div>
+		        
+		        <div class="row">
+		        	<input type="hidden" th:value="${orgJSON}" id="cashrefundOrgNo">
+		        	<input type="hidden" th:value="${typesJSON}" id="cashrefundType">
+		        	<input type="hidden" th:value="${cashCode}" id="cashrefund_payType">
+		        	<input type="hidden" th:value="${org}" id="cashrefund_dataSource">
+		        	<input id="cashrefund_isDifferent" type="hidden" th:value="1" name="cashrefund_isDifferent"  />
+					<table class="table table-bordered table-nomal " id="cashrefundDataTable" data-striped="false">
+						<thead>
+							<tr>
+								<th data-formatter="app.admin.cashrefund.number">序号</th>
+								<th data-field="reconciliationDate">账单时间</th>
+								<th data-field="isDifferentValue">账平标记</th>
+								<th data-field="orgNo"  data-formatter="app.admin.cashrefund.orgFormatter">机构名称</th>
+								<th data-field="payFlowNo">支付方流水号</th>
+								<!-- <th data-field="tradeFrom" data-formatter="app.admin.cashrefund.formatter">交易来源</th> -->
+								<th data-field="payType" data-formatter="app.admin.cashrefund.formatter">支付类型</th>
+								<th data-field="custName">患者名称</th>
+								<th data-field="orgAmount" data-formatter="app.admin.cashrefund.moneyFormat">his支付金额(元)</th>
+								<th data-field="platformAmount" data-formatter="app.admin.cashrefund.moneyFormat">平台金额(元)</th>
+								<!-- <th data-field="orderState" data-formatter="app.admin.cashrefund.formatter">订单状态</th> -->
+							</tr>
+						</thead>
+					</table>
+		        </div>
+	</div>
+</div>
+<div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">提示</h4>
+      </div>
+      <div class="modal-body">
+        请稍候。。。
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/cash/cashrefund.js}"></script>
+<script>
+ app.admin.cashrefund.init();
+</script>

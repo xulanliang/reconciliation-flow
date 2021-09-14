@@ -1,0 +1,497 @@
+::-ms-clear, ::-ms-reveal{display: none;}
+.fleft {
+	float: left;
+}
+
+.header {
+	height: 80px;
+	width: 100%;
+	background: #154293;
+}
+
+#footer {
+	height: 32px;
+	background: #42BEC0;
+	width: 100%;
+}
+
+.logo {
+	margin-left: 20px;
+	color: #fff;
+	font-size: 32px;
+	font-weight: 900;
+}
+
+.header_right {
+	float: right;
+	margin-top: 25px;
+	width: 165px;
+}
+
+#ContentPannel {
+	margin: 0px auto;
+	height: 100%;
+	overflow: hidden;
+}
+
+#ContentPannel iframe {
+	margin-top: 0px;
+	margin-left: 0px;
+}
+
+#Headermenu {
+	float: right;
+	margin-right: 0px;
+	margin-top: 0px;
+}
+
+#topnav ul {
+	position: relative;
+}
+
+#topnav li.list {
+	float: left;
+	display: inline;
+}
+
+#topnav li a {
+	cursor: pointer;
+	display: inline;
+	float: left;
+	width: 60px;
+	text-align: center;
+	height: 50px;
+	text-decoration: none;
+	color: #fff;
+	text-shadow: 0px -1px rgba(0, 0, 0, 0.2);
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	-moz-border-radius: 5px; /* Gecko browsers */
+	-webkit-border-radius: 5px; /* Webkit browsers */
+	border-radius: 5px; /* W3C syntax */
+}
+
+.number {
+	color: #fff;
+	line-height: 32px;
+	float: left;
+}
+
+.bottom_icon {
+	float: right;
+	height: 32px;
+	width: 40px;
+	padding-top: 5px;
+	cursor: pointer;
+	text-align: center
+}
+
+.bottom_icon:hover {
+	z-index: 999;
+	-moz-opacity: 0.6; /*Firefox*/
+	opacity: 0.6; /*Opera*/
+	filter: alpha(opacity = 60); /*IE*/
+}
+
+.flexslider {
+	margin: 0px auto;
+	position: relative;
+	width: 100%;
+	height: 750px;
+	overflow: hidden;
+	zoom: 1;
+}
+
+.flexslider ul {
+	padding: 0;
+	margin: 0;
+}
+
+.bgcolor {
+	background: RGB(27, 27, 27);
+}
+
+.flexslider .slides li {
+	width: 100%;
+	height: 100%;
+}
+
+.flex-direction-nav li {
+	list-style: none;
+}
+
+.flex-direction-nav a {
+	width: 70px;
+	height: 70px;
+	line-height: 99em;
+	overflow: hidden;
+	margin: -35px 0 0;
+	display: block;
+	background: url(../assets/img/login/ad_ctr.png) no-repeat;
+	position: absolute;
+	top: 50%;
+	z-index: 10;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity = 0);
+	-webkit-transition: all .3s ease;
+	border-radius: 35px;
+}
+
+.flex-direction-nav .flex-next {
+	background-position: 0 -70px;
+	right: 0;
+}
+
+.flex-direction-nav .flex-prev {
+	left: 0;
+}
+
+.flexslider:hover .flex-next {
+	opacity: 0.8;
+	filter: alpha(opacity = 25);
+}
+
+.flexslider:hover .flex-prev {
+	opacity: 0.8;
+	filter: alpha(opacity = 25);
+}
+
+.flexslider:hover .flex-next:hover, .flexslider:hover .flex-prev:hover {
+	opacity: 1;
+	filter: alpha(opacity = 50);
+}
+
+.flex-control-nav {
+	width: 98%;
+	position: absolute;
+	bottom: -10px;
+	text-align: center;
+}
+
+.flex-control-nav li {
+	margin: 0 2px;
+	display: inline-block;
+	zoom: 1;
+	*display: inline;
+}
+
+.flex-control-paging li a {
+	background: url(../assets/img/login/dot.png) no-repeat 0 -16px;
+	display: block;
+	height: 16px;
+	overflow: hidden;
+	text-indent: -99em;
+	width: 16px;
+	cursor: pointer;
+}
+
+.flex-control-paging li a.flex-active, .flex-control-paging li.active a
+	{
+	background-position: 0 0;
+}
+
+.flexslider .slides a img {
+	width: 100%;
+	height: 482px;
+	display: block;
+}
+
+.wrap_name {
+	width: 1600px;
+	height: 750px;
+	margin: 0 auto;
+}
+
+.wrap_one {
+	position: absolute;
+	left: 100px;
+	top: 30px;
+}
+
+.wrap_one li {
+	height: auto;
+	width: 300px;
+	list-style: none;
+	overflow: hidden
+}
+
+.wrap_two {
+	position: absolute;
+	right: 100px;
+	top: 30px;
+}
+
+.wrap_two li {
+	height: auto;
+	width: 300px;
+	list-style: none;
+	overflow: hidden
+}
+
+.box {
+	display: -moz-box;
+	display: -o-box;
+	display: box;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+
+.box-center {
+	align-items: center;
+	-webkit-align-items: center;
+	box-align: center;
+	-webkit-box-align: center;
+	justify-content: center;
+	-webkit-justify-content: center;
+	-moz-box-pack: center;
+	-webkit-box-pack: center;
+}
+
+.clearfix {
+	display: inline-block
+}
+
+.clearfix:after {
+	display: block;
+	content: ".";
+	height: 0;
+	line-height: 0;
+	clear: both;
+	visibility: hidden
+}
+
+.pay-wrap ul {
+	margin: 0;
+	padding: 0
+}
+
+.pay-wrap ul li {
+	list-style: none;
+}
+
+.pay-wrap .search-conditions {
+	display: block;
+}
+
+#totalPay, #top-conditions, #unilateralAccounts {
+	padding: 15px 0;
+}
+
+#totalPay .desc {
+	float: right;
+	margin-right: 50px;
+}
+
+.pay-wrap .search-conditions li {
+	float: left;
+}
+
+.pay-wrap .search-conditions .lable {
+	display: inline-block;
+	width: 40px;
+}
+
+.pay-wrap .search-conditions .date {
+	margin-left: 50px
+}
+
+.pay-wrap .pay-btn-group {
+	display: block;
+	text-align: center;
+	margin-top: 20px;
+}
+
+.pay-wrap .pay-btn-group .btn-groups {
+	float: right;
+	padding-right: 50px;
+}
+
+.pay-wrap .pay-btn-group .easyui-linkbutton {
+	margin-left: 20px;
+}
+
+.pay-wrap .pay-btn-group .all {
+	line-height: 24px
+}
+
+.unilateralAccounts {
+	text-align: center;
+}
+
+.mt20 {
+	margin-top: 20px;
+}
+
+.about4 {
+	width: 501px;
+	margin: 40px auto 0 auto;
+}
+
+.about4_ch {
+	font-size: 18px;
+	color: #d80017;
+	margin-bottom: 30px;
+}
+
+.about4_main {
+	position: relative;
+	padding-left: 170px;
+	overflow: hidden;
+	padding-bottom: 50px;
+}
+
+.line {
+	width: 3px;
+	height: 100%;
+	background-color: #999;
+	position: absolute;
+	left: 175px;
+	z-index: 1;
+}
+
+.about4_main ul li {
+	padding-left: 25px;
+	font-size: 16px;
+	color: #333333;
+	line-height: 30px;
+	margin-bottom: 30px;
+	background: url(../images/about4_icon.png) left center no-repeat;
+}
+
+.about4_main ul li:last-child {
+	margin-bottom: 0px;
+}
+
+.about4_main ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.time {
+	position: absolute;
+	left: 2px;
+	float: left;
+}
+
+.line span {
+	display: block;
+	width: 0;
+	height: 0;
+	border-width: 20px 20px 0;
+	border-style: solid;
+	border-color: #999 transparent transparent; /*黄 透明 透明 */
+	position: absolute;
+	top: 10px;
+	left: -18px;
+}
+#toolrecordBox8 {
+    margin-top: 30px;
+}
+.iconbox1 {
+	margin-top: 30px;
+	display: inline-block;
+    position: relative;
+    float: right;
+    width: 79px;
+    height: 79px;
+    right: 15px;
+    top: -101.5px;
+    overflow: hidden;
+    filter: drop-shadow(green 0px 0px);
+	background: url(../../assets/img/fastBrowsingImg/icon-baseNum.png) left center no-repeat;
+}
+.iconbox2 {
+	margin-top: 30px;
+	display: inline-block;
+    position: relative;
+    float: right;
+    width: 79px;
+    height: 79px;
+    right: 15px;
+    top: -101.5px;
+    overflow: hidden;
+    filter: drop-shadow(green 0px 0px);
+	background: url(../../assets/img/fastBrowsingImg/icon-baseNum.png) left center no-repeat;
+}
+.iconbox3 {
+	margin-top: 30px;
+	display: inline-block;
+    position: relative;
+    float: right;
+    width: 79px;
+    height: 79px;
+    right: 15px;
+    top: -101.5px;
+    overflow: hidden;
+    filter: drop-shadow(green 0px 0px);
+	background: url(../../assets/img/fastBrowsingImg/icon-baseNum.png) left center no-repeat;
+}
+.iconbox4 {
+	margin-top: 30px;
+	display: inline-block;
+    position: relative;
+    float: right;
+    width: 79px;
+    height: 79px;
+    right: 15px;
+    top: -101.5px;
+    overflow: hidden;
+    filter: drop-shadow(green 0px 0px);
+	background: url(../../assets/img/fastBrowsingImg/icon-baseNum.png) left center no-repeat;
+}
+.iconbox5 {
+	margin-top: 30px;
+	display: inline-block;
+    position: relative;
+    float: right;
+    width: 79px;
+    height: 79px;
+    right: 15px;
+    top: -101.5px;
+    overflow: hidden;
+    filter: drop-shadow(green 0px 0px);
+	background: url(../../assets/img/fastBrowsingImg/icon-baseNum.png) left center no-repeat;
+}
+.iconbox6 {
+	margin-top: 30px;
+	display: inline-block;
+    position: relative;
+    float: right;
+    width: 79px;
+    height: 79px;
+    right: 15px;
+    top: -101.5px;
+    overflow: hidden;
+    filter: drop-shadow(green 0px 0px);
+	background: url(../../assets/img/fastBrowsingImg/icon-baseNum.png) left center no-repeat;
+}
+.iconbox7 {
+	margin-top: 30px;
+	display: inline-block;
+    position: relative;
+    float: right;
+    width: 79px;
+    height: 79px;
+    right: 15px;
+    top: -101.5px;
+    overflow: hidden;
+    filter: drop-shadow(green 0px 0px);
+	background: url(../../assets/img/fastBrowsingImg/icon-baseNum.png) left center no-repeat;
+}
+.iconbox8 {
+	margin-top: 30px;
+	display: inline-block;
+    position: relative;
+    float: right;
+    width: 79px;
+    height: 79px;
+    right: 15px;
+    top: -101.5px;
+    overflow: hidden;
+    filter: drop-shadow(green 0px 0px);
+	background: url(../../assets/img/fastBrowsingImg/icon-baseNum.png) left center no-repeat;
+}

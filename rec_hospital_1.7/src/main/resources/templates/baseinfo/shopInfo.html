@@ -1,0 +1,190 @@
+<div class="m-content-wrapper" >
+        <div class="table-content-wrap">
+		      <div class="row tool-box-content">
+		            <form class="form-inline" id="shopInfoSearchForm">
+	                    <div class="form-group">	                       
+	                    	<input type="text" style="width: 230px;" class="form-control" data-name="orgId" id="codeTree" placeholder="所属机构"/>
+	                    	<!-- <select class="form-control" style="width: 150px;" onclick="app.admin.shopInfo.formaterOrgProps(1)" name="code"></select> -->
+	                    </div>
+	                    <div class="form-group m-btn">
+	                    	<button type="button" class="btn btn-primary"  onclick="app.admin.shopInfo.search()">查询</button>
+		                    <button id="btn_add" type="button" class="btn btn-success" onclick="app.admin.shopInfo.create()"> 新增 </button>
+	                    </div>	             
+	                </form>
+		        </div>
+		        <div class="row" style="min-width: 1300px;">
+		       		 <input type="hidden" th:value="${orgMap}" id="orgMap">
+					<table class="table table-bordered table-nomal " id="shopInfoDataTable" data-striped="false">
+						<thead>
+							<tr>
+								<th data-formatter="app.admin.shopInfo.number">序号</th>
+								<th data-field="payName">渠道名称</th>
+								<th data-field="orgNo" data-formatter="app.admin.shopInfo.orgName">所属机构</th>
+								<th data-field="orgNo" >所属机构</th>
+								<th data-field="metaDataPayId">支付渠道ID</th>
+								<th data-field="applyId">应用ID</th>
+								<th data-field="payShopNo">商户号</th>
+								<th data-field="deviceNos">设备编码</th>
+								<th data-field="payTermNo">支付终端号</th>
+								<th data-field="serviceAddress">服务地址</th>
+								<th data-field="" data-width="230" data-align="center" data-formatter="app.admin.shopInfo.formaterOpt">操作</th>
+							</tr>
+						</thead>
+					</table>
+		        </div>
+	</div>
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="shopInfoDlg" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="title">新增用户</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form">
+					<input type="hidden" id="shopId"  name="id" />
+					<div class="form-group">
+						<label class="col-sm-3 control-label">所属机构:</label>
+						<div class="col-sm-9">
+						<!-- 	<input id="shop_orgNo" name="orgNo" type="hidden" /> -->
+							<input type="text" class="form-control" data-name="orgNo" id="orgNameTree"/>
+							<!-- <select class="form-control" name="orgName" onclick="app.admin.shopInfo.formaterOrgProps(2)"></select> -->
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">商户号:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" name="payShopNo" placeholder="请输入商户号">
+						</div>
+					</div>
+					<div class="form-group" id="deviceNoDiv">
+						<label class="col-sm-3 control-label">设备编码:</label>
+						<div class="col-sm-9">
+							<select id="deviceNos" name="deviceNos" class="combox form-control"  multiple></select>
+							<!-- <select id="deviceNo" class="selectpicker show-tick form-control" name="deviceNo"  multiple></select> -->
+				    	</div>
+					</div>
+					<div class="form-group" id="payNameDiv">
+						<label class="col-sm-3 control-label">支付渠道:</label>
+						<div class="col-sm-9">
+							<input id="metaDataPayId" name="metaDataPayId" type="hidden" />
+							<select class="form-control" name="payName" onchange="app.admin.shopInfo.payNameChange()"></select>
+				    	</div>
+					</div>
+					<div class="form-group" id="applyIdDiv">
+						<label class="col-sm-3 control-label">应用ID:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" name="applyId" placeholder="请输入应用ID">
+				    	</div>
+					</div>
+					<div class="form-group" id="metaDataBankIdDiv">
+						<label class="col-sm-3 control-label">投资银行:</label>
+						<div class="col-sm-9">
+							<select class="form-control" name="metaDataBankId"></select>
+				    	</div>
+					</div>
+					<div class="form-group" id="shopPayTpduDiv">
+						<label class="col-sm-3 control-label">支付TPDU:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" name="payTpdu" placeholder="请输入支付TPDU">
+				    	</div>
+					</div>
+					<div class="form-group" id="pinAlgorithmDiv">
+						<label class="col-sm-3 control-label">pin算法:</label>
+						<div class="col-sm-9">
+							 <select class="form-control" name="pinAlgorithm"></select>
+				    	</div>
+					</div>
+					<div class="form-group" id="macAlgorithmDiv">
+						<label class="col-sm-3 control-label">mac算法:</label>
+						<div class="col-sm-9">
+							<select class="form-control" name="macAlgorithm"></select>
+				    	</div>
+					</div>
+					<div class="form-group" id="payPinkeyIdDiv">
+						<label class="col-sm-3 control-label">支付PIN密钥索引:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="payPinkeyId" name="payPinkeyId" placeholder="请输入支付PIN密钥索引(数字类型)">
+				    	</div>
+					</div>
+					<div class="form-group" id="payMackeyIdDiv">
+						<label class="col-sm-3 control-label">支付MAC密钥索引:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="payMackeyId" name="payMackeyId" placeholder="请输入支付MAC密钥索引(数字类型)">
+				    	</div>
+					</div>
+					<div class="form-group" id="payPkeyIdDiv">
+						<label class="col-sm-3 control-label">支付主密钥索引:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" name="payPkeyId" placeholder="请输入支付主密钥索引(数字类型)">
+				    	</div>
+					</div>
+					<div class="form-group" id="payTermNoDiv">
+						<label class="col-sm-3 control-label">终端号:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" name="payTermNo" placeholder="请输入终端号:">
+				    	</div>
+					</div>
+					<div class="form-group" id="bussShortnameDiv">
+						<label class="col-sm-3 control-label">业务系统简称:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" name="bussShortname" placeholder="请输入业务系统简称">
+				    	</div>
+					</div>
+					<div class="form-group" id="qrcodeTimeoutDiv">
+						<label class="col-sm-3 control-label">二维码有效时间:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" name="qrcodeTimeout" placeholder="请输入二维码有效时间">
+				    	</div>
+					</div>
+					<div class="form-group" id="orderTimeoutDiv">
+						<label class="col-sm-3 control-label">订单有效时间:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="orderTimeout" name="orderTimeout" placeholder="请输入订单有效时间">
+				    	</div>
+					</div>
+					<div class="form-group" id="serviceAddressDiv">
+						<label class="col-sm-3 control-label">服务器地址:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="serviceAddress" name="serviceAddress" placeholder="请输入服务器地址">
+				    	</div>
+					</div>
+					<div class="form-group" id="billFilePathDiv">
+						<label class="col-sm-3 control-label">账单下载地址:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="billFilePath" name="billFilePath" placeholder="请输入账单下载地址">
+				    	</div>
+					</div>
+					<div class="form-group" id="companyPidDiv">
+						<label class="col-sm-3 control-label">公司支付宝协议ID:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" name="companyPid" placeholder="请输入公司支付宝协议ID">
+				    	</div>
+					</div>
+					<div class="form-group" id="wxPayKeyDiv">
+						<label class="col-sm-3 control-label">微信商户支付密钥:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="wxPayKey" name="wxPayKey" placeholder="请输入微信商户支付密钥">
+				    	</div>
+					</div>
+					<div class="form-group" id="wxSslcertPasswordDiv">
+						<label class="col-sm-3 control-label">微信证书密码:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="wxSslcertPassword" name="wxSslcertPassword" placeholder="请输入微信证书密码">
+				    	</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" onclick="app.admin.shopInfo.save()">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/baseinfo/shopInfo.js}"></script>
+<script>
+ app.admin.shopInfo.init();
+</script>

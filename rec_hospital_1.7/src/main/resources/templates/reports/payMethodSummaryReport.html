@@ -1,0 +1,91 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+	    <div class="row tool-box-content">
+			<form class="form-inline" id="payMethodSummarySearchForm">
+				<div class="row tool-box-content">
+					<div class="form-group">
+						<label>所属机构:</label>
+					</div>
+					<div class="form-group">
+						<input type="text" style="width: 280px;" class="form-control" data-name="code" id="payMethodSummaryTree"/>
+					</div>
+					<div class="form-group">
+						<div class="form-group">
+							<label>开始时间:</label>
+						</div>
+						<div class="input-group">
+							<input AUTOCOMPLETE="off" type="text" class="form-control pull-right"
+								placeholder="开始时间" name="startTime">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="endTime">结束时间：</label>
+						<div class="input-group">
+							<input AUTOCOMPLETE="off" type="text" style="width: 200px"
+								class="form-control pull-right" placeholder="结束时间" name="endTime">
+						</div>
+					</div>
+					<div class="form-group">
+						<button type="button" class="btn btn-primary"
+							onclick="app.admin.payMethodSummaryReport.search()">查询</button>
+						<button id="btn_add" type="button" class="btn btn-success"
+							onclick="app.admin.payMethodSummaryReport.exportData()">导出</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="row">
+			<input type="hidden" th:value="${orgJSON}" id="payMethodOrgNo">
+	       	<input type="hidden" th:value="${typesJSON}" id="payMethodType">
+	       	<input type="hidden" th:value="${tradeDate}" id="payMethodDate">
+			<table class="table table-bordered table-nomal" id="payMethodSummaryDataTable" data-striped="false">
+		        <thead>
+	        	  <tr>
+					<th data-valign="middle" data-align="center" colspan="16" data-width="1500" name="tableTitle"></th>
+				  </tr>
+		          <tr>
+		            <th data-valign="middle" data-align="center" data-width="187.5" colspan="2"></th>
+		            <th data-valign="middle" data-align="center" data-width="187.5" colspan="2" >挂号</th>
+		            <th data-valign="middle" data-align="center" data-width="187.5" colspan="2" >预约挂号</th>
+		            <th data-valign="middle" data-align="center" data-width="187.5" colspan="2" >缴费</th>
+		            <th data-valign="middle" data-align="center" data-width="187.5" colspan="2" >门诊充值</th>
+		            <th data-valign="middle" data-align="center" data-width="187.5" colspan="2" >住院预缴金</th>
+		            <th data-valign="middle" data-align="center" data-width="187.5" colspan="2" >其他</th>
+		            <th data-valign="middle" data-align="center" data-width="187.5" colspan="2">合计</th>
+		          </tr>
+		          <tr>
+		            <th data-field="source" data-align="center" data-width="93.75" data-cell-style="app.admin.payMethodSummaryReport.setBold">来源</th>
+		            <th data-field="payType" data-align="center" data-width="93.75" data-cell-style="app.admin.payMethodSummaryReport.setBold">支付方式</th>
+		            
+		            <th data-field="regCount" data-align="center" data-width="93.75" data-cell-style="app.admin.payMethodSummaryReport.setBold">笔数</th>
+		            <th data-field="regPayAmount" data-align="center" data-width="93.75" data-cell-style="app.admin.payMethodSummaryReport.setBold" data-formatter="app.admin.payMethodSummaryReport.moneyFormat">金额</th>
+		            
+		            <th data-field="appointmentCount" data-align="center" data-width="93.75" data-cell-style="app.admin.payMethodSummaryReport.setBold">笔数</th>
+		            <th data-field="appointmentPayAmount" data-align="center" data-width="93.75" data-cell-style="app.admin.payMethodSummaryReport.setBold" data-formatter="app.admin.payMethodSummaryReport.moneyFormat">金额</th>
+		            
+		            <th data-field="payCount" data-align="center" data-width="93.75" data-cell-style="app.admin.payMethodSummaryReport.setBold">笔数</th>
+		            <th data-field="payPayAmount" data-align="center" data-width="93.75" data-cell-style="app.admin.payMethodSummaryReport.setBold" data-formatter="app.admin.payMethodSummaryReport.moneyFormat">金额</th>
+		            
+		            <th data-field="rechargeCount" data-align="center" data-width="93.75" data-cell-style="app.admin.payMethodSummaryReport.setBold">笔数</th>
+		            <th data-field="rechargePayAmount" data-align="center" data-width="93.75" data-cell-style="app.admin.payMethodSummaryReport.setBold" data-formatter="app.admin.payMethodSummaryReport.moneyFormat">金额</th>
+		            
+		            <th data-field="prePaymentCount" data-align="center" data-width="93.75" data-cell-style="app.admin.payMethodSummaryReport.setBold">笔数</th>
+		            <th data-field="prePaymentPayAmount" data-align="center" data-width="93.75" data-cell-style="app.admin.payMethodSummaryReport.setBold" data-formatter="app.admin.payMethodSummaryReport.moneyFormat">金额</th>
+		            
+		            <th data-field="otherCount" data-align="center" data-width="93.75" data-cell-style="app.admin.payMethodSummaryReport.setBold">笔数</th>
+		            <th data-field="otherPayAmount" data-align="center" data-width="93.75" data-cell-style="app.admin.payMethodSummaryReport.setBold" data-formatter="app.admin.payMethodSummaryReport.moneyFormat">金额</th>
+		            
+		            <th data-field="count" data-align="center" data-width="93.75" data-cell-style="app.admin.payMethodSummaryReport.setBold">笔数</th>
+		            <th data-field="payAmount" data-align="center" data-width="93.75" data-cell-style="app.admin.payMethodSummaryReport.setBold" data-formatter="app.admin.payMethodSummaryReport.moneyFormat">金额</th>
+		          </tr>
+		        </thead>
+		    </table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/reports/payMethodSummaryReport.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/reports.css}">
+<script>
+//初始化
+app.admin.payMethodSummaryReport.init();
+</script> 

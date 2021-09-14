@@ -1,0 +1,98 @@
+@charset "UTF-8";
+.insurance-order {
+  /*分类信息*/ }
+  .insurance-order .insurance-centre {
+    margin: 30px 20px;
+    height: 500px; }
+  .insurance-centre{
+  margin-left:-15px;
+  min-width: 1037px;}
+  .insurance-order .insurance-list {
+    width: 310px;
+    float: left;
+    margin-right: 20px;
+    padding: 20px 20px; }
+  .insurance-order .title-left {
+    height: 16px;
+    font-size: 16px;
+    line-height: 1;
+    color: #333333;
+    margin-bottom: 14px; 
+  }
+  .insurance-order .title-center {
+    color: #999999;
+    line-height: 1;
+    font-size: 14px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px; }
+  .insurance-order .amount {
+    text-align: center;
+    color: #3071ea;
+    font-size:24px;
+    line-height:1;
+    margin-bottom: 0;
+    font-family: PingFang-SC-Bold;
+   }
+  .insurance-order .drawing {
+    width: 100%;
+    height: 180px;
+    /* background: #12ce8a; */
+    border-radius: 50%;
+    position: relative;
+    margin: 0 auto; }
+    
+  .insurance-order .drawing-diff {
+  	margin-top:30px;
+    width: 120px;
+    height: 120px;
+    background: #eff3f9;
+    border-radius: 50%;
+    position: absolute;
+    margin-left: 50%;
+    transform: translateX(-50%);
+   }
+  .insurance-order .classify {
+    width: 100%;
+    position: relative;
+    padding-left: 20px; }
+  .insurance-order .classify li {
+    float: left;
+    margin-bottom: 10px;
+    font-size:20px;
+    list-style: disc; }
+  .insurance-order .classify .left {
+    width: 55%; }
+  .insurance-order .classify .right {
+    width: 45%; }
+
+
+  .insurance-order .classify-title {
+    font-size: 14px;
+    line-height: 20px;
+    color: #8084a7;
+    vertical-align: middle;
+    margin-bottom: 4px;
+  }
+  .insurance-order .classify-amount {
+    color: #333333;
+    margin-bottom: 0;
+    font-size: 14px;
+  }
+  .insurance-order .diff .amount {
+    color: #ec639f; }
+
+/*# sourceMappingURL=insuranceOrder.css.map */
+
+
+
+.th-info {
+  font-size: 14px;
+  color: #699dff;
+}
+
+
+.th-his-info {
+  font-size: 14px;
+  color: #12ce8a;
+}

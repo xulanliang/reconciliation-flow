@@ -1,0 +1,842 @@
+<!-- 异常账单查询 -->
+<link rel="stylesheet" type="text/css" href="assets/css/common.css">
+<link rel="stylesheet" type="text/css"
+	  href="assets/css/electronOrder.css">
+<!--media="print"-->
+<link rel="stylesheet" href="assets/css/orderAbnormal.css">
+
+<div class="m-content-wrapper"> <!-- main-box -->
+	<div class="table-content-wrap electron-order" id="unusualBill-data-div">
+		<form class="form-inline m-search" id="unusualBillSearchForm">
+			<div class="row tool-box-content">
+				<div class="form-group">
+					<label class="search-label">机构选择 </label>
+					<div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control"
+							   data-name="code" id="unusualBillOrgTree" placeholder="所属机构" />
+					</div>
+				</div>
+				<div class="form-group" th:if="${electronicRecPatTypeDisplay}">
+					<label class="search-label">数据来源 </label>
+					<div class="form-group no-margin">
+						<select class="form-control" id="dataSourceTree">
+							<option>全部</option>
+							<option>住院</option>
+							<option>门诊</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="startTime">对账日期 </label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input AUTOCOMPLETE="off" type="text"
+							   class="form-control pull-right" placeholder="对账日期"
+							   name="startTime" id="unusualBillRecTime" readonly="readonly">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="billSource">渠道名称 </label>
+					<div class="form-group no-margin">
+						<select class="form-control" name="billSource">
+							<option value="">全部</option>
+							<option>金蝶</option>
+							<option>巨鼎</option>
+							<option>其他来源</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="businessNo">支付方流水号 </label>
+					<div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control"
+							   name="businessNo" placeholder="支付方流水号" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="hisFlowNo">HIS流水号 </label>
+					<div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control"
+							   name="hisFlowNo" placeholder="HIS式流水号" />
+					</div>
+				</div>
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary"
+							onclick="app.admin.unusualBil.search(this)">查询</button>
+					<button type="button" class="btn btn-success" title="导出功能只导出未处理异常账单"
+							onclick="app.admin.unusualBil.exportData()">导出</button>
+					<button type="button" class="btn btn-default" title="打印功能只打印未处理异常账单"
+							onclick="app.admin.unusualBil.printData()">打印</button>
+				</div>
+			</div>
+		</form>
+
+		<!--收入总额-start-->
+		<!--<div class="electron clear-float">-->
+		<!--<input type="hidden" th:value="${orgJSON}" id="electronicOrgNo">-->
+		<input type="hidden" th:value="${typesJSON}" id="electronicType">
+		<!--<input type="hidden" th:value="${date}" id="electronicTradeDate">-->
+		<input type="hidden" th:value="${orgNo}" id="electronicOrgNoInit">
+		<input type="hidden" th:value="${isRefundExamine}"
+			   id="unusualBillIsRefundExamine">
+		<input type="hidden" th:value="${electronicRecDetailButtonOnly}"
+			   id="unusualBillDetailButtonOnly"/>
+		<!--</div>-->
+		<!--收入总额-end-->
+		<!--<div class="separator"></div>-->
+		<!--<ul class="user-nav border pay-type-list clear-float">-->
+		<!--</ul>-->
+		<!--支付渠道-->
+		<input type="hidden" value="" id="billSource">
+		<!--支付方式-->
+		<input type="hidden" value="" id="payType">
+		<!--<ul class="pay-methods clear-float"></ul>-->
+
+		<div class="row">
+			<h4>异常账单</h4>
+			<p>
+			<div class="btn-group" id="unusualBIllTable">
+				<button style="background-color: #ECF5FF" class="btn btn-default"
+						name="electronicBtn"
+						onclick="app.admin.unusualBil.showExceptionTrade('all')">所有</button>
+				<button class="btn btn-default" name="electronicBtn"
+						onclick="app.admin.unusualBil.showExceptionTrade('third')">长款</button>
+				<button class="btn btn-default" name="electronicBtn"
+						onclick="app.admin.unusualBil.showExceptionTrade('his')">短款</button>
+			</div>
+			</p>
+		</div>
+
+		<div class="row">
+			<div class="summary-amount-line">
+				<span class="title">差异总金额:</span><span class="text" id="unusuaBillAmount"></span><br></br>
+			</div>
+			<div class="summary-amount-line">
+				<span class="title">账单笔数:</span><span class="text" id="unusuaBillOrderNumber"></span>
+			</div>
+		</div>
+		<div class="row" id="printDiv">
+			<table class="table table-bordered table-nomal"
+				   id="unusualBillDataTable" data-striped="false">
+				<thead>
+				<tr>
+					<th data-field="businessNo" data-width="8%" data-sortable="true"
+						data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">支付方流水号
+					</th>
+					<th data-field="hisFlowNo" data-width="7%" data-sortable="true"
+						data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">HIS流水号
+					</th>
+					<th data-field="payName" data-width="8%" data-sortable="true"
+						data-formatter="app.admin.unusualBil.formatter">支付类型
+					</th>
+					<th data-field="tradeName" data-formatter="app.admin.unusualBil.formatter"
+						data-sortable="true" data-width="7%">交易类型
+					</th>
+					<th data-field="tradeAmount" data-sortable="true"
+						data-formatter="app.admin.unusualBil.moneyFormat" data-width="8%">交易金额(元)
+					</th>
+					<th data-field="patientName" data-sortable="true" data-width="7%">患者姓名</th>
+					<th data-field="tradeTime" data-sortable="true" data-width="11%">交易时间</th>
+					<th data-field="billSource" data-sortable="true"
+						data-formatter="app.admin.unusualBil.formatter" data-width="7%">渠道名称
+					</th>
+					<!-- 						<th data-field="businessType" data-sortable="true" data-formatter="app.admin.electronic.formatter" data-width="8%">业务类型</th> -->
+					<th data-field="exceptionType" data-sortable="false"
+						data-formatter="app.admin.unusualBil.exceptionState"
+						data-width="6%">异常状态
+					</th>
+					<th data-field="checkStateValue"
+						data-formatter="app.admin.unusualBil.currentState"
+						data-width="6%">当前状态</th>
+					<th data-field="id" data-sortable="false"
+						data-align="center"
+						data-formatter="app.admin.unusualBil.formatHandler"
+						data-width="200">操作
+					</th>
+				</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="followLoading" tabindex="-1" role="dialog"
+	 aria-labelledby="myModalLabel" data-backdrop='static'>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">提示</h4>
+			</div>
+			<div class="modal-body">请稍候。。。</div>
+		</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="unusualBIllFollowDetailDlg" tabindex="-1"
+	 role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+				<h4 class="modal-title">汇总明细</h4>
+			</div>
+			<div class="modal-body" name="electronicFollowDetailDlgBody"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="unusualBillDealFollowDlg" tabindex="-2"
+	 role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+				<h4 class="modal-title" hidden="false" id="floating">平账</h4>
+				<h4 class="modal-title" hidden="false" id="recover">追回</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form"
+					  id="unusualBillDealFollowDlgDlg" enctype="multipart/form-data">
+					<input type="text" name="payFlowNo" style="display: none;" />
+					<input type="text" name="checkState" style="display: none;" />
+					<input type="text" name="tradeAmount" style="display: none;" />
+					<input type="text" name="orgCode" style="display: none;" />
+					<input type="text" name="tradeDatetime" style="display: none;" />
+					<div class="form-group">
+						<label class="col-sm-2 control-label" hidden="false" id="floatingSeason">平账原因:</label>
+						<label class="col-sm-2 control-label" hidden="false" id="recoverSeason">追回原因:</label>
+						<div class="col-sm-10">
+							<textarea rows="4" class="form-control" cols="40"
+									  name=description></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">上传图片:</label>
+						<div class="col-sm-10">
+							<input type="file" name="file" />
+							<lable>温馨提示：图片最大支持2M，支持格式为bmp.png jpeg.jpg.gif</lable>
+						</div>
+					</div>
+					<!-- <div class="form-group">
+						<lable class="col-sm-12 control-label"
+							style="color:red;text-align:center;">温馨提示：该订单属于短款，此订单只做标记处理。</lable>
+					</div> -->
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="save"
+						onclick="app.admin.unusualBil.save()">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="unusualBillShowHandFollowDlg" tabindex="-3"
+	 role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+				<h4 class="modal-title">手动处理原因</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<lable name="description">描述</lable>
+				</div>
+				<div class="form-group">
+					<img style="width: 150px; height: 100px;" name="fileLocation"
+						 src="" alt="" />
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="unusualBillDlg" tabindex="-1" role="dialog"
+	 data-backdrop="false">
+	<div class="modal-dialog" style="width: 900px;">
+		<div class="modal-content order-abnormal">
+			<div class="abnormal border ">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+					<h4 class="modal-title">订单详情</h4>
+				</div>
+				<div class="abnormal-text">
+					<div id="unusualBillOrderStep">
+						<div class="electronic-step-legend">
+							<div class="pay-step-thrid"><div class='electronic-step-legend-item'><div></div></div>渠道</div>
+							<div class="pay-step-his"><div class='electronic-step-legend-item'><div></div></div>HIS</div>
+							<div class="pay-step-refund"><div class='electronic-step-legend-item'><div></div></div>手动退费</div>
+						</div>
+						<div id="unusualBillPayStepBox" data-interval="false" data-wrap="false" class="electronic-rec-pay-step-box carousel slide">
+							<a class="electronic-rec-pay-step-left disabled" href="#unusualBillPayStepBox" data-slide="prev"></a>
+							<div class="carousel-inner">
+							</div>
+							<a class="electronic-rec-pay-step-right" href="#unusualBillPayStepBox" data-slide="next"></a>
+						</div>
+					</div>
+					<ul class="detail">
+						<li class=" detail-card" form="unusualHisOrderTableForm" hidden="true">
+							<p class="detail-title">HIS订单信息<span style="color:red" data-name="his_titleState"></span></p>
+							<table class="table table-bordered table-nomal" id="unusualHisOrderTable" data-striped="false" style="min-width:699px;">
+								<thead>
+								<tr>
+									<th data-field="payFlowNo" data-sortable="true" data-width=280px>支付方流水号</th>
+									<th data-field="hisFlowNo"  data-sortable="true" data-width=140px>HIS流水号</th>
+									<th data-field="patName" data-sortable="true" data-width=100px>患者姓名</th>
+									<th data-field="patType" data-sortable="true" data-width=100px>患者类型</th>
+									<th data-field="patNumber" data-sortable="true" data-width=100px>患者ID</th>
+									<th data-field="payType" data-sortable="true" data-width=100px>支付类型</th>
+									<th data-field="orderState" data-sortable="true" data-width=100px>订单状态</th>
+									<th data-field="tradeTime" data-sortable="true" data-width=170px>交易时间</th>
+									<th data-field="tradeAmount"  data-sortable="true" data-width=120px>交易金额(元)</th>
+								</tr>
+								</thead>
+							</table>
+						</li>
+						<li class=" detail-card" form="hisOrder" hidden="true">
+							<p class="detail-title">
+								HIS订单信息<span style="color:red;vertical-align: text-top;" data-name="his_titleState"></span>
+							</p>
+							<ul class="detail-list-plan">
+								<li class="detail-text">
+									<div class="detail-text-list ">
+										<p class="list-left">患者姓名：</p>
+										<p class="list-right" data-name="patName"></p>
+									</div>
+									<div class="detail-text-list">
+										<p class="list-left">患者类型：</p>
+										<p class="list-right" data-name="patType"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">订单状态：</p>
+										<p class="list-right" data-name="orderState"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">支付流水号：</p>
+										<p class="list-right" data-name="payFlowNo"></p>
+									</div>
+								</li>
+								<li class="detail-text">
+									<div class="detail-text-list ">
+										<p class="list-left">交易金额：</p>
+										<p class="list-right" data-name="tradeAmount"></p>
+									</div>
+									<div class="detail-text-list">
+										<p class="list-left">交易时间：</p>
+										<p class="list-right" data-name="tradeTime"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">就诊卡号：</p>
+										<p class="list-right" data-name="visitNumber"></p>
+									</div>
+								</li>
+
+								<li class="detail-text">
+									<div class="detail-text-list ">
+										<p class="list-left">参考号：</p>
+										<p class="list-right" data-name="referenceNum"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">病人号：</p>
+										<p class="list-right" data-name="patNumber"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">商户订单号：</p>
+										<p class="list-right" data-name="shopFlowNo"></p>
+									</div>
+									<div class="detail-text-list">
+										<p class="list-left">HIS流水号：</p>
+										<p class="list-right" data-name="hisFlowNo"></p>
+									</div>
+								</li>
+								<li class="detail-text">
+									<div class="detail-text-list">
+										<p class="list-left">支付类型：</p>
+										<p class="list-right" data-name="payType"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">商户号：</p>
+										<p class="list-right" data-name="payShopNo"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">终端号：</p>
+										<p class="list-right" data-name="terminalNo"></p>
+									</div>
+								</li>
+							</ul>
+						</li>
+						<li class=" detail-card" form="unusualPayOrderTableForm" hidden="true">
+							<p class="detail-title">支付订单信息</p>
+							<table class="table table-bordered table-nomal" id="unusualPayOrderTable" data-striped="false" >
+								<thead>
+								<tr>
+									<th data-field="orderNo" data-sortable="true" data-width=280px>支付方流水号</th>
+									<th data-field="shopFlowNo" data-sortable="true" data-width=200px>商户流水号</th>
+									<th data-field="payAmount" data-sortable="true" data-width=120px>交易金额(元)</th>
+									<th data-field="businessType" data-sortable="true" data-width= 100px>业务类型</th>
+									<th data-field="orderState"  data-sortable="true"data-width=100px>订单状态</th>
+									<th data-field="custName" data-sortable="true" data-width=100px>患者姓名</th>
+									<th data-field="patType" data-sortable="true" data-width=100px>患者类型</th>
+									<!-- <th data-field="patientCardNo" data-sortable="true" data-width=100px>患者ID</th> -->
+									<th data-field="payType" data-sortable="true" data-width=100px>支付类型</th>
+									<th data-field="tradeDatatime" data-sortable="true" data-width=170px>交易时间</th>
+								</tr>
+								</thead>
+							</table>
+							<ul class="detail-list">
+								<div class="handle-description">
+									<div class="detail-text-list electronic-desc-img">
+										<p class="list-left">
+											<a data-name="descImg" value="" href="javascript:void()"
+											   onclick="app.admin.unusualBil.showImg(this)">查看图片附件</a>
+										</p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">处理说明：</p>
+										<p class="list-right" data-name="description"
+										   style="white-space: normal"></p>
+									</div>
+								</div>
+							</ul>
+						</li>
+						<li class=" detail-card" form="payOrder" hidden="true">
+							<p class="detail-title">支付订单信息</p>
+							<ul class="detail-list-plan">
+								<li class="detail-text">
+									<div class="detail-text-list ">
+										<p class="list-left">患者姓名：</p>
+										<p class="list-right" data-name="thirdDetail_custName"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">患者类型：</p>
+										<p class="list-right" data-name="thirdDetail_patType"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">订单状态：</p>
+										<p class="list-right" data-name="thirdDetail_orderState"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">支付流水号：</p>
+										<p class="list-right" data-name="thirdDetail_orderNo"></p>
+									</div>
+								</li>
+								<li class="detail-text">
+									<div class="detail-text-list">
+										<p class="list-left">交易金额：</p>
+										<p class="list-right" data-name="thirdDetail_payAmount"></p>
+									</div>
+									<div class="detail-text-list">
+										<p class="list-left">交易时间：</p>
+										<p class="list-right" data-name="thirdDetail_tradeDatatime"></p>
+									</div>
+									<div class="detail-text-list">
+										<p class="list-left">就诊卡号：</p>
+										<p class="list-right" data-name="patientCardNo"></p>
+									</div>
+								</li>
+								<li class="detail-text">
+									<div class="detail-text-list">
+										<p class="list-left">参考号：</p>
+										<p class="list-right" data-name="referenceNum"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">终端号：</p>
+										<p class="list-right" data-name="payTermNo"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">商户号：</p>
+										<p class="list-right" data-name="payShopNo"></p>
+									</div>
+									<div class="detail-text-list">
+										<p class="list-left">商户订单号：</p>
+										<p class="list-right" data-name="thirdDetail_businessFlowNo"></p>
+									</div>
+								</li>
+								<li class="detail-text">
+									<div class="detail-text-list">
+										<p class="list-left">业务类型：</p>
+										<p class="list-right" data-name="thirdDetail_businessType"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">支付类型：</p>
+										<p class="list-right" data-name="thirdDetail_payType"></p>
+									</div>
+									<div class="detail-text-list">
+										<p class="list-left">授权码：</p>
+										<p class="list-right" data-name="thirdDetail_authoriCode"></p>
+									</div>
+								</li>
+							</ul>
+							<ul class="detail-list clear-float">
+								<div class="handle-description">
+									<div class="detail-text-list electronic-desc-img">
+										<p class="list-left">
+											<a data-name="descImg" value="" href="javascript:void()"
+											   onclick="app.admin.unusualBil.showImg(this)">查看图片附件</a>
+										</p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">处理说明：</p>
+										<p class="list-right" data-name="description"
+										   style="white-space: normal"></p>
+									</div>
+								</div>
+							</ul>
+						</li>
+
+					</ul>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 退费操作 -->
+<div class="modal fade" id="unusualBillRefundFollowDlg" tabindex="-4"
+	 role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+				<h4 class="modal-title">退费操作</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form"
+					  id="unusualBillRefundFollowDlgDlg" enctype="multipart/form-data">
+					<input type="text" name="id" style="display: none;" />
+					<input type="text" name="orderNo" style="display: none;" />
+					<input type="text" name="payCode" style="display: none;" />
+					<!-- 退款金额 -->
+					<input type="text" name="tradeAmount" id="tradeAmount" style="display: none;" />
+					<!-- 订单金额 -->
+					<input type="text" name="payAmount" id="payAmount" style="display: none;" />
+					<input type="text" name="billSource" style="display: none;" />
+					<input type="text" name="orgCode" style="display: none;" />
+					<input type="text" name="state" style="display: none;" />
+					<input type="text" name="time" style="display: none;" />
+					<input type="text" name="tradetime" style="display: none;" />
+					<input type="text" id="businessType" name="businessType" style="display: none;" />
+					<input type="text" name="shopNo" style="display: none;" />
+					<input type="text" name="patType" style="display: none;" />
+					<input type="text" name="payNo" style="display: none;" />
+					<input type="text" name="terminalNo" style="display: none;" />
+					<!-- 发票号 -->
+					<input type="text" name="invoiceNo" style="display: none;" />
+					<input type="text" name="payType" style="display: none;" />
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label">退费原因:</label>
+						<div class="col-sm-10">
+							<textarea rows="4" class="form-control" cols="40" name="reason"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">退款金额:</label>
+						<div class="col-sm-10">
+							<input type="number" onkeyup="app.admin.electronic.numExt(this)" size="10" class="form-control" id="refundAmount">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">退款类型:</label>
+						<div class="col-sm-10">
+							<select class="form-control" name="refundType" id="refundType">
+								<option value="1">原路径退回</option>
+								<option value="2">线下现金退回</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">上传图片:</label>
+						<div class="col-sm-10">
+							<input type="file" name="file" />
+							<lable>仅支持图片</lable>
+						</div>
+					</div>
+					<div id="cashier" class="form-group" style="display: none;">
+						<label class="col-sm-2 control-label">操作员:</label>
+						<div class="col-sm-10">
+							<input type="text" id="cashierId" class="form-control" name="cashier"/>
+						</div>
+					</div>
+					<div id="counterNo" class="form-group" style="display: none;">
+						<label class="col-sm-2 control-label">终端号:</label>
+						<div class="col-sm-10">
+							<input type="text" id="counterNoId" class="form-control"  name="counterNo" />
+						</div>
+					</div>
+					<div id="bocNo" class="form-group" style="display: none;">
+						<label class="col-sm-2 control-label">流水号:</label>
+						<div class="col-sm-10">
+							<input type="text" id="bocNoId" class="form-control"  name="bocNo" />
+						</div>
+					</div>
+					<div id="sqm" class="form-group" style="display: none;">
+						<label class="col-sm-2 control-label">授权码:</label>
+						<div class="col-sm-10">
+							<input type="text" id="sqmId" class="form-control" name="sqm"/>
+						</div>
+					</div>
+					<div id="pjh" class="form-group" style="display: none;">
+						<label class="col-sm-2 control-label">票据号:</label>
+						<div class="col-sm-10">
+							<input type="text" id="pjhId" class="form-control" name="pjh"/>
+						</div>
+					</div>
+					<div id="sysNo" class="form-group" style="display: none;">
+						<label class="col-sm-2 control-label">系统订单号:</label>
+						<div class="col-sm-10">
+							<input type="text" id="sysNoId" class="form-control"  name="sysNo" />
+						</div>
+					</div>
+					<!-- <div class="form-group">
+						<lable class="col-sm-12 control-label"
+							style="color:red;text-align:center;">温馨提示：只能退费接入巨鼎的订单。</lable>
+					</div> -->
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="refundSave"
+						onclick="app.admin.unusualBil.refundSave()">处理</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript"
+		th:src="@{/assets/js/recon/unusualBill.js}"></script>
+<script type="text/javascript"
+		th:src="@{/assets/js/print-plugUtil.js}"></script>
+
+<script th:inline="javascript">
+	//获取后台传递的值
+	var orgJSON = [[${orgJSON}]];
+	var billSource = [[${billSource}]];
+	var patType = [[${patType}]];
+	var typesJSON=[[${typesJSON}]];
+	var beginTime = [[${beginTime}]];
+	var endTime = [[${endTime}]];
+	app.admin.unusualBil.init(orgJSON,beginTime, endTime);
+
+	$(document).ready(function () {
+		$("#dataSourceTree").change(function (val) {
+			var dataSource =  $("#dataSourceTree").val();
+			// 重新加载"渠道名称下拉框"
+			app.admin.unusualBil.searchPayDetail(dataSource);
+		})
+	})
+
+</script>
+
+
+<style>
+	.electronic-rec-pay-step{
+		overflow: hidden;
+		font-size: 12px;
+		display: flex;
+		flex-wrap: wrap;
+		margin:30px 0;
+		position: relative;
+	}
+	.electronic-rec-pay-step:BEFORE{
+		content: " ";
+		position: absolute;
+		left: 45px;
+		right: 0;
+		top: 50%;
+		transform: translateY(-50%);
+		height: 2px;
+		background: #eaeced;
+	}
+	.electronic-rec-pay-step:AFTER{
+		content: " ";
+		position: absolute;
+		top: 50%;
+		right:-5px;
+		transform: translateY(-50%);
+		width: 0;
+		height: 0;
+		border-width: 5px;
+		border-style: solid;
+		border-color:transparent transparent transparent #eaeced;
+	}
+	.electronic-rec-pay-step.last-his:BEFORE{
+		background: #26d9b5;
+	}
+	.electronic-rec-pay-step.last-his:AFTER{
+		border-color:transparent transparent transparent #26d9b5;
+	}
+	.electronic-rec-pay-step.last-thrid:BEFORE{
+		background: #49bbfc;
+	}
+	.electronic-rec-pay-step.last-thrid:AFTER{
+		border-color:transparent transparent transparent #49bbfc;
+	}
+	.electronic-rec-pay-step.last-refund:BEFORE
+	{
+		background: #fdc07e;
+	}
+	.electronic-rec-pay-step.last-refund:AFTER{
+		border-color:transparent transparent transparent #fdc07e;
+	}
+	.electronic-rec-pay-step-box{
+		display: flex;
+		align-items: center;
+	}
+	.electronic-rec-pay-step-left{
+		margin-right: 30px;
+		margin-left: -10px;
+		content: url(assets/img/electronic/left.png);
+	}
+	.electronic-rec-pay-step-left[disabled],
+	.electronic-rec-pay-step-left.disabled,
+	.electronic-rec-pay-step-left:hover{
+		content: url(assets/img/electronic/hover-left.png);
+	}
+	.electronic-rec-pay-step-right{
+		margin-right: -10px;
+		margin-left: 30px;
+		content: url(assets/img/electronic/right.png);
+	}
+	.electronic-rec-pay-step-right[disabled],
+	.electronic-rec-pay-step-right.disabled,
+	.electronic-rec-pay-step-right:hover{
+		content: url(assets/img/electronic/hover-right.png);
+	}
+	.electronic-rec-pay-step-item{
+		position: relative;
+		min-width: 15%;
+		text-align: center;
+		display: inline-block;
+	}
+	.electronic-rec-pay-step-item:FIRST-CHILD{
+		margin-left: -20px;
+	}
+	.electronic-rec-pay-step-item:LAST-CHILD{
+		/* margin-right: -25px; */
+	}
+	.electronic-step-legend{
+		display: flex;
+		justify-content: flex-end;
+		color: #999dad;
+		font-size: 12px;
+	}
+	.electronic-step-legend > div{
+		margin-left: 30px;
+	}
+	.electronic-step-legend .electronic-step-legend-item{
+		display: inline-block;
+		margin-right: 6px;
+	}
+	.electronic-step-legend-item,
+	.electronic-rec-pay-step-item-point{
+		width: 16px;
+		height: 16px;
+		border: 2px solid #26d9b5;
+		border-radius: 10px;
+		margin: 15px auto;
+		background: white;
+	}
+	.electronic-step-legend-item{
+		margin: 0px;
+		vertical-align: middle;
+		margin-top: -2px;
+	}
+	.electronic-step-legend-item div,
+	.electronic-rec-pay-step-item-point div{
+		width: 50%;
+		height: 50%;
+		background: #26d9b5;
+		border-radius: 10px;
+		margin: 50%;
+		transform: translate(-50%,-50%);
+	}
+	.electronic-rec-pay-step-item-point:BEFORE{
+		content: "";
+		height: 2px;
+		background: #26d9b5;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		left: 0;
+		right: 50%;
+		margin-right: 8px;
+	}
+	.electronic-rec-pay-step-item-point:AFTER{
+		content: "";
+		height: 2px;
+		background: #26d9b5;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		right: 0;
+		left: 50%;
+		margin-left: 8px;
+	}
+	.electronic-rec-pay-item-text{
+		text-align: center;
+		display: inline-block;
+		color: #333;
+		line-height: 18px;
+	}
+	.electronic-rec-pay-step-item-time{
+		text-align: center;
+		color: #999dad;
+		display: inline-block;
+		width: 90px;
+		line-height: 18px;
+	}
+	.pay-step-thrid .electronic-step-legend-item,
+	.pay-step-thrid .electronic-rec-pay-step-item-point{
+		border-color: #49bbfc;
+	}
+	.pay-step-thrid .electronic-step-legend-item div,
+	.pay-step-thrid .electronic-rec-pay-step-item-point:BEFORE,
+	.pay-step-thrid .electronic-rec-pay-step-item-point:AFTER,
+	.pay-step-thrid .electronic-rec-pay-step-item-point div{
+		background: #49bbfc;
+	}
+	.pay-step-his .electronic-step-legend-item,
+	.pay-step-his .electronic-rec-pay-step-item-point{
+		border-color: #26d9b5;
+	}
+	.pay-step-his .electronic-step-legend-item div,
+	.pay-step-his .electronic-rec-pay-step-item-point:BEFORE,
+	.pay-step-his .electronic-rec-pay-step-item-point:AFTER,
+	.pay-step-his .electronic-rec-pay-step-item-point div{
+		background: #26d9b5;
+	}
+	.pay-step-refund .electronic-step-legend-item,
+	.pay-step-refund .electronic-rec-pay-step-item-point{
+		border-color: #fdc07e;
+	}
+	.pay-step-refund .electronic-step-legend-item div,
+	.pay-step-refund .electronic-rec-pay-step-item-point:BEFORE,
+	.pay-step-refund .electronic-rec-pay-step-item-point:AFTER,
+	.pay-step-refund .electronic-rec-pay-step-item-point div{
+		background: #fdc07e;
+	}
+</style>

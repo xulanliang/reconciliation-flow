@@ -1,0 +1,247 @@
+/*公共样式*/
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+ul li {
+	list-style: none;
+}
+/*清楚浮动*/
+.clear:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+	zoom: 1;
+}
+/*小标题样式*/
+.title {
+	font-size: 14px;
+	line-height: 14px;
+	color: #999dad;
+}
+/*收入笔数样式*/
+.num {
+	color: #333333;
+	font-size: 18px;
+}
+/*背景颜色*/
+.background {
+	background-color: #f6fcff;
+}
+/*边框样式*/
+.border {
+	border: solid 1px #dde4e9;
+	border-radius: 3px;
+}
+
+.color-main {
+	color: #333;
+}
+
+.color-th {
+	color: #999dad;
+}
+
+.color-nav {
+	color: #8084a7;
+}
+
+.color-pholder {
+	color: #c2ccd8;
+}
+
+.color-link {
+	color: #3071ea;
+}
+
+.color-muted {
+	color: #dde4e9;
+}
+
+.color-primary {
+	color: #3071ea;
+}
+
+.color-success {
+	color: #12ce8a;
+}
+
+.color-warning {
+	color: #ff9c00;
+}
+
+.color-danger {
+	color: #ff4949;
+}
+
+.bg-muted {
+	background-color: #dde4e9;
+}
+
+.bg-primary {
+	background-color: #3071ea;
+}
+
+.bg-success {
+	background-color: #12ce8a;
+}
+
+.bg-warning {
+	background-color: #ff9c00;
+}
+
+.bg-danger {
+	background-color: #ff4949;
+}
+
+/*半圆按钮：开始*/
+
+/*左边半圆*/
+.btn-radius-left {
+	border-top-left-radius: 2em;
+	border-bottom-left-radius: 2em;
+}
+
+/*右边半圆*/
+.btn-radius-right {
+	border-top-right-radius: 2em;
+	border-bottom-right-radius: 2em;
+}
+
+/*左右两边半圆*/
+.btn-radius {
+	border-radius: 2em;
+}
+
+/*半圆按钮：结束*/
+.main-box {
+	min-width: 1430px;
+}
+
+.main-box>* {
+	width: 100%;
+}
+
+/*分段：开始
+
+
+使用说明：
+
+假设：
+段数为: segNum
+
+更改段数需要更改以下设置：
+.segment>* {
+width: segNum/100;
+}
+
+
+*/
+.segment {
+	padding: 8px 0;
+	white-space: nowrap;
+}
+
+.segment::after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.segment>* {
+	float: left;
+	height: 100%;
+	position: relative; /* 兼容子元素的定位布局 */
+	width: 33.3%; /* width 的值应为: segNum/100 */
+	border-color: #dde4e9;
+	border-width: 1px;
+	border-style: none none none solid;
+}
+
+.segment>*:first-child {
+	border-left-style: none;
+}
+
+/*分段：结束*/
+
+/* 块居中：开始
+
+使用说明：
+需要给父元素设置 position: relative;
+*/
+
+/*水平居中*/
+.block-center-h {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+/*垂直居中*/
+.block-center-v {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+/*垂直水平都居中*/
+.block-center-hv {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+/* 块居中：结束*/
+
+/*清除浮动*/
+.clear-float::after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.datepicker table tr td.disabled {
+	color: #c2ccd8;
+}
+
+/* 滚动条效果 */
+html ::-webkit-scrollbar {
+    width: 6px;
+}
+html ::-webkit-scrollbar-thumb {
+    background-color: #cccccc;
+}
+html * {
+    scrollbar-face-color:#cccccc;
+}
+
+
+
+
+
+
+
+
+.tradeActive {
+	background-color: #ECF5FF;
+}
+
+.mergeColumnCls {
+	text-align: center;
+	vertical-align: middle!important;
+} 
+
+.tableTitleArea {
+	margin-bottom: 10px;
+}
+
+
+
+.row-space {
+	margin-bottom: 50px;
+}

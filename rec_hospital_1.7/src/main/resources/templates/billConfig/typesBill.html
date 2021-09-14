@@ -1,0 +1,225 @@
+<style>
+	.control-label pull-right{
+		
+	}
+</style>
+<div class="m-content-wrapper" style="margin-top:0px;">
+	<div class="table-content-wrap" style="margin-top: 0px;">
+<!-- 		<div class="row tool-box-content"> -->
+<!-- 			<form class="form-inline"> -->
+<!-- 				<div class="form-group m-btn"></div> -->
+<!-- 			</form> -->
+<!-- 		</div> -->
+		<div class="row">
+			<div class="panel-group" id="billconfigaccordinon">
+				<form class="form-horizontal" role="form">
+					<div class="panel panel-default" 
+						style="width: 50%; float: left; margin-top: 0px;">
+						<div class="panel-heading">
+							<h4 class="panel-title" data-toggle="collapse">账单类型解析配置</h4>
+						</div>
+						<div class="panel-collapse collapse in">
+							<div class="panel-body">
+								<div class="form-group">
+									<div class="col-sm-2">
+										<label class="control-label pull-right">账单类型</label>
+									</div>
+									<div class="col-sm-5">
+										<span> 
+											<label class="radio-inline"> 
+												<input type="radio" onclick="app.admin.typesBillConfig.showOrhide(1)" name="billType" value="1">
+												<span>邮件</span>
+											</label> 
+											<label class="radio-inline"> 
+												<input type="radio" onclick="app.admin.typesBillConfig.showOrhide(2)" name="billType" value="2">
+												<span>ftp</span>
+											</label>
+											<label class="radio-inline"> 
+												<input type="radio" onclick="app.admin.typesBillConfig.showOrhide(3)" name="billType" value="3">
+												<span>本地</span>
+											</label>
+										</span>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-2">
+										<label class="control-label pull-right">解析类型</label>
+									</div>
+									<div class="col-sm-5">
+										<span> 
+											<label class="radio-inline"> 
+												<input type="radio" name="billPayType" value="0249">
+												<span>微信</span>
+											</label> 
+											<label class="radio-inline"> 
+												<input type="radio" name="billPayType" value="0349">
+												<span>支付宝</span>
+											</label>
+											<label class="radio-inline"> 
+												<input type="radio" name="billPayType" value="0449">
+												<span>银行</span>
+											</label>
+										</span>
+									</div>
+								</div>
+								<div id="emailDiv" style="display: none;">
+									<div class="form-group" id="configHost">
+										<div class="col-sm-2">
+											<label class="control-label pull-right">服务器host</label>
+										</div>
+										<div class="col-sm-5">
+											<input class="form-control" type="text" name="configHost"/> 
+										</div>
+									</div>
+									<div class="form-group" id="configProt">
+										<div class="col-sm-2">
+											<label class="control-label pull-right">端口号prot</label>
+										</div>
+										<div class="col-sm-5">
+											<input class="form-control" type="text" name="configProt"/> 
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-sm-2">
+											<label class="control-label pull-right">使用的协议</label>
+										</div>
+										<div class="col-sm-5">
+											<span> 
+												<label class="radio-inline"> 
+													<input type="radio" name="configAgreement" value="pop3">
+													<span>POP3</span>
+												</label> 
+												<label class="radio-inline"> 
+													<input type="radio" name="configAgreement" value="smtp">
+													<span>SMTP</span>
+												</label>
+												<label class="radio-inline"> 
+													<input type="radio" name="configAgreement" value="imap">
+													<span>IMAP</span>
+												</label>
+											</span>
+										</div>
+									</div>
+									<div class="form-group" id="userName">
+										<div class="col-sm-2">
+											<label class="control-label pull-right">用户名</label>
+										</div>
+										<div class="col-sm-5">
+											<input class="form-control" type="text" name="userName"/> 
+										</div>
+									</div>
+									<div class="form-group" id="passWord">
+										<div class="col-sm-2">
+											<label class="control-label pull-right">密码</label>
+										</div>
+										<div class="col-sm-5">
+											<input class="form-control" type="text" name="passWord"/> 
+										</div>
+									</div>
+								</div>
+								<div class="form-group" id="url">
+									<div class="col-sm-2">
+										<label class="control-label pull-right">pdf地址</label>
+									</div>
+									<div class="col-sm-5">
+										<input class="form-control" type="text" name="url"/> 
+									</div>
+								</div>
+								
+								
+								<div class="form-group" id="configAdd">
+									<div class="col-sm-2">
+										<label class="control-label pull-right">保存本地的地址</label>
+									</div>
+									<div class="col-sm-5">
+										<input class="form-control" type="text" name="configAdd"/> 
+									</div>
+								</div>
+								<div class="form-group" id="configRowStart">
+									<div class="col-sm-2">
+										<label class="control-label pull-right">解析第几行开始</label>
+									</div>
+									<div class="col-sm-5">
+										<input class="form-control" type="text" name="configRowStart"/> 
+									</div>
+								</div>
+								<div class="form-group" id="configLineStart">
+									<div class="col-sm-2">
+										<label class="control-label pull-right">解析第几列开始</label>
+									</div>
+									<div class="col-sm-5">
+										<input class="form-control" type="text" name="configLineStart"/> 
+									</div>
+								</div>
+								<div class="form-group" id="configFlter">
+									<div class="col-sm-2">
+										<label class="control-label pull-right">解析中需要过滤的字段</label>
+									</div>
+									<div class="col-sm-5">
+										<input class="form-control" type="text" name="configFlter"/> 
+									</div>
+								</div>
+								<div class="form-group" id="configPay">
+									<div class="col-sm-2">
+										<label class="control-label pull-right">缴费关键字</label>
+									</div>
+									<div class="col-sm-5">
+										<input class="form-control" type="text" name="configPay"/> 
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-2">
+										<label class="control-label pull-right">账单分隔符</label>
+									</div>
+									<div class="col-sm-5">
+										<span> 
+											<input class="form-control" name="configSplit" type="text"/> 
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default" 
+						style="width: 50%; float: left; margin-top: 0px; height: 580px;overflow-y:auto;">
+						<div class="panel-heading">
+							<h4 class="panel-title" data-toggle="collapse">账单字段映射配置</h4>
+						</div>
+						<div class="panel-collapse collapse in">
+							<div class="panel-body" id="mapperDiv">
+								<div class="form-group">
+									<div class="col-sm-2">
+										<label class="control-label pull-left">字段映射</label>
+									</div>
+									<div class="col-sm-2">
+										<input id="mapperKeyList" style="display: none;" name="mapperKeyList"/>
+										<input id="mapperValList" style="display: none;" name="mapperValList"/>
+										<button type="button" class="btn btn-success" onclick="app.admin.typesBillConfig.newAdd()">新增</button>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-2">
+										<label class="control-label pull-left">数据库字段</label>
+									</div>
+									<div class="col-sm-2">
+										<label class="control-label pull-left">账单下标值</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group" 
+						style="text-align: center; width: 100%; float: left; margin-top: 20px;">
+						<button type="button" class="btn btn-primary"
+							onclick="app.admin.typesBillConfig.save()" id="billconfig_save_bt">保存</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"
+	th:src="@{/assets/js/billconfig/typesBillConfig.js}"></script>
+<script type="text/javascript">
+	app.admin.typesBillConfig.init();
+</script>

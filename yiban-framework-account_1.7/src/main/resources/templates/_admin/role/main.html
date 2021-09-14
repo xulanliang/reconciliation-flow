@@ -1,0 +1,97 @@
+<div class="m-content-wrapper" >
+        <div class="table-content-wrap">
+		<div class="row tool-box-content">
+			<form class="form-inline" id="rolecfgSearchForm">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="名称"
+						name="name">
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="领域"
+						name="realm">
+				</div>
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary"
+						onclick="app.admin.role.search()">查询</button>
+					<button id="btn_add" type="button" class="btn btn-success"	onclick="app.admin.role.create()"> 新增 </button>
+					<!-- <button type="button" class="btn btn-primary"  onclick="app.admin.role.reflush()">刷新</button> -->
+
+				</div>
+			</form>
+		</div>
+		<div class="row">
+					<table class="table table-bordered table-nomal " id="roleDataTable" data-striped="false">
+						<thead>
+							<tr>
+								<th data-formatter="app.admin.role.number" data-width="5%">序号</th>
+								<th data-field="name" data-sortable="true" data-width="15%">名称</th>
+								<th data-field="realm" data-sortable="true" data-width="15%">领域</th>
+								<th data-field="description" data-sortable="true" data-width="15%">描述</th>
+								<th data-field="createdDate" data-sortable="true" data-width="18%">创建时间</th>
+<!-- 								<th data-field="createdBy.name">创建人</th> -->
+								<th data-field="" data-width="30%" data-align="center" data-formatter="app.admin.role.formaterOpt">操作</th>
+							</tr>
+						</thead>
+					</table>
+		        </div>
+	</div>
+</div>
+<!--新增  -->
+<div class="modal fade" id="roleDlg" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">新增角色</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form">
+					<input type="hidden"  name="id" />
+					<div class="form-group">
+						<label class="col-sm-2 control-label">名称</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="name" placeholder="请输入名称">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">领域</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="realm" placeholder="请输入领域">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">描述</label>
+						<div class="col-sm-10">
+							<textarea rows="3" class="form-control" cols="40" name="description"></textarea>
+				    	</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" onclick="app.admin.role.save()">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="zTreePower" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">编辑权限</h4>
+			</div>
+			<div class="modal-body" style="height: 500px;overflow: auto;">
+				<ul id="tree" class="ztree"></ul>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" onclick="app.admin.role.powerSave()">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/admin/role/role.js}"></script>
+<script>
+ app.admin.role.init();
+</script>

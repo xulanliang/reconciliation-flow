@@ -1,0 +1,175 @@
+<div class="m-content-wrapper" >
+    <div class="table-content-wrap">
+        <form class="form-inline m-search" id="tradeSearchForm">
+          	<div class="row tool-box-content">
+            	<div class="form-group">
+            		<label class="search-label">所属机构：</label><div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control" data-name="code" id="tradeTree" placeholder="所属机构"/>
+			        </div>
+			    </div>
+			   <div class="form-group">
+						<label class="search-label" for="beginTime">开始时间：</label><div class="input-group">
+							<div class="input-group-addon">
+								<i class="fa fa-calendar"></i>
+							</div>
+							<input AUTOCOMPLETE="off" type="text"
+								class="form-control pull-right" placeholder="开始时间"
+								name="beginTime">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="search-label" for="endTime">结束时间：</label><div class="input-group">
+							<div class="input-group-addon">
+								<i class="fa fa-calendar"></i>
+							</div>
+							<input AUTOCOMPLETE="off" type="text"
+								class="form-control pull-right" placeholder="结束时间"
+								name="endTime">
+						</div>
+					</div>
+                  <div class="form-group m-btn">
+                  	<button type="button"  class="btn btn-primary"  onclick="app.admin.trade.search()">查询</button><a onclick='app.admin.trade.exportData()' class="btn btn-success">导出</a>
+                  	<a data-toggle="collapse" data-parent="#trade-search-box" href="#trade-search-box"> 高级查询 <i class="fa fa-angle-down"></i></a>
+                  </div>	
+                  <div id="trade-search-box" class="panel-collapse collapse ">
+	                  <div class="form-group">
+	                   	<label  class="search-label">交易类型：</label><select class="form-control" id="trade_tradeType" name="trade_tradeType"></select>
+	                   </div>
+					  <div class="form-group">                   
+	                   	<label  class="search-label">业务类型：</label><select class="form-control" id="trade_businessType" name="trade_businessType"></select>
+	                  </div>
+	                   <div class="form-group">
+	                   	<label  class="search-label">支付类型：</label><select class="form-control" id="trade_payType" name="trade_payType"></select>
+	                  </div>
+	                   <div class="form-group">
+						<label  class="search-label">支付来源：</label><select class="form-control" id="trade_paySource" name="trade_paySource"></select>
+	                </div>
+	                <div class="form-group">
+	                	<label  class="search-label">设备编码：</label><input type="text" class="form-control" id="trade_payTermNo" name="trade_payTermNo" placeholder="设备编码"/>
+	                </div>
+	                 <div class="form-group">
+	                   	<label  class="search-label">支付方流水号：</label><input type="text" class="form-control" id="trade_sysSerial" name="trade_sysSerial" placeholder="支付方流水号"/>
+	                </div>
+	            </div>
+           	</div>             
+          </form>
+<!-- 		            <form class="form-inline" id="tradeSearchForm">
+		            	<div class="form-group">
+		            		<label>所属机构:</label>
+			            	<div class="form-group">
+								<input type="text" style="width: 150px;" class="form-control" data-name="code" id="tradeTree" placeholder="所属机构"/>
+					        </div>
+					    </div>
+	                    <div class="form-group">
+	                    	<label>交易类型:</label><select class="form-control" id="trade_tradeType" name="trade_tradeType"></select>
+	                    	<label>业务类型:</label><select class="form-control" id="trade_businessType" name="trade_businessType"></select>
+	                    	<label>支付类型:</label><select class="form-control" id="trade_payType" name="trade_payType"></select>
+	                    	<label>支付来源:</label><select class="form-control" id="trade_paySource" name="trade_paySource"></select>
+		                </div>
+		                <div class="form-group">
+		                	<label>设备编码:</label><input type="text" class="form-control" id="trade_payTermNo" name="trade_payTermNo" placeholder="设备编码"/>
+	                    	<label>支付方流水号:</label><input type="text" class="form-control" id="trade_sysSerial" name="trade_sysSerial" placeholder="支付方流水号"/>
+		                	<label for="beginTime">开始时间:</label>
+	                        <div class="input-group">
+	                           <div class="input-group-addon">
+	                               <i class="fa fa-calendar"></i>
+	                           </div>
+	                           <input AUTOCOMPLETE="off" type="text" class="form-control pull-right" placeholder="开始时间" name="beginTime">
+	                        </div>
+	                         <label for="endTime">结束时间:</label>
+	                       		<div class="input-group">
+		                           <div class="input-group-addon">
+		                               <i class="fa fa-calendar"></i>
+		                           </div>
+		                           <input AUTOCOMPLETE="off" type="text" class="form-control pull-right"  placeholder="结束时间" name="endTime">
+		                     </div>
+		                </div>
+	                    <div class="form-group m-btn">
+	                    	<button type="button"  class="btn btn-primary"  onclick="app.admin.trade.search()">查询</button>
+	                    	<a onclick='app.admin.trade.exportData()' class="btn btn-primary">导出</a>
+	                    </div>	             
+	                </form> -->
+       <!--  <div class="row">
+			<div style="display:inline-block;">
+				<label style="min-width:100px;">总金额:</label><label style="color:#F00;min-width:130px;" id="pAllAmount"></label><br></br>
+	         	<label style="min-width:100px;">总笔数:</label><label style="color:#F00;min-width:130px;" id="pAllNum"></label>
+			</div>
+		</div> -->
+        <div class="row">
+        	<input type="hidden" th:value="${orgJSON}" id="tradeOrgNo">
+        	<input type="hidden" th:value="${typesJSON}" id="tradeType">
+        	<input type="hidden" th:value="${org}" id="trade_dataSource">
+			<table class="table table-bordered table-nomal " id="tradeDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-formatter="app.admin.trade.number" data-width="50px" class="text-center">序号</th>
+						<th data-field="orgNo" data-sortable="true" data-formatter="app.admin.trade.orgFormatter">机构名称</th>
+						<th data-field="tradeDatatime" data-sortable="true">账单时间</th>
+						<th data-field="orderState" data-formatter="app.admin.trade.formatter" data-sortable="true">订单状态</th>
+						<th data-field="payAmount" data-formatter="app.admin.trade.moneyFormat" data-sortable="true">金额(元)</th>
+						<th data-field="tradeCode" data-formatter="app.admin.trade.formatter" data-sortable="true">交易类型</th>
+						<th data-field="payType" data-formatter="app.admin.trade.formatter" data-sortable="true">支付类型</th>
+              				<th data-field="deviceNo" data-sortable="true">设备编码</th> 
+						<th data-field="payFlowNo" data-sortable="true">支付方流水号</th>
+						<th data-field="" data-width="100" data-align="center" data-formatter="app.admin.trade.formatOpt">操作</th>
+
+<!-- 								<th data-formatter="app.admin.trade.number">序号</th>
+								<th data-field="tradeDatatime">账单时间</th>
+								<th data-field="orgNo"  data-formatter="app.admin.trade.orgFormatter">机构名称</th>
+								<th data-field="orderState" data-formatter="app.admin.trade.formatter">订单状态</th>
+								<th data-field="tradeCode" data-formatter="app.admin.trade.formatter">交易类型</th>
+								<th data-field="payBusinessType" data-formatter="app.admin.trade.formatter">业务类型</th>
+								<th data-field="payType" data-formatter="app.admin.trade.formatter">支付类型</th>
+								<th data-field="paySource" data-formatter="app.admin.trade.formatter">支付来源</th>
+								<th data-field="payTermNo">终端号</th>  
+	               				<th data-field="deviceNo">设备编码</th> 
+								<th data-field="custName">客户名称</th>
+								<th data-field="custIdentifyType" data-formatter="app.admin.trade.formatter">客户标识</th>
+								<th data-field="payFlowNo">支付方流水号</th>
+								<th data-field="payAccount">支付账号</th>
+								<th data-field="payAmount" data-formatter="app.admin.trade.moneyFormat">金额(元)</th> -->
+						</tr>
+					</thead>
+				</table>
+		  </div>
+	</div>
+</div>
+	
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="tradeDedailedDlg" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">详情</h4>
+			</div>
+			<div class="modal-body m-form-detail-body" style="height:500px;">
+				<dl class="dl-horizontal" form="detail">
+					<dt>账单日期</dt><dd data-name="tradeDatatime"></dd>
+					<dt>机构名称</dt><dd data-name="orgNo"></dd>
+					<dt>订单状态</dt><dd data-name="orderState"></dd>
+					<dt>交易类型</dt><dd data-name="tradeCode"></dd>
+					<dt>业务类型</dt><dd data-name="payBusinessType"></dd>
+					<dt>支付类型</dt><dd data-name="payType"></dd>
+					<dt>支付来源</dt><dd data-name="paySource"></dd>
+					<dt>终端号</dt><dd data-name="payTermNo"></dd>
+					<dt>设备编码</dt><dd data-name="deviceNo"></dd>
+					<dt>客户名称</dt><dd data-name="custName"></dd>
+					<dt>客户标识</dt><dd data-name="custIdentifyType"></dd>
+					<dt>支付方流水号</dt><dd data-name="payFlowNo"></dd>
+					<dt>支付账号</dt><dd data-name="payAccount"></dd>
+					<dt>金额(元)</dt><dd data-name="payAmount"></dd>
+				</dl>				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+	
+<script type="text/javascript" th:src="@{/assets/js/recon/trade.js}"></script>
+<script th:inline="javascript">
+ var accountDate = [[${accountDate}]];
+ app.admin.trade.init(accountDate);
+</script>

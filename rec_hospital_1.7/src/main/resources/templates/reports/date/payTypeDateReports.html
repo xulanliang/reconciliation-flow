@@ -1,0 +1,105 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row tool-box-content">
+               <form class="form-inline" id="payTypeDateReportsSearchForm">
+                   <div class="form-group">
+               	   		<label>所属机构:</label>
+	                   <div class="form-group">
+	                       <input type="text" style="width:280px;" class="form-control" data-name="orgCode" id="payTypeDateOrgSelect"/>
+	                   </div>
+               	   </div>
+                   <div class="form-group">
+						<div class="form-group">
+							<label>选择日期:</label>
+						</div>
+						<div class="input-group">
+	                		 <input type="text" class="form-control" style="width: 220px;" onmousemove="this.style.cursor='pointer';"
+		                 		id="payTypeDateTime" name="payTypeDateTimeRange" readonly="readonly"/>
+						</div>
+					</div>
+                   <div class="form-group m-btn">
+                     <button type="button" id="searchPayTypeDateReportsBtn" class="btn btn-primary" onclick="app.admin.ReportsPayTypeDate.search()">查询</button>
+                     <button type="button" class="btn btn-success" onclick="app.admin.ReportsPayTypeDate.exportList()">导出</button>
+                   	 <a data-toggle="collapse" data-parent="#businessTypeDate" href="#payTypeDate-search-box"> 高级查询 <i class="fa fa-angle-down"></i></a>
+                   </div>
+                   <div id="payTypeDate-search-box" class="panel-collapse collapse ">
+                   		 <div class="form-group">
+	               	   		<label>汇总方式:</label>
+	               	   </div>
+						<div class="form-group">
+						    <label class="radio-inline">
+						      <input type="radio"  value="years" name="collectType"
+						      	onclick="app.admin.ReportsPayTypeDate.resetDatePicker()">年统计
+						    </label>
+						    <label class="radio-inline">
+						      <input type="radio"  value="months" name="collectType"
+						      	onclick="app.admin.ReportsPayTypeDate.resetDatePicker()">月统计
+						    </label>
+						    <label class="radio-inline">
+						      <input type="radio"  value="days" name="collectType" checked
+						      	onclick="app.admin.ReportsPayTypeDate.resetDatePicker()">日统计
+						    </label>
+						</div>
+						<!-- <div class="form-group">
+							<a href="javascript:void(0);" class="button button-tiny"  onclick="app.admin.ReportsPayTypeDate.search('day30')">最近30天</a>
+						</div>
+						<div class="form-group">
+							<a href="javascript:void(0);" class="button button-tiny" onclick="app.admin.ReportsPayTypeDate.search('day7')">最近一周</a>
+						</div> -->
+					</div>
+               </form>
+        </div>
+		<div class="row">
+			<div class="tableTitleArea"><span style="font-size: 18px;">日期支付方式汇总报表</span></div>
+			<table class="table table-bordered table-nomal" id="payTypeDateReportsDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-valign="middle" data-width="1200" colspan="13" name="tableTitle"
+							 class="tableExcelDisplayArea"></th>
+					</tr>
+					<tr class="success">
+						<th data-valign="middle" data-width="100">&nbsp;</th>
+						<th data-valign="middle" data-width="200" colspan="2" >微信</th>
+						<th data-valign="middle" data-width="200" colspan="2" >支付宝</th>
+						<th data-valign="middle" data-width="200" colspan="2" >银联</th>
+						<th data-valign="middle" data-width="200" colspan="2" >现金</th>
+						<th data-valign="middle" data-width="200" colspan="2" >聚合支付</th>
+						<th data-valign="middle" data-width="200" colspan="2" >医保</th>
+					</tr>
+					
+					<tr>
+						<th data-field="businessType" data-formatter="app.admin.ReportsPayTypeDate.normal">时间</th>
+						
+					    <th data-field="wechatAcount" data-width="80" data-formatter="app.admin.ReportsPayTypeDate.normal">笔数</th>
+						<th data-field="wechatAmount" data-width="100" data-formatter="app.admin.ReportsPayTypeDate.moneyFormat">金额(元)</th>
+						
+					    <th data-field="zfbAcount" data-width="80" data-formatter="app.admin.ReportsPayTypeDate.normal">笔数</th>
+						<th data-field="zfbAmount" data-width="100" data-formatter="app.admin.ReportsPayTypeDate.moneyFormat">金额(元)</th>
+						
+						<th data-field="bankAcount" data-width="80" data-formatter="app.admin.ReportsPayTypeDate.normal">笔数</th>
+						<th data-field="bankAmount" data-width="100" data-formatter="app.admin.ReportsPayTypeDate.moneyFormat">金额(元)</th>
+						
+						<th data-field="cashAcount" data-width="80" data-formatter="app.admin.ReportsPayTypeDate.normal">笔数</th>
+						<th data-field="cashAmount" data-width="100" data-formatter="app.admin.ReportsPayTypeDate.moneyFormat">金额(元)</th>
+						
+						<th data-field="unionAcount" data-width="80" data-formatter="app.admin.ReportsPayTypeDate.normal">笔数</th>
+						<th data-field="unionAmount" data-width="100" data-formatter="app.admin.ReportsPayTypeDate.moneyFormat">金额(元)</th>
+						
+						<th data-field="yibaoAcount" data-width="80" data-formatter="app.admin.ReportsPayTypeDate.normal">笔数</th>
+						<th data-field="yibaoAmount" data-width="100" data-formatter="app.admin.ReportsPayTypeDate.moneyFormat">金额(元)</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/reports/date/payTypeDateReports.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/reports.css}">
+<script th:inline="javascript">
+
+var orgCode = [[${orgCode}]];
+var beginTime = [[${beginTime}]];
+var endTime = [[${endTime}]];
+app.admin.ReportsPayTypeDate.init(orgCode,beginTime, endTime);
+
+</script>

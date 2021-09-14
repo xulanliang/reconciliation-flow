@@ -1,0 +1,112 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row tool-box-content">
+               <form class="form-inline" id="pizhouForm">
+                   <div class="form-group">
+               	   		<label>所属机构:</label>
+	                   <div class="form-group">
+	                       <input type="text" style="width:280px;" class="form-control" data-name="orgCode" id="pizhouOrgSelect"/>
+	                   </div>
+               	   </div>
+               	   <div class="form-group">
+						<div class="form-group">
+							<label>选择日期:</label>
+						</div>
+						<div class="input-group">
+	                		 <input type="text" class="form-control" style="width: 220px;" onmousemove="this.style.cursor='pointer';"
+		                 		id="pizhouTime" name="pizhouTimeRange" readonly="readonly"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="form-group">
+							<label>选择银行:</label>
+						</div>
+						<div class="input-group">
+	                		<select name="selectType" id="selectType" class="form-control" style="width: 220px;" >
+	                			<option value="全部">全部</option>
+	                			<option value="农商行">农商行</option>
+	                			<option value="中国银行">中国银行</option>
+	                		</select>
+						</div>
+					</div>
+                   <div class="form-group m-btn">
+                     <button type="button" id="pizhouReportsBtn" class="btn btn-primary" onclick="app.admin.pizhou.search()">查询</button>
+                     <button type="button" class="btn btn-success" onclick="app.admin.pizhou.exportList()">导出</button>
+                     <a data-toggle="collapse" data-parent="#businessTypeDate" href="#businessTypeDate-search-box"> 高级查询 <i class="fa fa-angle-down"></i></a>
+                   </div>
+                   <div id="businessTypeDate-search-box" class="panel-collapse collapse ">
+                   		 <div class="form-group">
+	               	   		<label>汇总方式:</label>
+	               	   </div>
+						<div class="form-group">
+						    <label class="radio-inline">
+						      <input type="radio"  value="years" name="collectType" 
+						      	onclick="app.admin.pizhou.resetDatePicker()">年统计
+						    </label>
+						    <label class="radio-inline">
+						      <input type="radio"  value="months" name="collectType"
+						      onclick="app.admin.pizhou.resetDatePicker()">月统计
+						    </label>
+						    <label class="radio-inline">
+						      <input type="radio"  value="days" name="collectType" checked
+						      onclick="app.admin.pizhou.resetDatePicker()">日统计
+						    </label>
+						</div>
+					</div>
+               </form>
+        </div>
+        <div class="row">
+        	<div class="text-center ">门诊汇总  笔数 <span style="width:20px" id="mzNum"></span> 金额  <span style="width:20px" id="mzAmount"></span></div>
+        	<div class="text-center">住院汇总  笔数 <span style="width:20px" id="zyNum"></span> 金额  <span style="width:20px" id="zyAmount"></span></div>
+        </div>
+		<div class="row">
+			<div class="tableTitleArea"><span style="font-size: 18px;">邳州业务类型汇总报表</span></div>
+			<table class="table table-bordered table-nomal" id="pizhouTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-valign="middle" data-width="1200" colspan="9" name="tableTitle"
+							 class="tableExcelDisplayArea"></th>
+					</tr>
+					<tr class="success">
+						<th data-valign="middle" data-width="100">&nbsp;</th>
+						<th data-valign="middle" class ="text-center" data-width="200" colspan="6" >门诊业务</th>
+						<th data-valign="middle" class ="text-center" data-width="200" colspan="2" >住院业务</th>
+					</tr>
+					<tr class="success">
+						<th data-valign="middle"  data-width="100">&nbsp;</th>
+						<th data-valign="middle" class ="text-center" data-width="200" colspan="2" >挂号</th>
+						<th data-valign="middle" class ="text-center" data-width="200" colspan="2" >缴费</th>
+						<th data-valign="middle" class ="text-center" data-width="200" colspan="2" >门诊充值</th>
+						<th data-valign="middle" class ="text-center" data-width="200" colspan="2" >住院预交金</th>
+					</tr>
+					
+					<tr>
+						<th data-field="ly" class ="text-center" data-formatter="app.admin.pizhou.normal">渠道</th>
+						
+					    <th data-field="registrationNum" class ="text-center" data-width="80" data-formatter="app.admin.pizhou.normal">笔数</th>
+						<th data-field="registrationAmount" class ="text-center" data-width="100" data-formatter="app.admin.pizhou.normal">金额(元)</th>
+						
+					    <th data-field="payNum" class ="text-center" data-width="80" data-formatter="app.admin.pizhou.normal">笔数</th>
+						<th data-field="payAmount" class ="text-center" data-width="100" data-formatter="app.admin.pizhou.normal">金额(元)</th>
+						
+						<th data-field="outpatientRechargeNum" class ="text-center" data-width="80" data-formatter="app.admin.pizhou.normal">笔数</th>
+						<th data-field="outpatientRechargeAmount" class ="text-center" data-width="100" data-formatter="app.admin.pizhou.normal">金额(元)</th>
+						
+						<th data-field="zyyjjNum" class ="text-center" data-width="80" data-formatter="app.admin.pizhou.normal">笔数</th>
+						<th data-field="zyyjjAmount" class ="text-center" data-width="100" data-formatter="app.admin.pizhou.normal">金额(元)</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/reports/pizhou/pizhou.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/reports.css}">
+<script th:inline="javascript">
+
+var orgCode = [[${orgCode}]];
+var beginTime = [[${beginTime}]];
+var endTime = [[${endTime}]];
+app.admin.pizhou.init(orgCode,beginTime, endTime);
+
+</script>

@@ -1,0 +1,92 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row tool-box-content">
+			<form class="form-inline m-search" id="historydataSearchForm">
+				<div class="form-group">
+					<label class="search-label">机构：</label>
+					<div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control"
+							id="historylogOrgSelect" name="historylogOrgSelect"
+							data-name="historylogOrgSelect" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="beginTime">开始时间：</label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input AUTOCOMPLETE="off" type="text"
+							class="form-control pull-right" placeholder="开始时间"
+							name="startTime">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="endTime">结束时间：</label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input AUTOCOMPLETE="off" type="text"
+							class="form-control pull-right" placeholder="结束时间" name="endTime">
+					</div>
+				</div>
+				<!-- <div class="form-group">
+					<div class="form-group">
+						<label>开始时间：</label>
+					</div>
+					<div class="input-group">
+						<input AUTOCOMPLETE="off" type="text" class="form-control pull-right"
+							placeholder="开始时间" name="startTime">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="endTime">结束时间：</label>
+					<div class="input-group">
+						<input AUTOCOMPLETE="off" type="text" style="width: 200px"
+							class="form-control pull-right" placeholder="结束时间" name="endTime">
+					</div>
+				</div> -->
+
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary"
+						onclick="app.admin.history.search()">查询</button>
+					<button type="button" class="btn btn-primary"
+						onclick="app.admin.history.recon()">获取</button>
+				</div>
+			</form>
+		</div>
+		<div class="row">
+			<table class="table table-bordered table-nomal "
+				id="historylogDataTable" data-striped="false"
+				th:attr="typesJSON=${typesJSON},orgJSON=${orgJSON}">
+				<thead>
+					<tr>
+						<th data-formatter="app.admin.history.number" >序号</th>
+						<th data-field="orgNo" data-sortable="true"
+							data-formatter="app.admin.history.formatOrg" data-align="center">机构名称</th>
+						<th data-field="orderDate" data-sortable="true"
+							data-align="center" data-formatter="app.admin.history.formatDate">账单日期</th>
+						<th data-field="sendAmount" data-sortable="true"
+							data-align="center">发送次数</th>
+						<!-- <th data-field="historyState" data-align="center" data-formatter="app.admin.history.formatStat">状态</th> -->
+						<th data-field="exceptionRemark" data-sortable="true">描述</th>
+						<!-- <th data-field="" data-width="120" data-align="center" data-formatter="app.admin.history.formatOpt">操作</th> -->
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="histortDataLoading" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">提示</h4>
+			</div>
+			<div class="modal-body">请稍候。。。</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/admin/history.js}"></script>

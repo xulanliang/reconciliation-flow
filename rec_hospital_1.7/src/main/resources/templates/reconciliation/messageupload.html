@@ -1,0 +1,62 @@
+<div id="easyui-layout-content" class="easyui-layout"
+	data-options="fit:true">
+
+	<!-- center panel -->
+	<div data-options="region:'center',border:false">
+
+		<table id="messageUpload_tbl" class="easyui-datagrid"
+			data-options="fit:true,singleSelect:true"
+			style="width: auto; height: auto" idField="id"
+			th:attr="data-search-url=@{/admin/messageUpload/pageList},typesJSON=${typesJSON},orgJSON=${orgJSON}"
+			toolbar="#messageUploadToolbar" pagination="true" rownumbers="true"
+			fitColumns="true" singleSelect="true">
+			<thead>
+				<tr>
+					<th field="orgNo" data-options="width:100,align:'center'" formatter="app.admin.messageUpload.orgFormatter">机构名称</th>
+					<th field="dataTime" data-options="width:100,align:'center'">数据时间</th>
+					<th field="payType"
+						data-options="width:80,align:'center',align:'center'" formatter="app.admin.messageUpload.formatter">支付类型</th>
+					<th field="tradeCode"
+						data-options="width:80,align:'center',align:'center'" formatter="app.admin.messageUpload.formatter">交易类型</th>
+					<th field="payBusinessType" data-options="width:100,align:'center'" formatter="app.admin.messageUpload.formatter">业务类型</th>
+					<th field="payAccount" data-options="width:60,align:'center'" >支付账号</th>
+					<th field="payAmount" data-options="width:60,align:'center'" >支付金额(元)</th>
+					<th field="state" data-options="width:60,align:'center'" formatter="app.admin.messageUpload.formatter">状态</th>
+				</tr>
+			</thead>
+		</table>
+		<div id="messageUploadToolbar" class="tools_bar"
+			style="border-top: none; margin-bottom: 0px;">
+			<div class="PartialButton">
+				<!-- <span class="spanSearch"> <label>所属机构：</label> <input
+					class="easyui-combotree" id="message_search_org_id" name="message_search_org_id"
+					data-options="panelHeight:'auto'"
+			        th:attr="url=@{/admin/reconciliation/organizationsList_nopage.json?includeAll=true}"
+					style="width: 256px; height: 30px;" />
+				</span> -->
+				<div class="contract_Box">
+					<shiro:hasPermission name="messageUpload:new">
+						<a onclick="app.admin.messageUpload.newmessageUpload()"
+							class="tools_btn  self-button easyui-linkbutton"
+							iconCls="icon-upload" plain="true">上传</a>
+						<div class="tools_separator"></div>
+					</shiro:hasPermission>
+					<shiro:hasPermission name="messageUpload:remove">
+						<a onclick="app.admin.messageUpload.destroymessageUpload()"
+							class="tools_btn  self-button easyui-linkbutton"
+							iconCls="icon-remove" plain="true">删除 </a>
+						<div class="tools_separator"></div>
+					</shiro:hasPermission>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end easyui-layout -->
+</div>
+
+<script type="text/javascript"
+	th:src="@{/assets/js/admin/messageUpload.js}"></script>
+<script type="text/javascript">
+	app.admin.messageUpload.init();
+</script>
+

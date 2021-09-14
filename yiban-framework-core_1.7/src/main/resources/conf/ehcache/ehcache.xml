@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd" updateCheck="false">
+<diskStore path="java.io.tmpdir/pms_omp_ehcache" />
+   <defaultCache
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="1200"
+            timeToLiveSeconds="1200"
+            overflowToDisk="false"
+            diskPersistent="false"
+            diskExpiryThreadIntervalSeconds="1200"
+            memoryStoreEvictionPolicy="LRU"
+            />
+   <cache name="runtimeProperty" 
+          eternal="false" 
+          maxElementsInMemory="1000" 
+          overflowToDisk="false" 
+          diskPersistent="false"
+          timeToIdleSeconds="0" 
+          timeToLiveSeconds="300" 
+          memoryStoreEvictionPolicy="LRU" />
+    
+     <cache name="com.yiban.framework.shiro.service.impl.ShiroDbRealm.authorizationCache" 
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="1200"
+            timeToLiveSeconds="1200"
+            overflowToDisk="false"
+            diskPersistent="false"
+            diskExpiryThreadIntervalSeconds="1200"
+            memoryStoreEvictionPolicy="LRU" />
+</ehcache>

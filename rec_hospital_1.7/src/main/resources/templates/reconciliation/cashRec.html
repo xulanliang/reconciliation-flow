@@ -1,0 +1,519 @@
+<link rel="stylesheet" type="text/css" href="assets/css/common.css">
+<link rel="stylesheet" type="text/css" href="assets/css/cashRec.css">
+<link rel="stylesheet" href="assets/css/orderAbnormal.css">
+
+<div class="m-content-wrapper"> <!-- main-box -->
+	<div class="table-content-wrap cash-order" id="cash-data-div">
+		<form class="form-inline m-search row-space" id="cashRecSearchForm">
+			<div class="row tool-box-content">
+				<div class="form-group">
+					<label class="search-label">机构选择 </label>
+					<div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control"
+							data-name="code" id="cashOrgTree" placeholder="所属机构" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="startTime">结账时间 </label>
+					<div class="input-group">
+					 	<input type="text" class="form-control" style="width: 220px;" onmousemove="this.style.cursor='pointer';"
+                 			id="cashRecTime" readonly="readonly"/>
+					</div>
+				</div>
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary" onclick="app.admin.cashRec.search(this)">查询</button>
+					<!-- <button id="btn_add" type="button" class="btn btn-success"
+						onclick="app.admin.cashRec.exportData()">导出</button> -->
+				</div>
+			</div>
+		</form>
+		
+		<ul class="cash segment3 clear row-space">
+		 <li class="cash-list">
+		     <div class="list-content block-center-hv clear">
+		         <div class="left">
+		             <div class="circle circle-allamount"></div>
+		         </div>
+		         <div class="right">
+		           <p class="title">实收总金额</p>
+		           <p class="title color-warning payAllAmount"></p>
+		           <p class="title">支付笔数&nbsp;<span class="num payAcount"></span></p>
+		           <p class="title">退款笔数&nbsp;<span class="num refundAcount"></span></p>
+		         </div>
+		     </div>
+		 </li>
+		    <li class="cash-list">
+		        <div class="list-content block-center-hv clear">
+		            <div class="left">
+		                <div class="circle circle-his"></div>
+		            </div>
+		            <div class="right">
+		                <p class="title">HIS应收总金额</p>
+		                <p class="title color-warning hisAllAmount"></p>
+		                <p class="title">支付笔数&nbsp;<span class="num hisPayAcount"></span></p>
+		                <p class="title">退款笔数&nbsp;<span class="num hisRefundAcount"></span></p>
+		            </div>
+		        </div>
+		    </li>
+		    <li class="cash-list">
+		        <div class="list-content block-center-hv clear">
+		            <div class="left">
+		                <div class="circle circle-dif"></div>
+		            </div>
+		            <div class="right">
+		                <p class="title">差异总金额</p>
+		                <p class="title color-warning tradeDiffAmount"></p>
+		                <!-- <p class="title">笔数&nbsp;<span class="num tradeDiffPayAcount"></span></p> -->
+		            </div>
+		        </div>
+		    </li>
+		</ul>
+		<div class="self-service segment2 border clear-float">
+		    <input type="hidden" th:value="${orgJSON}" id="cashOrgNo">
+			<input type="hidden" th:value="${typesJSON}" id="cashType">
+			<input type="hidden" th:value="${startDate}" id="cashStartDate">
+			<input type="hidden" th:value="${endDate}" id="cashEndDate">
+			<input type="hidden" th:value="${orgNo}" id="cashOrgNoInit">
+		    <div class="left">
+		        <div class="content self-help-div">
+		            <div class="title">
+		                <p class=" color-link">自助机</p>
+		                <p class="line color-link"></p>
+		            </div>
+		            <ul class="earning clear">
+		                <li>
+		                    <p class="earning-title">总计</p>
+		                    <div class=" earning-list">
+		                        <p class="earning-left title">实收总金额</p>
+		                        <p class="earning-right"></p>
+		                    </div>
+		                    <div class=" earning-list">
+		                        <p class="earning-left title">支付笔数</p>
+		                        <p class="earning-right"></p>
+		                    </div>
+		                    <div class=" earning-list">
+		                        <p class="earning-left title">退款笔数</p>
+		                        <p class="earning-right"></p>
+		                    </div>
+		                </li>
+		                <li>
+		                    <p class="earning-title">门诊</p>
+		                    <div class=" earning-list">
+		                        <p class="earning-left title">实收总金额</p>
+		                        <p class="earning-right"></p>
+		                    </div>
+		                    <div class=" earning-list">
+		                        <p class="earning-left title">支付笔数</p>
+		                        <p class="earning-right"></p>
+		                    </div>
+		                    <div class=" earning-list">
+		                        <p class="earning-left title">退款笔数</p>
+		                        <p class="earning-right"></p>
+		                    </div>
+		                </li>
+		                <li>
+		                    <p class="earning-title">住院</p>
+		                    <div class=" earning-list">
+		                        <p class="earning-left title">实收总金额</p>
+		                        <p class="earning-right"></p>
+		                    </div>
+		                    <div class=" earning-list">
+		                        <p class="earning-left title">支付笔数</p>
+		                        <p class="earning-right"></p>
+		                    </div>
+		                    <div class=" earning-list">
+		                        <p class="earning-left title">退款笔数</p>
+		                        <p class="earning-right"></p>
+		                    </div>
+		                </li>
+		            </ul>
+		        </div>
+		    </div>
+		    <div class="right">
+		        <div class="content window-div">
+		            <div class="title">
+		                <p class=" color-link">窗口</p>
+		                <p class="line color-link"></p>
+		            </div>
+		            <ul class="earning clear">
+		                <li>
+		                    <p class="earning-title">总计</p>
+		                    <div class=" earning-list">
+		                        <p class="earning-left title">实收总金额</p>
+		                        <p class="earning-right"></p>
+		                    </div>
+		                    <div class=" earning-list">
+		                        <p class="earning-left title">支付笔数</p>
+		                        <p class="earning-right"></p>
+		                    </div>
+		                    <div class=" earning-list">
+		                        <p class="earning-left title">退款笔数</p>
+		                        <p class="earning-right"></p>
+		                    </div>
+		                </li>
+		                <li>
+		                    <p class="earning-title">门诊</p>
+		                    <div class=" earning-list">
+		                        <p class="earning-left title">实收总金额</p>
+		                        <p class="earning-right"></p>
+		                    </div>
+		                    <div class=" earning-list">
+		                        <p class="earning-left title">支付笔数</p>
+		                        <p class="earning-right"></p>
+		                    </div>
+		                    <div class=" earning-list">
+		                        <p class="earning-left title">退款笔数</p>
+		                        <p class="earning-right"></p>
+		                    </div>
+		                </li>
+		                <li>
+		                    <p class="earning-title">住院</p>
+		                    <div class=" earning-list">
+		                        <p class="earning-left title">实收总金额</p>
+		                        <p class="earning-right"></p>
+		                    </div>
+		                    <div class=" earning-list">
+		                        <p class="earning-left title">支付笔数</p>
+		                        <p class="earning-right"></p>
+		                    </div>
+		                    <div class=" earning-list">
+		                        <p class="earning-left title">退款笔数</p>
+		                        <p class="earning-right"></p>
+		                    </div>
+		                </li>
+		            </ul>
+		        </div>
+		    </div>
+		</div>
+		
+		<div >
+			<h4>
+				异常账单
+			</h4>
+			<p>
+				<div class="btn-group" id="cashTable">
+					<button style="background-color: #ECF5FF" class="btn btn-default" name="cashBtn"
+						onclick="app.admin.cashRec.showExceptionTrade('all')">所有</button>
+					<button class="btn btn-default" name="cashBtn"
+						onclick="app.admin.cashRec.showExceptionTrade('third')">长款（渠道多出）</button>
+					<button class="btn btn-default" name="cashBtn"
+						onclick="app.admin.cashRec.showExceptionTrade('his')">短款（HIS多出）</button>
+				</div>
+			</p>
+		</div>
+		<div >
+			<table class="table table-bordered table-nomal" id="cashRecDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-field="businessNo" data-sortable="true" data-width="15%" data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">支付方流水号</th>
+						<th data-field="hisFlowNo" data-sortable="true" data-width="13%" data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">HIS流水号</th>
+						<th data-field="terminalNo" data-sortable="true" data-width="10%">柜员号</th>
+						<th data-field="billSource" data-sortable="true" data-width="10%" data-formatter="app.admin.cashRec.formatter">渠道名称</th>
+						<th data-field="tradeAmount" data-sortable="true"
+							data-formatter="app.admin.cashRec.moneyFormat" data-width="10%">金额(元)</th>
+						<th data-field="patientName" data-sortable="true" data-width="10%">患者名称</th>
+						<th data-field="tradeTime" data-sortable="true" data-width="13%">交易时间</th>
+						<th data-field="checkStateValue" data-formatter="app.admin.cashRec.exceptionState" data-width="8%">异常状态</th>
+						<th data-field="" data-formatter="app.admin.cashRec.formatOpt">操作</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="cashRecDealFollowDlg" tabindex="-2" role="dialog" data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">平账</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" id="cashRecDealFollowDlgForm" enctype="multipart/form-data">
+					<input type="text" name="id" style="display: none;" />
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label">平账原因:</label>
+						<div class="col-sm-10">
+							<textarea rows="4" class="form-control" cols="40" name=description></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">上传图片:</label>
+						<div class="col-sm-10">
+							<input type="file" name="file" />
+							<lable>温馨提示：图片最大支持2M，支持格式为bmp.png jpeg.jpg.gif</lable>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="save" onclick="app.admin.cashRec.save()">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 详情 模态框（Modal） -->
+<div class="modal fade" id="cashDetailDlg" tabindex="-1" role="dialog"
+	 data-backdrop="false">
+	<div class="modal-dialog" style="width: 900px">
+		<div class="modal-content order-abnormal">
+			<div class="abnormal border ">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+					<h4 class="modal-title">订单详情</h4>
+				</div>
+				<div class="abnormal-text">
+					<ul class="detail">
+						<li class=" detail-card " form="hisOrderTableForm" hidden="true">
+							<p class="detail-title">HIS订单信息<span style="color:red" data-name="his_titleState"></span></p>
+							<table class="table table-bordered table-nomal" id="hisCashOrderTable" data-striped="false" style="min-width:699px;">
+								<thead>
+								<tr>
+									<th data-field="payFlowNo" data-sortable="true" data-width=280px>支付方流水号</th>
+									<th data-field="hisFlowNo"  data-sortable="true" data-width=140px>HIS流水号</th>
+									<th data-field="patName" data-sortable="true" data-width=100px>患者姓名</th>
+									<th data-field="patType" data-sortable="true" data-width=100px>患者类型</th>
+									<th data-field="patNumber" data-sortable="true" data-width=100px>患者ID</th>
+									<th data-field="mzCode" data-sortable="true" data-width=100px>门诊号</th>
+									<th data-field="payType" data-sortable="true" data-width=100px>支付类型</th>
+									<th data-field="orderState" data-sortable="true" data-width=100px>订单状态</th>
+									<th data-field="tradeTime" data-sortable="true" data-width=170px>交易时间</th>
+									<th data-field="tradeAmount"  data-sortable="true" data-width=120px>交易金额(元)</th>
+								</tr>
+								</thead>
+							</table>
+						</li>
+						<li class=" detail-card" form="hisOrder" hidden="true">
+							<p class="detail-title">
+								HIS订单信息
+							</p>
+							<ul class="detail-list-plan ">
+									<li class="detail-text">
+										<div class="detail-text-list ">
+											<p class="list-left">患者姓名：</p>
+											<p class="list-right" data-name="patName"></p>
+										</div>
+										<div class="detail-text-list">
+											<p class="list-left">患者类型：</p>
+											<p class="list-right" data-name="patType"></p>
+										</div>
+										<div class="detail-text-list">
+											<p class="list-left">支付类型：</p>
+											<p class="list-right" data-name="payType"></p>
+										</div>
+										<div class="detail-text-list ">
+											<p class="list-left">订单状态：</p>
+											<p class="list-right" data-name="orderState"></p>
+										</div>
+										<div class="detail-text-list ">
+											<p class="list-left">支付流水号：</p>
+											<p class="list-right" data-name="payFlowNo"></p>
+										</div>
+									</li>
+									<li class="detail-text">
+										<div class="detail-text-list ">
+											<p class="list-left">交易金额：</p>
+											<p class="list-right" data-name="tradeAmount"></p>
+										</div>
+										<div class="detail-text-list">
+											<p class="list-left">交易时间：</p>
+											<p class="list-right" data-name="tradeTime"></p>
+										</div>
+										<div class="detail-text-list ">
+											<p class="list-left">就诊卡号：</p>
+											<p class="list-right" data-name="patientCardNo"></p>
+										</div>
+										<div class="detail-text-list ">
+											<p class="list-left">就诊号：</p>
+											<p class="list-right" data-name="visitNumber"></p>
+										</div>
+									</li>
+
+									<li class="detail-text">
+										<div class="detail-text-list ">
+											<p class="list-left">患者ID：</p>
+											<p class="list-right" data-name="patNumber"></p>
+										</div>
+										<div class="detail-text-list ">
+											<p class="list-left">商户号：</p>
+											<p class="list-right" data-name="payShopNo"></p>
+										</div>
+										<div class="detail-text-list ">
+											<p class="list-left">商户订单号：</p>
+											<p class="list-right" data-name="shopFlowNo"></p>
+										</div>
+										<div class="detail-text-list">
+											<p class="list-left">HIS流水号：</p>
+											<p class="list-right" data-name="hisFlowNo"></p>
+										</div>
+									</li>
+									<li class="detail-text">
+										<div class="detail-text-list ">
+											<p class="list-left">终端号：</p>
+											<p class="list-right" data-name="terminalNo"></p>
+										</div>
+										<div class="detail-text-list ">
+											<p class="list-left">参考号：</p>
+											<p class="list-right" data-name="referenceNum"></p>
+										</div>
+										<div class="detail-text-list ">
+											<p class="list-left">门诊号：</p>
+											<p class="list-right" data-name="mzCode"></p>
+										</div>
+										<div class="detail-text-list ">
+											<p class="list-left">发票号：</p>
+											<p class="list-right" data-name="invoiceNo"></p>
+										</div>
+									</li>
+								</dl>
+							</ul>
+						</li>
+						<li class=" detail-card" form="payOrderTableForm" hidden="true">
+							<p class="detail-title">支付订单信息</p>
+							<table class="table table-bordered table-nomal" id="payCashOrderTable" data-striped="false" >
+								<thead>
+								<tr>
+									<th data-field="orderNo" data-sortable="true" data-width=280px>支付方流水号</th>
+									<th data-field="shopFlowNo" data-sortable="true" data-width=200px>商户流水号</th>
+									<th data-field="paymentAccount" data-sortable="true" data-width=200px>银行卡号</th>
+									<th data-field="payAmount" data-sortable="true" data-width=120px>交易金额(元)</th>
+									<th data-field="businessType" data-sortable="true" data-width= 100px>业务类型</th>
+									<th data-field="orderState"  data-sortable="true"data-width=100px>订单状态</th>
+									<th data-field="custName" data-sortable="true" data-width=100px>患者姓名</th>
+									<th data-field="patType" data-sortable="true" data-width=100px>患者类型</th>
+									<th data-field="payType" data-sortable="true" data-width=100px>支付类型</th>
+									<th data-field="tradeDatatime" data-sortable="true" data-width=170px>交易时间</th>
+								</tr>
+								</thead>
+							</table>
+							<ul class="detail-list clear-float">
+								<div class="cash-handle-description">
+									<div class="detail-text-list electronic-desc-img">
+										<p class="list-left">
+											<a data-name="descImg" value="" href="javascript:void()"
+											   onclick="app.admin.cashRec.showImg(this)">查看图片附件</a>
+										</p>
+									</div>
+									<div class="detail-text-list">
+										<p class="list-left">处理说明：</p>
+										<p class="list-right" data-name="description"
+										   style="white-space: normal"></p>
+									</div>
+								</div>
+							</ul>
+						</li>
+						<li class=" detail-card " form="payOrder" hidden="true">
+							<p class="detail-title">支付订单信息</p>
+							<ul class="detail-list-plan">
+								<li class="detail-text">
+									<div class="detail-text-list ">
+										<p class="list-left">患者姓名：</p>
+										<p class="list-right" data-name="thirdDetail_custName"></p>
+									</div>
+									<div class="detail-text-list " >
+										<p class="list-left">患者类型：</p>
+										<p class="list-right" data-name="thirdDetail_patType"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">订单状态：</p>
+										<p class="list-right" data-name="thirdDetail_orderState"></p>
+									</div>
+									<div class="detail-text-list " >
+										<p class="list-left">支付流水号：</p>
+										<p class="list-right" data-name="thirdDetail_orderNo"></p>
+									</div>
+								</li>
+								<li class="detail-text" >
+									<div class="detail-text-list">
+										<p class="list-left">交易金额：</p>
+										<p class="list-right" data-name="thirdDetail_payAmount"></p>
+									</div>
+									<div class="detail-text-list">
+										<p class="list-left">交易时间：</p>
+										<p class="list-right" data-name="thirdDetail_tradeDatatime"></p>
+									</div>
+									<div class="detail-text-list">
+										<p class="list-left">就诊号：</p>
+										<p class="list-right" data-name="visitNumbe"></p>
+									</div>
+								</li>
+
+								<li class="detail-text" >
+									<div class="detail-text-list">
+										<p class="list-left">业务类型：</p>
+										<p class="list-right" data-name="thirdDetail_businessType"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">支付类型：</p>
+										<p class="list-right" data-name="thirdDetail_payType"></p>
+									</div>
+									<div class="detail-text-list">
+										<p class="list-left">银行卡号：</p>
+										<p class="list-right" data-name="paymentAccount"></p>
+									</div>
+									<div class="detail-text-list">
+										<p class="list-left">商户订单号：</p>
+										<p class="list-right" data-name="thirdDetail_businessFlowNo"></p>
+									</div>
+									
+								</li>
+								<li class="detail-text" >
+									<div class="detail-text-list">
+										<p class="list-left">参考号：</p>
+										<p class="list-right" data-name="referenceNum"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">终端号：</p>
+										<p class="list-right" data-name="payTermNo"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">商户号：</p>
+										<p class="list-right" data-name="payShopNo"></p>
+									</div>
+									<div class="detail-text-list">
+										<p class="list-left">授权码：</p>
+										<p class="list-right" data-name="thirdDetail_authoriCode"></p>
+									</div>
+								</li>
+							</ul>
+							<ul class="detail-list clear-float">
+								<div class="cash-handle-description">
+									<div class="detail-text-list electronic-desc-img">
+										<p class="list-left">
+											<a data-name="descImg" value="" href="javascript:void()"
+											   onclick="app.admin.cashRec.showImg(this)">查看图片附件</a>
+										</p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">处理说明：</p>
+										<p class="list-right" data-name="description"
+										   style="white-space: normal"></p>
+									</div>
+								</div>
+							</ul>
+						</li>
+
+					</ul>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" th:src="@{/assets/js/recon/cashRec.js}"></script>
+<script th:inline="javascript">
+//获取后台传递的值
+var typesJSON=[[${typesJSON}]];
+var orgJSON = [[${orgJSON}]];
+var orgNo = [[${orgNo}]]; 
+app.admin.cashRec.init(orgJSON);
+</script>

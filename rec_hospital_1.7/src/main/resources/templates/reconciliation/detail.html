@@ -1,0 +1,407 @@
+<link href="assets/css/timeline.css" rel="stylesheet">
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<form class="form-inline m-search" id="detailSearchForm">
+			<div class="row tool-box-content">
+				<div class="form-group">
+					<label class="search-label">所属机构：</label><div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control"
+							data-name="orgNo" name="orgNoTree" id="detailParentSelect"
+							placeholder="所属机构" />
+					</div>
+				</div>
+				<!-- <div class="form-group">
+					<label>所属机构：</label>
+				</div>
+				<div class="form-group no-margin">
+					<input type="text" style="width: 220px;" class="form-control"
+						data-name="orgNo" name="orgNoTree" id="detailParentSelect" />
+				</div> -->
+				<!-- <div class="form-group" style="display:none">
+					<label>交易类型：</label> <select class="form-control"
+						name="tradeType" class="selectpicker"  multiple="multiple"></select>
+				</div>
+				<div class="form-group">
+					<label>支付类型：</label> <select class="form-control"
+						name="payType" class="selectpicker"  multiple="multiple"></select>
+				</div>
+				<div class="form-group">
+					<label>对账流水号:</label> <input type="text" class="form-control"
+						name="flowNo">
+				</div>
+				<div class="form-group"  style="display:none">
+					<label>业务类型：</label> <select class="form-control"
+						name="businessType" class="selectpicker"></select>
+				</div> -->
+				<div class="form-group">
+					<label class="search-label" for="beginTime">开始时间：</label><div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input AUTOCOMPLETE="off" type="text"
+							class="form-control pull-right" placeholder="开始时间"
+							name="startTime">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="endTime">结束时间：</label><div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input AUTOCOMPLETE="off" type="text"
+							class="form-control pull-right" placeholder="结束时间"
+							name="endTime">
+					</div>
+				</div> 
+				<!-- <div class="form-group">
+					<label class="search-label" for="beginTime">开始时间：</label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input AUTOCOMPLETE="off" type="text"
+							class="form-control pull-right" placeholder="开始时间"
+							name="startTime">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="endTime">结束时间：</label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input AUTOCOMPLETE="off" type="text" 
+							class="form-control pull-right" placeholder="结束时间" name="endTime">
+					</div>
+				</div> -->
+				<!-- <div class="form-group">
+					<div class="form-group">
+						<label>开始时间：</label>
+					</div>
+					<div class="input-group">
+						<input AUTOCOMPLETE="off" type="text"
+							class="form-control pull-right" placeholder="开始时间"
+							name="startTime">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="form-group">
+						<label for="endTime">结束时间：</label>
+					</div>
+					<div class="input-group">
+						<input AUTOCOMPLETE="off" type="text" style="width: 180px"
+							class="form-control pull-right" placeholder="结束时间" name="endTime">
+					</div>
+				</div> -->
+				<!-- <div class="form-group">
+					<label>投资银行：</label> <select class="form-control"
+						name="bankTypeId" class="selectpicker"></select>
+				</div> -->
+				<!-- <div class="form-group" style="display: none">
+					<label>设备编码：</label> <select class="form-control" name="deviceNo"
+						class="selectpicker"></select>
+				</div> -->
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary"
+						onclick="app.admin.detail.search()">查询</button>
+					<button id="btn_add" type="button" class="btn btn-success"
+						onclick="app.admin.detail.exportData()">导出</button>
+					<a data-toggle="collapse" data-parent="#detail-search-box"
+						href="#detail-search-box"> 高级查询 <i class="fa fa-angle-down"></i></a>
+				</div>
+				
+				<div id="detail-search-box" class="panel-collapse collapse">
+					<div class="form-group" style="display: none">
+						<label>交易类型：</label> <select class="form-control" name="tradeType"
+							class="selectpicker" multiple="multiple"></select>
+					</div>
+					<div class="form-group">
+						<label class="search-label">支付类型：</label><select style="width: 220px"
+							 class="form-control" name="payType"
+							class="selectpicker" multiple="multiple"></select>
+					</div>
+					<div class="form-group">
+						<label class="search-label">对账流水号：</label><input type="text"
+							class="form-control" name="flowNo">
+					</div>
+					<div class="form-group" style="display: none">
+						<label>业务类型：</label> <select class="form-control"
+							name="businessType" class="selectpicker"></select>
+					</div>
+					<div class="form-group" style="display: none">
+						<label>设备编码：</label> <select class="form-control" name="deviceNo"
+							class="selectpicker"></select>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- <div style="min-width:1550px;" class="row tool-box-content">
+				<div class="form-group">
+					<div class="form-group">
+						<label>开始时间:</label>
+					</div>
+					<div class="input-group">
+						<input AUTOCOMPLETE="off" type="text" class="form-control pull-right"
+							placeholder="开始时间" name="startTime">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="endTime">结束时间：</label>
+					<div class="input-group">
+						<input AUTOCOMPLETE="off" type="text" style="width: 200px"
+							class="form-control pull-right" placeholder="结束时间" name="endTime">
+					</div>
+				</div>
+				<div class="form-group">
+					<label>投资银行：</label> <select class="form-control"
+						name="bankTypeId" class="selectpicker"></select>
+				</div>
+				<div class="form-group"  style="display:none">
+					<label>设备编码：</label> <select class="form-control"
+						name="deviceNo" class="selectpicker"></select>
+				</div>
+				<div class="form-group">
+					<button type="button" class="btn btn-primary"
+						onclick="app.admin.detail.search()">查询</button>
+					<button id="btn_add" type="button" class="btn btn-success"
+						onclick="app.admin.detail.exportData()">导出</button>
+					<a data-toggle="collapse" data-parent="#detail-search-box"
+						href="#detail-search-box"> 高级查询 <i
+						class="fa fa-angle-down"></i></a>	
+				</div>
+			</div> -->
+		</form>
+		<div class="row" style="display: none;" id="detailDataTableDiv">
+			<table class="table table-bordered table-nomal" id="detailDataTable"
+				data-striped="false">
+				<thead>
+					<tr>
+						<th class="text-center" data-sortable="true"><font size="3">序号</font></th>
+						<th class="text-center" data-sortable="true"><font size="3">详情</font></th>
+						<th class="text-center" data-sortable="true" colspan="7"><font
+							size="3">账单基本信息</font></th>
+						<th class="text-center" colspan="2" data-sortable="true"><font
+							size="3">支付渠道</font></th>
+						<th class="text-center" colspan="2" data-sortable="true"><font
+							size="3">his系统</font></th>
+						<th class="text-center" colspan="4" data-sortable="true"><font
+							size="3">平台</font></th>
+						<th class="text-center" colspan="2" data-sortable="true"><font
+							size="3">对账信息</font></th>
+					</tr>
+					<tr>
+						<th class="text-center" data-sortable="true"
+							data-formatter="app.admin.detail.SerialNumberFormat"></th>
+						<th data-field="operationUserId" data-sortable="true"
+							data-formatter="app.admin.detail.formatCheck">查看</th>
+						<!-- <th data-field="id"
+							data-formatter="app.admin.detail.formatHandler">处理</th> -->
+						<th data-field="payDateStamName" data-sortable="true">账单日期</th>
+						<th data-field="orgNo" data-sortable="true"
+							data-formatter="app.admin.detail.orgFormatter">机构名称</th>
+						<th data-field="tradeCode" data-sortable="true"
+							data-formatter="app.admin.detail.formatter">交易类型</th>
+						<th data-field="payBusinessType" data-sortable="true"
+							data-formatter="app.admin.detail.formatter">业务类型</th>
+						<th data-field="custName" data-sortable="true">客户名称</th>
+						<th data-field="custIdentify" data-sortable="true"
+							data-formatter="app.admin.detail.formatter">客户标识</th>
+						<th data-field="flowNo" data-sortable="true">对账流水号</th>
+
+						<th data-field="thirdAmount" data-sortable="true"
+							data-formatter="app.admin.detail.moneyFormat">支付金额(元)</th>
+						<th data-field="payType" data-sortable="true"
+							data-formatter="app.admin.detail.formatter">支付类型</th>
+
+						<th data-field="orgAmount" data-sortable="true"
+							data-formatter="app.admin.detail.moneyFormat">his支付金额(元)</th>
+						<th data-field="deviceNo" data-sortable="true">设备编码</th>
+
+						<th data-field="platformAmount" data-sortable="true"
+							data-formatter="app.admin.detail.moneyFormat">平台金额(元)</th>
+						<th data-field="payTermNo" data-sortable="true">支付终端号</th>
+						<th data-field="payAccount" data-sortable="true">支付账号</th>
+						<th data-field="orderState" data-sortable="true"
+							data-formatter="app.admin.detail.formatter">订单状态</th>
+
+						<th data-field="reconciliationDate" data-sortable="true">对账时间</th>
+						<th data-field="remarkInfo" data-sortable="true">备注</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<div class="row" style="display: none;" id="twoDetailDataTableDiv">
+			<table class="table table-bordered table-nomal"
+				id="twoDetailDataTable" data-striped="false">
+				<thead>
+					<!-- <tr>
+						<th class="text-center"><font size="4">序号</font></th>
+						<th class="text-center"><font size="4">交易详情</font></th>
+						<th class="text-center"><font size="4">操作</font></th>
+						<th class="text-center" colspan="7"><font size="3">账单基本信息</font></th>
+						<th class="text-center" colspan="2"><font size="3">支付渠道</font></th>
+						<th class="text-center" colspan="2"><font size="3">his系统</font></th>
+						<th class="text-center" colspan="4"><font size="3">对账信息</font></th>
+					</tr> -->
+					<tr>
+						<th class="text-center" data-sortable="true"
+							data-formatter="app.admin.detail.SerialNumberFormat">序号</th>
+						<!--<th data-field="operationUserId"
+							data-formatter="app.admin.detail.formatCheck">查看</th>
+						 <th data-field="id"
+							data-formatter="app.admin.detail.formatHandler">处理</th> -->
+						<th data-field="tradeDate" data-sortable="true">账单日期</th>
+						<th data-field="billSource" data-sortable="true"
+							data-formatter="app.admin.detail.formatter" >渠道名称</th>
+						<th data-field="orgNo" data-sortable="true"
+							data-formatter="app.admin.detail.orgFormatter">机构名称</th>
+						<th data-field="patType" data-sortable="true"
+							data-formatter="app.admin.detail.formatter" >患者类型</th>	
+						<!-- <th data-field="tradeCode"
+							data-formatter="app.admin.detail.formatter">交易类型</th> -->
+						<th data-field="tradeName" data-sortable="true"
+							data-formatter="app.admin.detail.formatter">业务类型</th>
+						<th data-field="custName" data-sortable="true">客户名称</th>
+						<!-- <th data-field="custIdentify"
+							data-formatter="app.admin.detail.formatter">客户标识</th> -->
+						<th data-field="businessNo" data-sortable="true">对账流水号</th>
+
+						<th data-field="tradeAmount" data-sortable="true"
+							data-formatter="app.admin.detail.moneyFormat">支付金额(元)</th>
+						<th data-field="payName" data-sortable="true"
+							data-formatter="app.admin.detail.formatter">支付类型</th>
+
+						<!-- <th data-field="orgAmount">his支付金额(元)</th>
+						<th data-field="deviceNo">设备编码</th>
+
+						<th data-field="operationUserName">对账人</th> -->
+						<th data-field="tradeTime" data-sortable="true">对账时间</th>
+						<th data-field="remarkInfo" data-sortable="true">备注</th>
+						<!-- <th data-field="handleCode"
+							data-formatter="app.admin.detail.formatter">状态</th> -->
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="detailDlg1" tabindex="-1" role="dialog"
+	data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">处理单边帐信息</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" id="detailSearchFormDlg">
+					<input name="detailId" id="detailId" type="hidden" />
+					<div class="form-group">
+						<label class="col-sm-2 control-label">处理方式：</label>
+						<div class="col-sm-10">
+							<select class="form-control" name="handleCode"
+								class="selectpicker"></select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">金额:</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="platformAmount"
+								placeholder="请输入值">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">处理备注:</label>
+						<div class="col-sm-10">
+							<textarea rows="3" class="form-control" cols="40"
+								name="remarkInfo"></textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary"
+					onclick="app.admin.detail.save()">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade " id="detailDlg2" tabindex="-1" role="dialog"
+	data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title">交易流程查询</h4>
+				</div>
+			</div>
+			<div class="">
+				<div class="modal-header ">
+					<label class="col-sm-2">his流水号:</label><label class="col-sm-3"
+						id="hisFlowNo"></label> <label class="col-sm-2">支付方流水号:</label><label
+						class="col-sm-4" id="payFlowNo"></label>
+				</div>
+			</div>
+			<div class="">
+				<div class="well with-header">
+					<div class="header">
+						<span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;全部
+					</div>
+					<table class="table table-hover" id="detailTableDlg"
+						data-striped="false">
+						<thead class="bordered-darkorange">
+							<tr>
+								<th data-field="Good_No">商品编码</th>
+								<th data-field="Good_Name">商品名称</th>
+								<th data-field="Good_Desc">商品描述</th>
+								<th data-field="Good_Price">商品价格</th>
+								<th data-field="Good_Qty">商品数量</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+			<input type="hidden" th:value="${orgNo}" id="orgNo">
+			<div class="">
+				<div class="well with-header">
+					<div class="header ">
+						<span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;单边帐
+					</div>
+					<div>
+						<ul style="text-align: center;" id="timeline" class="timeline">
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<script type="text/javascript" th:src="@{/assets/js/recon/detail.js}"></script>
+<script th:inline="javascript">
+
+////获取后台传递的值
+var typesJSON = [[${typesJSON}]];
+var orgJSON = [[${orgJSON}]];
+var accountDate = [[${accountDate}]];
+var accountOrgNo = [[${accountOrgNo}]];
+var deviceNo = [[${deviceNo}]];
+var orgNo = [[${orgNo}]];
+var flag = [[${flag}]];
+var recType = [[${recType}]];
+
+/////初始化
+app.admin.detail.init(typesJSON,orgJSON,accountDate,accountOrgNo,deviceNo,flag,recType,orgNo);
+
+</script>

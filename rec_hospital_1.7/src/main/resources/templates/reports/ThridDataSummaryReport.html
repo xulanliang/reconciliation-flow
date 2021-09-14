@@ -1,0 +1,90 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row tool-box-content">
+               <form class="form-inline" id="payTypeMachineReportsSearchForm">
+                   <div class="form-group">
+               	   		<label>所属机构:</label>
+	                   <div class="form-group">
+	                       <input type="text" style="width:280px;" class="form-control" data-name="orgCode" id="payTypeMachineOrgSelect"/>
+	                   </div>
+               	   </div>
+               	   <div class="form-group">
+						<div class="form-group">
+							<label>选择日期:</label>
+						</div>
+						<div class="input-group">
+							<input type="text" class="form-control" style="width: 220px;" onmousemove="this.style.cursor='pointer';"
+								id="payTypeMachineTime" readonly="readonly"/>
+						</div>
+					</div>
+                   <div class="form-group m-btn">
+                     <button type="button" class="btn btn-primary" onclick="app.admin.ReportsPayTypeMachine.search(this)">查询</button>
+                     <button type="button" class="btn btn-success" onclick="app.admin.ReportsPayTypeMachine.exportList()">导出</button>
+                   </div>
+               </form>
+        </div>
+		<div class="row">
+			<!--<div class="tableTitleArea"><span style="font-size: 18px;">自助机支付方式汇总报表</span></div>-->
+			<table class="table table-bordered table-nomal" id="payTypeMachineReportsDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-valign="middle" data-width="1300" colspan="14" name="tableTitle" class="tableExcelDisplayArea"></th>
+					</tr>
+					<tr class="success">
+						<th data-field="orgNo" data-valign="middle" data-width="100" rowspan="2">院区</th>
+						<th data-valign="middle" data-field="name" data-width="100" rowspan="2">渠道</th>
+						<th data-valign="middle" data-field="patType" data-width="100" rowspan="2">数据来源</th>
+						<th data-valign="middle" data-width="200" colspan="2" >支付宝</th>
+						<th data-valign="middle" data-width="200" colspan="2" >微信</th>
+						<th data-valign="middle" data-width="200" colspan="2" >银联</th>
+						<th data-valign="middle" data-width="200" colspan="2" >合计</th>
+					</tr>
+					
+					<tr>
+						<th data-field="aliPay" data-formatter="app.admin.ReportsPayTypeMachine.normal">金额</th>
+						<th data-field="aliCount" data-formatter="app.admin.ReportsPayTypeMachine.normal">笔数</th>
+
+						<th data-field="weCheat" data-formatter="app.admin.ReportsPayTypeMachine.normal">金额</th>
+						<th data-field="weCheatCount" data-formatter="app.admin.ReportsPayTypeMachine.normal">笔数</th>
+
+						<th data-field="bank" data-formatter="app.admin.ReportsPayTypeMachine.normal">金额</th>
+						<th data-field="bankCount" data-formatter="app.admin.ReportsPayTypeMachine.normal">笔数</th>
+
+						<th data-field="sumPay" data-formatter="app.admin.ReportsPayTypeMachine.normal">金额</th>
+						<th data-field="sumCount" data-formatter="app.admin.ReportsPayTypeMachine.normal">笔数</th>
+
+
+					    <!--<th data-field="wechatAcount" data-width="80" data-formatter="app.admin.ReportsPayTypeMachine.normal">笔数</th>
+						<th data-field="wechatAmount" data-width="100" data-formatter="app.admin.ReportsPayTypeMachine.moneyFormat">金额(元)</th>
+						
+					    <th data-field="zfbAcount" data-width="80" data-formatter="app.admin.ReportsPayTypeMachine.normal">笔数</th>
+						<th data-field="zfbAmount" data-width="100" data-formatter="app.admin.ReportsPayTypeMachine.moneyFormat">金额(元)</th>
+						
+						<th data-field="bankAcount" data-width="80" data-formatter="app.admin.ReportsPayTypeMachine.normal">笔数</th>
+						<th data-field="bankAmount" data-width="100" data-formatter="app.admin.ReportsPayTypeMachine.moneyFormat">金额(元)</th>
+						
+						<th data-field="cashAcount" data-width="80" data-formatter="app.admin.ReportsPayTypeMachine.normal">笔数</th>
+						<th data-field="cashAmount" data-width="100" data-formatter="app.admin.ReportsPayTypeMachine.moneyFormat">金额(元)</th>
+						
+						<th data-field="unionAcount" data-width="80" data-formatter="app.admin.ReportsPayTypeMachine.normal">笔数</th>
+						<th data-field="unionAmount" data-width="100" data-formatter="app.admin.ReportsPayTypeMachine.moneyFormat">金额(元)</th>
+						
+						<th data-field="yibaoAcount" data-width="80" data-formatter="app.admin.ReportsPayTypeMachine.normal">笔数</th>
+						<th data-field="yibaoAmount" data-width="100" data-formatter="app.admin.ReportsPayTypeMachine.moneyFormat">金额(元)</th>
+						
+						<th data-field="" data-width="100" data-formatter="app.admin.ReportsPayTypeMachine.sumMoneyFormat">总金额(元)</th>-->
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/reports/thridDataSummaryReport.js}"></script>
+<script th:inline="javascript">
+
+var orgCode = [[${orgCode}]];
+var beginTime = [[${beginTime}]];
+var endTime = [[${endTime}]];
+app.admin.ReportsPayTypeMachine.init(orgCode,beginTime, endTime);
+
+</script>

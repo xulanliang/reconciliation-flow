@@ -1,0 +1,10 @@
+.fixed-table-container{
+    height: auto !important;
+	padding-bottom: 0px !important;
+}
+.th-inner{
+	font-weight: bold;
+}
+.tableTitleArea{
+	font-weight: bold;
+}

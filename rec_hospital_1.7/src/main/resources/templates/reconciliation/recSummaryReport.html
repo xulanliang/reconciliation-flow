@@ -1,0 +1,316 @@
+<div class="m-content-wrapper">   <!-- main-box -->
+	<div class="table-content-wrap electron-order" id="electronic-data-div">
+		<form class="form-inline m-search" id="recSummaryReportSearchForm">
+			<div class="row tool-box-content">
+				<div class="form-group">
+					<label class="search-label">机构选择 </label>
+					<div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control"
+							   data-name="code" id="recSummaryReportOrgTree" placeholder="所属机构" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="startTime">汇总日期 </label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input AUTOCOMPLETE="off" type="text" style="width:190px;"
+							class="form-control pull-right" placeholder="汇总日期"
+							name="startTime" id="recSummaryReportRecTime" readonly="readonly">
+					</div>
+				</div>
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary"
+						onclick="app.admin.recSummaryReport.search(this)">查询</button>
+					<button type="button" class="btn btn-success" title="导出汇总数据"
+						onclick="app.admin.recSummaryReport.exportData()">导出</button> 
+				</div>
+			</div>
+		</form>
+		<input type="hidden" th:value="${typesJSON}" id="recSummaryReportType">
+		<input type="hidden" th:value="${orgNo}" id="recSummaryReportOrgNoInit">
+		
+		<div class="row" th:each="billSource:${billSources}">
+			<div class="rec-summarry-report-title" th:text="${billSource.name}+'汇总单'"></div>
+			<table class="table table-bordered table-nomal" 
+					th:id="'recSummaryReportDataTable_'+${billSource.value}"
+				    data-striped="false">
+				<thead>
+				<tr>
+					<th data-field="tradeDate" data-width="8%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.hjFormat">日期
+					</th>
+					<th data-field="hisAmount" data-width="8%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat">HIS应收(元)
+					</th>
+					<th data-field="billSource" data-width="8%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.formatterTypeValue">渠道名称
+					</th>
+					<th data-field="thirdAmount" data-width="8%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat">渠道实收(元)
+					</th>
+					<th data-field="payType" data-sortable="false" data-width="7%"
+						data-formatter="app.admin.recSummaryReport.formatterTypeValue">支付方式
+					</th>
+					<th data-field="hisPayAmount" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat" data-width="8%">应收金额(元)
+					</th>
+					<th data-field="thridPayAmount" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat" data-width="8%">实收金额(元)
+					</th>
+					<th data-field="longAmount" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.longMoneyFormat" data-width="8%">长款金额(元)
+					</th>
+					<th data-field="shortAmount" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.shortMoneyFormat" data-width="8%">短款金额(元)
+					</th>
+					<!-- <th data-field="handleAmount" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat" data-width="8%">应处理金额(元)
+					</th> -->
+				</tr>
+				</thead>
+			</table>
+		</div>
+		<!-- 短款对应长款 -->
+		<div class="modal fade" id="recSummaryReportShortDetail" tabindex="-4"
+			 role="dialog" data-backdrop="false">
+			<div class="modal-dialog" style="width: 1500px">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">&times;</button>
+						<h4 class="modal-title">短款明细汇总</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+						<div class="col-md-7">
+							<table class="table table-bordered table-nomal" data-striped="false"
+								id="recSummaryReportShortDetailTable">
+								<thead>
+									<tr>
+										<th data-field="businessNo" data-width="250" data-sortable="false"
+											data-formatter="app.admin.recSummaryReport.hjFormat">支付方流水号
+										</th>
+										<!-- <th data-field="type" data-sortable="false">异常来源
+										</th> -->
+										<th data-field="payDate" data-sortable="false">支付日期
+										</th>
+										<th data-field="refundDate" data-sortable="false">退款日期
+										</th>
+										<th data-field="refundAmount" data-sortable="false"
+											data-formatter="app.admin.recSummaryReport.moneyFormat">金额(元)
+										</th>
+										<th data-field="payType" data-sortable="false"
+											data-formatter="app.admin.recSummaryReport.formatterTypeValue">支付方式
+										</th>
+									</tr>
+								</thead>
+							</table>
+							</div>
+							<div class="col-md-5">
+							<table class="table table-bordered table-nomal" data-striped="false"
+								id="recSummaryReportShortSummaryTable">
+								<thead>
+									<tr>
+										<th data-field="payDate" data-sortable="false"
+										data-formatter="app.admin.recSummaryReport.hjFormat">支付日期
+										</th>
+										<th data-field="refundDate" data-sortable="false">退款日期
+										</th>
+										<th data-field="refundAmount" data-sortable="false"
+											data-formatter="app.admin.recSummaryReport.moneyFormat">金额(元)
+										</th>
+										<th data-field="payType" data-sortable="false"
+											data-formatter="app.admin.recSummaryReport.formatterTypeValue">支付方式
+										</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 账单汇总表 -->
+		<!-- <div class="row">
+			<div class="rec-summarry-report-title">巨鼎汇总单</div>
+			<table class="table table-bordered table-nomal"
+				   id="recSummaryReportDataTable" data-striped="false">
+				<thead>
+				<tr>
+					<th data-field="tradeDate" data-width="8%" data-sortable="false">日期
+					</th>
+					<th data-field="hisAmount" data-width="8%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat">HIS应收(元)
+					</th>
+					<th data-field="billSource" data-width="8%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.formatterTypeValue">渠道名称
+					</th>
+					<th data-field="thirdAmount" data-width="8%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat">渠道实收(元)
+					</th>
+					<th data-field="payType" data-sortable="false" data-width="7%"
+						data-formatter="app.admin.recSummaryReport.formatterTypeValue">支付方式
+					</th>
+					<th data-field="hisPayAmount" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat" data-width="8%">应收金额(元)
+					</th>
+					<th data-field="thridPayAmount" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat" data-width="8%">实收金额(元)
+					</th>
+					<th data-field="longAmount" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat" data-width="8%">长款金额(元)
+					</th>
+					<th data-field="shortAmount" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat" data-width="8%">短款金额(元)
+					</th>
+					<th data-field="handleAmount" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat" data-width="8%">应处理金额(元)
+					</th>
+				</tr>
+				</thead>
+			</table>
+		</div> -->
+		
+		<!-- 异常账单明细 -->
+		<!-- <div class="row">
+			<div class="rec-summarry-report-title">异常账单明细表</div>
+			<table class="table table-bordered table-nomal"
+				   id="recSummaryReportExceptionTable" data-striped="false">
+				<thead>
+				<tr>
+					<th data-field="businessNo" data-width="13%" data-sortable="false" data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">支付方流水号</th>
+					<th data-field="hisFlowNo" data-sortable="true" data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">HIS流水号</th>
+					<th data-field="paymentAccount" data-width="10%" data-sortable="false">银行卡号</th>
+					<th data-field="payName" data-width="10%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.formatterTypeValue">支付类型</th>
+					<th data-field="tradeName" data-formatter="app.admin.recSummaryReport.formatterTypeValue"
+						data-sortable="false" data-width="8%">交易类型</th>
+					<th data-field="tradeAmount" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat" data-width="10%">交易金额(元)</th>
+					<th data-field="patientName" data-sortable="false" data-width="8%">患者姓名</th>
+					<th data-field="tradeTime" data-sortable="true" data-width="13%">交易时间</th>
+					<th data-field="billSource" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.formatterTypeValue" data-width="8%">渠道名称</th>
+					<th data-field="tradeTime" data-sortable="false" data-width="11%">交易时间</th>
+					<th data-field="checkStateValue"
+						data-formatter="app.admin.recSummaryReport.exceptionState"
+						data-width="6%">状态</th>
+				</tr>
+				</thead>
+			</table>
+		</div> -->
+		
+		
+		<!-- 异常账单汇总 -->
+		<!-- <div class="row">
+			<div class="rec-summarry-report-title">异常账单汇总表</div>
+			<table class="table table-bordered table-nomal"
+				   id="recSummaryReportExceptionSummaryTable" data-striped="false">
+				<thead>
+				<tr>
+					<th data-rowspan="2" data-field="billSource" data-width="10%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.formatterType">类别
+					</th>
+					<th data-rowspan="2" data-field="tradeDate" data-width="7%" data-sortable="false">日期
+					</th>
+					<th data-rowspan="2" data-field="hisPayAmount" data-width="7%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat">HIS应收(元)
+					</th>
+					<th data-rowspan="2" data-field="thridPayAmount" data-width="7%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat">渠道实收(元)
+					</th>
+					
+					<th data-rowspan="1" data-colspan="3" data-field="hisPayAmount" data-align="center" data-sortable="false"
+						data-width="18%">差异金额(元)
+					</th>
+					<th data-rowspan="1" data-colspan="3" data-field="thridPayAmount" data-align="center" data-sortable="false"
+						data-width="18%">当天处理金额(元)
+					</th>
+					<th data-rowspan="1" data-colspan="3" data-field="longAmount" data-align="center" data-sortable="false"
+						data-width="18%">历史待处理金额(元)
+					</th>
+					<th data-rowspan="1" data-colspan="3" data-field="longAmount" data-align="center" data-sortable="false"
+						data-width="18%">当天处理历史金额(元)
+					</th>
+				</tr>
+				<tr>
+					<th data-rowspan="1" data-colspan="1" data-field="allAmount" data-width="8%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat">总计
+					</th>
+					<th data-rowspan="1" data-colspan="1" data-field="longAmount" data-width="8%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat">长款金额
+					</th>
+					<th data-rowspan="1" data-colspan="1" data-field="shortAmount" data-width="8%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat">短款金额
+					</th>
+					<th data-rowspan="1" data-colspan="1" data-field="todayAmount" data-width="8%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat">总计
+					</th>
+					<th data-rowspan="1" data-colspan="1" data-field="todayLongAmount" data-width="8%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat">长款金额
+					</th>
+					<th data-rowspan="1" data-colspan="1" data-field="todayShortAmount" data-width="8%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat">短款金额
+					</th>
+					<th data-rowspan="1" data-colspan="1" data-field="historyUnHandleAmount" data-width="8%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat">总计
+					</th>
+					<th data-rowspan="1" data-colspan="1" data-field="historyUnHandleLongAmount" data-width="8%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat">长款金额
+					</th>
+					<th data-rowspan="1" data-colspan="1" data-field="historyUnHandleShortAmount" data-width="8%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat">短款金额
+					</th>
+					<th data-rowspan="1" data-colspan="1" data-field="todayHistoryAmount" data-width="8%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat">总计
+					</th>
+					<th data-rowspan="1" data-colspan="1" data-field="todayHistoryLongAmount" data-width="8%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat">长款金额
+					</th>
+					<th data-rowspan="1" data-colspan="1" data-field="todayHistoryShortAmount" data-width="8%" data-sortable="false"
+						data-formatter="app.admin.recSummaryReport.moneyFormat">短款金额
+					</th>
+				</tr>
+				</thead>
+			</table>
+		</div> -->
+	</div>
+</div>
+<script type="text/javascript"
+	th:src="@{/assets/lib/table/bootstrap-table-merge-cells.js}"></script>
+<script type="text/javascript"
+	th:src="@{/assets/js/recon/recSummaryReport.js}"></script>
+
+<script th:inline="javascript">
+//获取后台传递的值
+var orgJSON = [[${orgJSON}]];
+var typesJSON=JSON.parse([[${typesJSON}]]);
+var startDate = [[${startDate}]];
+var endDate = [[${endDate}]];
+var billSources = [[${billSources}]];
+app.admin.recSummaryReport.init(orgJSON,startDate, endDate);
+</script>
+<style>
+.bootstrap-table .table:not(.table-condensed) > tbody > tr > td{
+	vertical-align: middle;
+}
+.bootstrap-table .table>thead>tr>th {
+    vertical-align: middle;
+    border-bottom: 1px solid #ddd;
+}
+.rec-summarry-report-title{
+	padding: 10px 0px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+.shortMoneyBtn{
+	cursor: pointer;
+}
+</style>

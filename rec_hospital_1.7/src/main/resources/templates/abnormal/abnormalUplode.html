@@ -1,0 +1,476 @@
+<link rel="stylesheet" href="assets/css/common.css">
+<link rel="stylesheet" href="assets/css/orderAbnormal.css">
+<!-- <script src="../jquery.min.js"></script> -->
+<link rel="stylesheet" href="assets/byStep/byStep.css" />
+<script src="assets/byStep/byStep.js"></script>
+<script src="assets/js/TabNav.js"></script>
+<div class="m-content-wrapper" id="TradeDetailDiv">
+    <div class="table-content-wrap">
+        <form class="form-inline m-search" id="tradeSearchForm">
+          	<div class="row tool-box-content">
+            	<div class="form-group">
+            		<label class="search-label">所属机构：</label><div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control" data-name="orgCode" id="tradeTree" placeholder="所属机构"/>
+			        </div>
+			    </div>
+			   <div class="form-group">
+						<label class="search-label" for="beginTime">选择时间：</label><div class="input-group">
+							<div class="input-group-addon">
+								<i class="fa fa-calendar"></i>
+							</div>
+						  	 <input type="text" class="form-control" style="width: 330px;" onmousemove="this.style.cursor='pointer';"
+		                 		name = "beginTime" id="tradeDetailStartTime" readonly="readonly"/>
+						</div>
+					</div>
+                  <div class="form-group m-btn">
+                  	<button type="button"  class="btn btn-primary"  onclick="app.admin.tradeDetail.search(this)">查询</button>
+                  	<a onclick='app.admin.tradeDetail.exportData()' class="btn btn-success">导出</a>
+	                 <button  th:if="${tradeDetailPullButtonDisplay}" type="button"  class="btn btn-primary"  onclick="app.admin.tradeDetail.pullTradeDetail(this)">拉取</button>
+                  	<a data-toggle="collapse" data-parent="#trade-search-box" href="#trade-search-box"> 高级查询 <i class="fa fa-angle-down"></i></a>
+                  </div>	
+                  <div id="trade-search-box" class="panel-collapse collapse ">
+	                  <div class="more-collapse-plan">
+				        <div class="form-group">
+							<label class="search-label">支付类型：</label><select class="form-control"
+								style="width: 220px" id="tradePayCode"
+								name="tradePayCode"></select>
+						</div>	
+						  <div class="form-group">                   
+		                   	<label  class="search-label">业务类型：</label><select class="form-control" id="payBussinessType" name="payBussinessType"></select>
+		                  </div>
+		                <div class="form-group">
+		                	<label  class="search-label">柜员号：</label><input type="text" class="form-control"  id="deviceNo" name="deviceNo" placeholder="柜员号"/>
+		                </div>
+		                <div class="form-group">
+		                   	<label  class="search-label">流水号：</label><input type="text" class="form-control" id="serialNumber" name="serialNumber" placeholder="支付方流水号/HIS流水号"/>
+		                </div>
+		                 <div class="form-group" style="display:none;">
+		                   	<label  class="search-label">支付方流水号：</label><input type="text" class="form-control" id="paySystemNo" name="paySystemNo" placeholder="支付方流水号"/>
+		                </div>
+		                <div class="form-group" style="display:none;">
+		                   	<label  class="search-label">HIS流水号：</label><input type="text" class="form-control" id="hisOrderNO" name="hisOrderNO" placeholder="HIS流水号"/>
+		                </div>
+		                <div class="form-group">
+		                   	<label  class="search-label">订单状态：</label><select class="form-control" id="orderState" name="orderState"></select>
+		                </div>
+		                <div class="form-group">
+		                   	<label  class="search-label">就诊卡号：</label><input type="text" class="form-control" id="visitNumber" name="visitNumber" placeholder="就诊卡号"/>
+		                </div>
+		                <div class="form-group">
+		                   	<label  class="search-label">患者姓名：</label><input type="text" class="form-control" id="custName" name="custName" placeholder="患者姓名"/>
+		                </div>
+		                <div class="form-group">
+		                   	<label  class="search-label">患者类型：</label><select  class="form-control" id="patType" name="patType" >
+		                   		<option value="">全部</option>
+								<option value="zy">住院</option>
+								<option value="mz">门诊</option>
+		                   	</select>
+		                </div>
+	                </div>
+	            </div>
+           	</div>             
+          </form>
+        <div class="row">
+        	<input type="hidden" id="selectType">
+			<p>
+			<ul class="btn-group tab-nav" id="followTable" default-selected="0" active-class="tradeActive">
+				
+			</ul>
+			</p>
+		</div>
+		<div class="row" id="tradeDetailCount" style="display: none;">
+			<div class="pay-type-amount-box">
+				<div class="pay-type-amount-title-line">
+					<img src="/assets/img/rec/zh-icon.png">
+					<span>总金额</span>
+				</div>
+				<div class="pay-type-amount-line">
+					<span>总金额</span><span id="tradeDetailAllAmount"></span>
+				</div>
+				<div class="pay-type-amount-line">
+	         		<span>支付笔数</span><span id="tradeDetailPayAllNum"></span>
+	         	</div>
+	         	<div class="pay-type-amount-line">
+					<span>退款笔数</span><span id="tradeDetailRefundAllNum"></span>
+				</div>
+			</div>
+			
+         	<div class="pay-type-amount-box">
+         		<div class="pay-type-amount-title-line">
+					<img src="/assets/img/rec/wx.png">
+					<span>微信</span>
+				</div>
+				<div class="pay-type-amount-line">
+					<span >总金额</span><span id="wechatTradeAllAmount"></span>
+				</div>
+				<div class="pay-type-amount-line">
+					<span >支付笔数</span><span id="wechatTradePayAllNum"></span>
+				</div>
+				<div class="pay-type-amount-line">
+	         		<span >退款笔数</span><span id="wechatTradeRefundAllNum"></span>
+	         	</div>
+			</div>
+			
+			<div class="pay-type-amount-box">
+				<div class="pay-type-amount-title-line">
+					<img src="/assets/img/rec/zfb.png">
+					<span>支付宝</span>
+				</div>
+				<div class="pay-type-amount-line">
+					<span >总金额</span><span id="aliTradeAllAmount"></span>
+				</div>
+				<div class="pay-type-amount-line">
+					<span >支付笔数</span><span id="aliTradePayAllNum"></span>
+				</div>
+				<div class="pay-type-amount-line">
+	         		<span >退款笔数</span><span id="aliTradeRefundAllNum"></span>
+	         	</div>
+			</div>
+			
+			<div class="pay-type-amount-box">
+				<div class="pay-type-amount-title-line">
+					<img src="/assets/img/rec/zgyh.png">
+					<span>银行</span>
+				</div>
+				<div class="pay-type-amount-line">
+					<span >总金额</span><span id="bankAllAmount"></span>
+				</div>
+				<div class="pay-type-amount-line">
+					<span >支付笔数</span><span id="bankPayAllNum"></span>
+				</div>
+				<div class="pay-type-amount-line">
+	         		<span >退款笔数</span><span id="bankRefundAllNum"></span>
+	         	</div>
+			</div>
+			
+			<div class="pay-type-amount-box">
+				<div class="pay-type-amount-title-line">
+					<img src="/assets/img/rec/yb-icon.png">
+					<span>医保</span>
+				</div>
+				<div class="pay-type-amount-line">
+					<span >总金额</span><span id="ybAllAmount"></span>
+				</div>
+				<div class="pay-type-amount-line">
+					<span >支付笔数</span><span id="ybPayAllNum"></span>
+				</div>
+				<div class="pay-type-amount-line">
+	         		<span >退款笔数</span><span id="ybRefundAllNum"></span>
+	         	</div>
+			</div>
+			<div class="pay-type-amount-box">
+				<div class="pay-type-amount-title-line">
+					<img src="/assets/img/rec/xj-icon.png">
+					<span>现金</span>
+				</div>
+				<div class="pay-type-amount-line">
+					<span >总金额</span><span id="cashAmount"></span>
+				</div>
+				<div class="pay-type-amount-line">
+					<span >支付笔数</span><span id="cashPayAllNum"></span>
+				</div>
+				<div class="pay-type-amount-line">
+	         		<span >退款笔数</span><span id="cashRefundAllNum"></span>
+	         	</div>
+			</div>
+		</div>  
+        <div class="row">
+        	<input type="hidden" th:value="${orgJSON}" id="tradeOrgNo">
+        	<input type="hidden" th:value="${typesJSON}" id="tradeType">
+        	<input type="hidden" th:value="${org}" id="trade_dataSource">
+        	<input type="hidden" th:value="${hConfig}" id="hConfig">
+        	<input type="hidden" th:value="${isDisplay}" id="tradeDetailIsDisplay">
+			<table class="table table-bordered table-nomal " id="tradeDataTable" data-striped="false" >
+				<thead>
+					<tr>
+						<th data-formatter="app.admin.tradeDetail.number" data-width="4%" class="text-center">序号</th>
+						<th data-field="orgCode" data-sortable="true" data-width="8%" data-formatter="app.admin.tradeDetail.orgFormatter" >机构名称</th>
+						<th data-field="systemFrom" data-sortable="true" data-width="8%" data-formatter="app.admin.tradeDetail.formatter">渠道名称</th>
+						<th data-field="tradeDataTime" data-sortable="true" data-width="8%" data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">交易时间</th>
+						<th data-field="custName" data-sortable="true" data-width="8%">患者姓名</th>
+						<th data-field="payAmount" data-formatter="app.admin.tradeDetail.moneyFormat" data-width="7%" data-sortable="true">金额(元)</th>
+						<th data-field="paySystemNo" data-sortable="true" data-width="11%" data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">支付方流水号</th>
+						<th data-field="payType" data-formatter="app.admin.tradeDetail.formatter" data-width="8%" data-sortable="true">支付类型</th>
+						<th data-field="visitNumber" data-sortable="true" data-width="8%" data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">就诊卡号</th>
+						<th data-field="cashier" data-sortable="true" data-width="7%">柜员号</th> 
+						<th data-field="orderState" data-formatter="app.admin.tradeDetail.formatter" data-width="8%" data-sortable="true">订单状态</th>
+						<th data-field="" data-width="14%" data-align="center" data-formatter="app.admin.tradeDetail.formatOpt">操作</th>
+						</tr>
+					</thead>
+				</table>
+		  </div>
+	</div>
+</div>
+
+<!-- 加载模块  -->
+<div class="modal fade" id="pullTradeDetailModal" tabindex="-1" role="dialog" 
+	aria-labelledby="myModalLabel" data-backdrop='static'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="pullTradeDetailModalLabel">提示</h4>
+      </div>
+      <div class="modal-body">
+        	正在拉取his交易明细，预计需要几分钟，请稍后...
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="tradeDedailedDlg" tabindex="-1" role="dialog" data-backdrop=true>
+	<div class="modal-dialog" style="width:40%;min-width:900px;">
+		<div class="modal-content order-abnormal" >
+			<div class="abnormal border ">
+				 <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title">订单详情</h4>
+					</div> 
+				<!-- <p class="toast-title background">订单详情</p> -->
+				<div class="abnormal-text">
+					<div class="text-title" >
+						<div class="title-right block-center-v">
+							<p class="abnormal-title">交易异常</p>
+							<p class="title"></p>
+						</div>
+					</div>
+					<ul class="detail">
+						<li id="step-bar" class="step-card"></li>
+						<li class=" detail-card">
+							<p class="detail-title">HIS订单信息<span data-name="his_titleState" style="color:red;"></span></p>
+							<ul class="detail-list-plan">
+								<li class="detail-text">
+									<div class="detail-text-list ">
+										<p class="list-left">患者姓名：</p>
+										<p class="list-right" data-name="his_patientName"></p>
+									</div>
+									<div class=" detail-text-list">
+										<p class="list-left">患者类型：</p>
+										<p class="list-right" data-name="his_patientType"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left" style="text-align: right">支付流水号：</p>
+										<p class="list-right" data-name="his_payNo"></p>
+									</div>
+								</li>
+								<li class="detail-text">
+									<div class=" detail-text-list">
+										<p class="list-left" style="text-align: right">支付类型：</p>
+										<p class="list-right" data-name="his_payType"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">订单状态：</p>
+										<p class="list-right" data-name="his_orderState"></p>
+									</div>
+								</li>
+								<li class="detail-text">
+									<div class="detail-text-list">
+										<p class="list-left">交易时间：</p>
+										<p class="list-right" data-name="his_tradeTime"></p>
+									</div>
+									<div class="detail-text-list ">
+										<p class="list-left">交易金额：</p>
+										<p class="list-right" data-name="his_tradeAmount"></p>
+									</div>
+									<!-- <div class=" detail-text-list">
+										<p class="list-left">交易时间：</p>
+										<p class="list-right" data-name="his_tradeTime"></p>
+									</div> -->
+								</li>
+								<li class="detail-text">
+									<div class="detail-text-list ">
+										<p class="list-left" style="text-align: right">病人号：</p>
+										<p class="list-right" data-name="his_patientNo"></p>
+									</div>
+									<div class=" detail-text-list">
+										<p class="list-left" style="text-align: right">HIS流水号：</p>
+										<p class="list-right" data-name="his_hisNo"></p>
+									</div>
+								</li>
+								<!-- <li class="detail-text">
+									<div class="detail-text-list ">
+										<p class="list-left">交易金额：</p>
+										<p class="list-right" data-name="his_tradeAmount"></p>
+									</div> 
+									
+								</li>-->
+							</ul>
+						</li>
+						<li class=" detail-card">
+							<p class="detail-title">平台订单信息</p>
+							<ul class="detail-list-plan">
+								<li class="detail-text">
+									<div class="detail-text-list ">
+										<p class="list-left" style="text-align: right">交易订单号：</p>
+										<p class="list-right" data-name="orderNo"></p>
+									</div>
+									<div class=" detail-text-list">
+										<p class="list-left" style="text-align: right">交易金额：</p>
+										<p class="list-right" data-name="payAmount"></p>
+									</div>
+								</li>
+								<li class="detail-text">
+									<div class="detail-text-list ">
+										<p class="list-left">订单状态：</p>
+										<p class="list-right" data-name="orderState"></p>
+									</div>
+									<div class=" detail-text-list">
+										<p class="list-left">业务类型：</p>
+										<p class="list-right" data-name="payBusinessType"></p>
+									</div>
+								</li>
+								<li class="detail-text">
+									<div class="detail-text-list ">
+										<p class="list-left" style="text-align: right">支付类型：</p>
+										<p class="list-right" data-name="payType"></p>
+									</div>
+									<div class=" detail-text-list">
+										<p class="list-left" style="text-align: right">收费员：</p>
+										<p class="list-right" data-name="cashier"></p>
+									</div>
+								</li>
+							</ul>
+						</li>
+						<li class=" detail-card" hidden="true" id="refundInfo">
+							<p class="detail-title">退款信息</p>
+							<ul class="detail-list clear-float">
+								<table class="table table-bordered table-nomal" id="refundTable" data-striped="false">
+									<thead>
+										<tr>
+											<th data-field="refundOrderNo" data-sortable="true" data-width=39.3%>退款流水号</th>
+											<th data-field="refundAmount" data-sortable="true" data-width=19.7%>退款金额(元)</th>
+											<th data-field="refundDateTime" data-sortable="true" data-width= 39.3%>退款时间</th>
+										</tr>
+									</thead>
+								</table>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<div class="toast-bottom">
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="tradeRefundDlg" tabindex="-4" role="dialog"
+	data-backdrop="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">退费操作</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" id="refundForm"
+					enctype="multipart/form-data">
+					<input type="text" name="id" style="display: none;"/> 
+					<input type="text" name="orderNo" style="display: none;"/>
+					<input type="text" name="payCode" style="display: none;"/>
+					<!-- 退款金额 -->
+					<input type="text" name="tradeAmount" id="tradeTradeAmountt" style="display: none;"/>
+					<!-- 订单金额 -->
+					<input type="text" name="payAmount" id="payAmount" style="display: none;" />
+					<input type="text" id="tradeBillSource" name="billSource" style="display: none;"/>
+					<input type="text" id="tradePayType" name="tradePayType" style="display: none;"/>
+					<input type="text" name="state" style="display: none;" value="0"/>
+					<input type="text" name="payBusinessType" style="display: none;"/>
+					<input type="text" name="outTradeNo" style="display: none;"/>
+					<input type="text" name="tradeDataTime" style="display: none;"/>
+					<!-- 发票号 -->
+					<input type="text" name="invoiceNo" style="display: none;"/>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">退费原因:</label>
+						<div class="col-sm-10">
+							<textarea rows="4" class="form-control" cols="40" name="reason"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">退款金额:</label>
+						<div class="col-sm-10">
+							<input type="number" onkeyup="app.admin.tradeDetail.numExt(this)" size="10" class="form-control" id="tradeRefundAmountt">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">退款类型:</label>
+						<div class="col-sm-10">
+							<select class="form-control" name="refundType" id="refundType">
+								<option value="1">原路径退回</option>
+								<option value="2">线下现金退回</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">上传图片:</label>
+						<div class="col-sm-10">
+							<input type="file" name="file" />
+							<lable>仅支持图片</lable>
+						</div>
+					</div>
+					<div id="tradeCashier" class="form-group" style="display: none;">
+						<label class="col-sm-2 control-label">操作员:</label>
+						<div class="col-sm-10">
+							<input type="text" id="tradeCashierId" class="form-control" name="cashier"/>
+						</div>
+					</div>
+					<div id="tradeCounterNo" class="form-group" style="display: none;">
+						<label class="col-sm-2 control-label">终端号:</label>
+						<div class="col-sm-10">
+							<input type="text" id="tradeCounterNoId" class="form-control"  name="counterNo" />
+						</div>
+					</div>
+					<div id="tradeBocNo" class="form-group" style="display: none;">
+						<label class="col-sm-2 control-label">流水号:</label>
+						<div class="col-sm-10">
+							<input type="text" id="tradeBocNoId" class="form-control"  name="bocNo" />
+						</div>
+					</div>
+					<div id="tradeSqm" class="form-group" style="display: none;">
+						<label class="col-sm-2 control-label">授权码:</label>
+						<div class="col-sm-10">
+							<input type="text" id="tradeSqmId" class="form-control" name="sqm"/>
+						</div>
+					</div>
+					<div id="tradePjh" class="form-group" style="display: none;">
+						<label class="col-sm-2 control-label">票据号:</label>
+						<div class="col-sm-10">
+							<input type="text" id="tradePjhId" class="form-control" name="pjh"/>
+						</div>
+					</div>
+					<div id="tradeSysNo" class="form-group" style="display: none;">
+						<label class="col-sm-2 control-label">系统订单号:</label>
+						<div class="col-sm-10">
+							<input type="text" id="tradeSysNoId" class="form-control"  name="sysNo" />
+						</div>
+					</div>
+					<!-- <div class="form-group">
+						<lable class="col-sm-12 control-label"
+							style="color:red;text-align:center;">温馨提示：只能退费接入巨鼎的订单。</lable>
+					</div> -->
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="refundButton"
+					onclick="app.admin.tradeDetail.refundButton()">处理</button>
+			</div>
+		</div>
+	</div>
+</div>
+	
+<script type="text/javascript" th:src="@{/assets/js/admin/abnormalUplode.js}"></script>
+<script th:inline="javascript">
+ var accountDate = [[${accountDate}]];
+ var date = [[${date}]];
+ var orgCode = [[${orgCode}]];
+ var orderState = [[${orderState}]];
+ app.admin.tradeDetail.init(accountDate,date,orgCode,orderState);
+</script>
+<script>
+</script>

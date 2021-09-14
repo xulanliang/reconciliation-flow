@@ -1,0 +1,79 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row tool-box-content">
+               <form class="form-inline" id="unionPaySourceReportsSearchForm">
+                   <div class="form-group">
+               	   		<label>所属机构:</label>
+	                   <div class="form-group">
+	                       <input type="text" style="width:280px;" class="form-control" data-name="orgCode" id="unionPaySourceOrgSelect"/>
+	                   </div>
+               	   </div>
+               	   <div class="form-group">
+						<div class="form-group">
+							<label>选择日期:</label>
+						</div>
+						<div class="input-group">
+							<input type="text" class="form-control" style="width: 220px;" onmousemove="this.style.cursor='pointer';"
+							id="unionPaySourceTime" readonly="readonly"/>
+						</div>
+					</div>
+                   <div class="form-group m-btn">
+                     <button type="button" class="btn btn-primary" onclick="app.admin.ReportsUnionPaySource.search(this)">查询</button>
+                     <button type="button" class="btn btn-success" onclick="app.admin.ReportsUnionPaySource.exportList()">导出</button>
+                   </div>
+               </form>
+        </div>
+		<div class="row">
+			<div class="tableTitleArea"><span style="font-size: 18px;">系统来源银联汇总报表</span></div>
+			<table class="table table-bordered table-nomal" id="unionPaySourceReportsDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-valign="middle" data-width="1200" colspan="13" name="tableTitle" class="tableExcelDisplayArea"></th>
+					</tr>
+					<tr class="success">
+						<th data-valign="middle" data-width="100">&nbsp;</th>
+						<th data-valign="middle" data-width="200" colspan="2" >挂号</th>
+						<th data-valign="middle" data-width="200" colspan="2" >预约挂号</th>
+						<th data-valign="middle" data-width="200" colspan="2" >缴费</th>
+						<th data-valign="middle" data-width="200" colspan="2" >门诊充值</th>
+						<th data-valign="middle" data-width="200" colspan="2" >住院预交金</th>
+						<th data-valign="middle" data-width="200" colspan="2" >其他</th>
+					</tr>
+					
+					<tr>
+						<th data-field="businessType" data-formatter="app.admin.ReportsUnionPaySource.formatter">系统来源</th>
+						
+					    <th data-field="registerAcount" data-width="80" data-formatter="app.admin.ReportsUnionPaySource.normal">笔数</th>
+						<th data-field="registerAmount" data-width="100" data-formatter="app.admin.ReportsUnionPaySource.moneyFormat">金额(元)</th>
+						
+					    <th data-field="makeAppointmentAcount" data-width="80" data-formatter="app.admin.ReportsUnionPaySource.normal">笔数</th>
+						<th data-field="makeAppointmentAmount" data-width="100" data-formatter="app.admin.ReportsUnionPaySource.moneyFormat">金额(元)</th>
+						
+						<th data-field="payAcount" data-width="80" data-formatter="app.admin.ReportsUnionPaySource.normal">笔数</th>
+						<th data-field="payAmount" data-width="100" data-formatter="app.admin.ReportsUnionPaySource.moneyFormat">金额(元)</th>
+						
+						<th data-field="clinicAcount" data-width="80" data-formatter="app.admin.ReportsUnionPaySource.normal">笔数</th>
+						<th data-field="clinicAmount" data-width="100" data-formatter="app.admin.ReportsUnionPaySource.moneyFormat">金额(元)</th>
+						
+						<th data-field="prepaymentForHospitalizationAcount" data-width="80" data-formatter="app.admin.ReportsUnionPaySource.normal">笔数</th>
+						<th data-field="prepaymentForHospitalizationAmount" data-width="100" data-formatter="app.admin.ReportsUnionPaySource.moneyFormat">金额(元)</th>
+						
+						<th data-field="" data-width="80" data-formatter="app.admin.ReportsUnionPaySource.otherAcount">笔数</th>
+						<th data-field="" data-width="100" data-formatter="app.admin.ReportsUnionPaySource.otherAmount">金额(元)</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/reports/syssource/unionPaySourceReports.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/reports.css}">
+<script th:inline="javascript">
+
+var orgCode = [[${orgCode}]];
+var beginTime = [[${beginTime}]];
+var endTime = [[${endTime}]];
+var typesJSON = [[${typesJSON}]];
+app.admin.ReportsUnionPaySource.init(orgCode, typesJSON, beginTime, endTime);
+
+</script>

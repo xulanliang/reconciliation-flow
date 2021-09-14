@@ -1,0 +1,62 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<div class="row tool-box-content">
+			<form class="form-inline" id="summaryStatisticalReportsSearchForm">
+				<div class="form-group">
+					<input type="text" style="width: 280px;" class="form-control" data-name="code" id="summaryStatisticalReportsTree" placeholder="所属机构" />
+				</div>
+				<div class="form-group">
+					<label for="beginTime">开始时间:</label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input type="text" class="form-control pull-right" placeholder="开始时间" name="beginTime">
+					</div>
+					<label for="endTime">结束时间:</label>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input type="text" class="form-control pull-right" placeholder="结束时间" name="endTime">
+					</div>
+				</div>
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary" onclick="app.admin.summaryStatisticalReports.search()">查询</button>
+					<button type="button" class="btn btn-primary" onclick="app.admin.summaryStatisticalReports.exportJasper()">打印</button>
+				</div>
+			</form>
+		</div>
+
+		<div class="row">
+			<input type="hidden" th:value="${orgJSON}" id="hisPayDedailedOrgNo">
+			<input type="hidden" th:value="${typesJSON}" id="hisPayDedailedType">
+			<table class="table table-bordered table-nomal " id="summaryStatisticalReportsDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-formatter="app.admin.summaryStatisticalReports.number">序号</th>
+						<th data-field="tradeDatatime">账单时间</th>
+						<th data-field="orgNo" data-formatter="app.admin.summaryStatisticalReports.orgFormatter">机构名称</th>
+						<th data-field="payBusinessType" data-formatter="app.admin.summaryStatisticalReports.formatter">业务类型</th>
+						<th data-field="payType" data-formatter="app.admin.summaryStatisticalReports.formatter">支付类型</th>
+						<th data-field="paySource" data-formatter="app.admin.summaryStatisticalReports.formatter">支付来源</th>
+						<th data-field="payTermNo">终端号</th>
+						<th data-field="deviceNo">设备编码</th>
+						<th data-field="custName">客户名称</th>
+						<th data-field="custIdentifyType" data-formatter="app.admin.summaryStatisticalReports.formatter">客户标识</th>
+						<th data-field="payFlowNo">支付方流水号</th>
+						<th data-field="payAccount">支付账号</th>
+						<th data-field="payAmount" data-formatter="app.admin.summaryStatisticalReports.moneyFormat">金额(元)</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/reports/summaryStatisticalReports.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/reports.css}">
+<script th:inline="javascript">
+	//获取后台传递的值
+	var accountDate = [[${accountDate}]];
+	app.admin.summaryStatisticalReports.init(accountDate);
+</script>

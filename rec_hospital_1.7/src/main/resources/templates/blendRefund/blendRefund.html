@@ -1,0 +1,138 @@
+<div class="m-content-wrapper">
+	<div class="table-content-wrap">
+		<form class="form-inline m-search" id="blendRefundSearchForm">
+			<div class="row tool-box-content">
+				<div class="form-group">
+					<label class="search-label">所属机构：</label>
+					<div class="form-group no-margin">
+						<input type="text" style="width: 220px;" class="form-control"
+							data-name="code" id="blendRefundTree" placeholder="所属机构" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="search-label" for="beginTime">开始时间：</label><div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<!-- <input type="text" id="blendRefundStartTime"  name="beginTime"
+						  onmousemove="this.style.cursor='pointer';" class="form-control pull-right" th:value="${accountDate+' 00:00:00'}"
+						  onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'blendRefundEndTime\')}'})"> -->
+						<input type="text" class="form-control" style="width: 330px;" onmousemove="this.style.cursor='pointer';"
+							id="blendRefundTime" readonly="readonly"/>
+					</div>
+				</div>
+				<!-- <div class="form-group">
+					<label class="search-label" for="endTime">结束时间：</label><div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input type="text" id="blendRefundEndTime" name="endTime"
+						 onmousemove="this.style.cursor='pointer';" class="form-control pull-right" th:value="${accountDate+' 23:59:59'}"
+						 onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'blendRefundStartTime\')}'})">
+					</div>
+				</div>  -->
+				<div class="form-group m-btn">
+					<button type="button" class="btn btn-primary"
+						onclick="app.admin.blendRefund.search()">查询</button>
+					<!-- <button id="btn_add" type="button" class="btn btn-success"
+						onclick="app.admin.blendRefund.exportData()">导出</button> -->
+					<a data-toggle="collapse" data-parent="#blendRefund-search-box" href="#blendRefund-search-box"> 高级查询 <i class="fa fa-angle-down"></i></a>
+				</div>
+				
+				<div id="blendRefund-search-box" class="panel-collapse collapse ">
+					<div class="form-group">
+						<label class="search-label">业务类型：</label>
+						<select class="form-control" id="payBussinessType"
+							name="payBussinessType"></select>
+					</div>
+					<div class="form-group">
+						<label class="search-label">收费员：</label><input type="text"
+							class="form-control" id="cashier" name="cashier"
+							placeholder="收费员" />
+					</div>
+					<div class="form-group">
+						<label class="search-label">退款业务订单号：</label><input type="text"
+							class="form-control" id="refundOrderNo"
+							name="refundOrderNo" placeholder="退款业务订单号" />
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="row">
+			<input type="hidden" th:value="${orgJSON}" id="blendRefundOrgNo"> <input type="hidden"
+				th:value="${typesJSON}" id="blendRefundType">
+			<table class="table table-bordered table-nomal " id="blendRefundDataTable" data-striped="false">
+				<thead>
+					<tr>
+						<th data-field="orgCode" data-sortable="true" data-formatter="app.admin.blendRefund.orgFormatter">机构名称</th>
+						<th data-field="refundDateTime"  data-sortable="true">退款时间</th>
+						<th data-field="refundOrderNo"  data-sortable="true">退款业务订单号</th>		
+						<th data-field="refundAmount" data-sortable="true" data-formatter="app.admin.blendRefund.moneyFormat">退款金额(元)</th>
+						<th data-field="settlementType" data-sortable="true" data-formatter="app.admin.blendRefund.formatter">结算方式</th>
+						<th data-field="payBusinessType"  data-sortable="true" data-formatter="app.admin.blendRefund.formatter">业务类型</th>
+						<th data-field="cashier"  data-sortable="true">收费员</th>
+						<th data-field="refundStrategy"  data-sortable="true" data-formatter="app.admin.blendRefund.refundStrategy">策略</th>
+						<th data-field="" data-width="100" data-align="center" data-formatter="app.admin.blendRefund.formatOpt">操作</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="blendRefundDlg" tabindex="-1" role="dialog" data-backdrop="false">
+	<div class="modal-dialog" style="width: 50%;min-width: 630px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">详情</h4>
+			</div>
+			<div class="modal-body m-form-detail-body">
+				<div>
+					<h4>支付订单</h4>
+				</div>
+				<table class="table table-bordered table-nomal " id="blendPayOrderTable" data-striped="false">
+					<thead>
+						<tr>
+							<th data-field="tsnOrderNo"  data-sortable="true">支付方流水号</th>		
+							<th data-field="hisOrderNo"  data-sortable="true">HIS流水号</th>
+							<th data-field="payAmount" data-sortable="true" data-formatter="app.admin.blendRefund.moneyFormat">支付金额(元)</th>
+							<th data-field="payType"  data-sortable="true" data-formatter="app.admin.blendRefund.formatter">支付类型</th>
+							<th data-field="billSource"  data-sortable="true" data-formatter="app.admin.blendRefund.formatter">渠道名称</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div class="modal-body m-form-detail-body">
+				<div>
+					<h4>退款记录</h4>
+				</div>
+				<table class="table table-bordered table-nomal " id="refundRecordTable" data-striped="false">
+					<thead>
+						<tr>
+							<th data-field="tsnOrderNo">支付方流水号</th>		
+							<th data-field="refundOrderNo">HIS流水号</th>
+							<th data-field="payAmount" data-formatter="app.admin.blendRefund.moneyFormat">原支付金额(元)</th>
+							<th data-field="refundAmount" data-formatter="app.admin.blendRefund.moneyFormat">退款金额(元)</th>
+							<th data-field="refundState"  data-formatter="app.admin.blendRefund.refundState">退款状态</th>
+							<th data-field="refundCount">退款次数</th>
+							<th data-field="refundStateInfo" data-formatter="app.admin.toolsUtils.columnEllipsisFormatter">退款详情</th>
+							<th data-formatter="app.admin.blendRefund.refundFormat">操作</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" th:src="@{/assets/js/blendRefund/blendRefund.js}"></script>
+<script th:inline="javascript">
+ // 获取后台传递的值
+ var accountDate = [[${accountDate}]];
+ app.admin.blendRefund.init(accountDate);
+</script>

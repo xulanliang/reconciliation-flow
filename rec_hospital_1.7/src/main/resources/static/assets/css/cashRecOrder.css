@@ -1,0 +1,530 @@
+@charset "UTF-8";
+.electron-order {
+  /*分段：结束*/
+  /*收入金额*/
+  /*总收入*/
+  /*详细收入*/
+  /*用户导航信息*/
+  /*付款方式*/
+  /*左边样式*/
+  /*右边样式*/
+  /*自助机-窗口*/ }
+  #electronicTable{
+  	margin-bottom: 10px;
+  	overflow: hidden;
+  }
+  .electron-order .segment3 {
+    padding: 20px 0;
+    white-space: nowrap; }
+  .electron-order .segmen3::after {
+    content: "";
+    display: block;
+    clear: both; }
+  .electron-order .segment3 > * {
+    float: left;
+    height: 100%;
+    position: relative;
+    /* 兼容子元素的定位布局 */
+    /* width: 48%; */
+/*     width: 33%; */
+    width: 25%;
+    /* width 的值应为: segNum/100 */
+    border-color: #dde4e9;
+    border-width: 1px;
+    border-style: none none none solid; }
+  .electron-order .segment3 > *:first-child {
+    border-left-style: none; }
+  .electron-order .electron {
+    position: relative;
+    margin: 20px auto;
+    height: 125px;
+    /*删除*/ 
+	margin-left: -15px; }
+  .electron-order .electron-total {
+    width: 210px;
+    height: 100%;
+    float: left;
+    margin-right: 10px; }
+  .electron-order .total-left {
+    width: 100%;
+    height: 100%; }
+  .electron-order .electron li {
+    height: 100%; }
+  .electron-order .separator {
+    height: 10px;
+    background-image: url(../img/rec/triangle_up.png), url(../img/rec/line_h.png);
+    background-repeat: no-repeat,no-repeat;
+    background-size: auto 10px,100% 1px;
+    background-position: 81px top,left 9px;
+    margin: 0 -15px; }
+  .electron-order .total-left li {
+    width: 100%;
+    padding: 20px; }
+  .electron-order .electron .first {
+    margin-bottom: 13px; }
+
+
+  .electron-order .electron .second {
+    font-size: 18px;
+    margin-bottom: 18px;
+  }
+
+
+	
+
+  .electron-order .total-right {
+    height: 100%;
+    float: left;
+    position: relative;
+     width: 900px;
+    /* width: 480px; */ }
+  .electron-order .total-text {
+    padding-left: 30px; }
+
+
+.electron-order .total-text .title.first {
+  margin-bottom: 20px;
+}
+
+
+.electron-order .total-text .title {
+  margin-bottom: 6px;
+}
+.pay-type-list-box{
+  display: flex;
+  align-items: center; 
+  margin: 35px -15px 20px; 
+  border-bottom: 1px solid #dde4e9;
+}
+.pay-type-list-content{
+  flex: 1;
+  overflow: hidden;
+  margin: 0 15px;
+}
+.electron-order .user-nav {
+  line-height: 40px;
+  font-size: 14px;
+  white-space: nowrap;
+  margin: 0px;
+}
+#cashRecBillSourceRight,
+#cashRecBillSourceLeft{
+	cursor: pointer;
+	display: none;
+}
+#cashRecBillSourceLeft:HOVER,
+#cashRecBillSourceRight:HOVER{
+	opacity: 0.8;
+}
+#cashRecBillSourceRight.disable,
+#cashRecBillSourceLeft.disable{
+	opacity: 0.2;
+	cursor:not-allowed;
+}
+.electron-order .total-right .total-text>title {
+  margin-bottom: 6px;
+}
+
+
+  .electron-order .form-inline .form-group{
+  	margin: 8px 40px 6px 0px;
+  }
+  .electron-order .form-inline .form-group label{
+	min-width: auto;
+  }
+  .electron-order .user-nav li {
+   	cursor: pointer;
+    height: 100%;
+    margin-right:50px;
+    display:inline-block;
+    position: relative;
+  }
+  .electron-order .user-nav li:last-child{
+  	margin-right: 20px;
+  }
+  .electron-order .user-nav li.color-link::after{
+  	content:' ';
+  	border-bottom: 3px solid #3071ea;
+  	max-width: 40px;
+  	position: absolute;
+  	bottom: 0;
+  	left: 0;
+  	right:0;
+  	margin: 0 auto;
+  }
+  .hisCashRec-badge{
+  	position: absolute;
+  	margin-left: 5px;
+  	background: #ec639f;
+    padding: 0 3px;
+    min-width: 16px;
+    line-height: 16px;
+    top:5px;
+  }
+  
+  .electron-order .pay-methods .pay-text {
+    position: relative;
+    margin-top: 17px;
+    margin-left: 20px; }
+  
+  .electron-order .pay-title {
+    height: 18px;
+    font-size: 14px;
+    line-height: 18px;
+    color: #333333;
+    background-size: 18px 18px;
+    background-repeat: no-repeat;
+    background-position: left;
+    padding-left: 28px;
+    margin-bottom: 15px; }
+  .electron-order .wx {
+    background-image: url("../img/rec/wx.png"); }
+  .electron-order .zfb {
+    background-image: url("../img/rec/zfb.png"); }
+  .electron-order .zgyh {
+    background-image: url("../img/rec/zgyh.png"); }
+  .electron-order .jhzf {
+    background-image: url("../img/rec/jhzf.png"); }
+  .electron-order .zh {
+    background-image: url("../img/rec/zh-icon.png"); }
+  .electron-order .ybzf {
+    background-image: url("../img/rec/yb-icon.png"); }
+  .electron-order .pay-list {
+    width: 100%;
+    height: 14px;
+    line-height: 14px;
+    font-size: 14px;
+    color: #8084a7;
+    margin-bottom: 19px;
+    position: relative; }
+  .electron-order .pay-left {
+    width: 50%;
+    float: left;
+    height: 100%; }
+  .electron-order .pay-right {
+    width: 50%;
+    float: left;
+    height: 100%;
+    color: #333333;
+    font-weight: bold;
+
+  }
+  .electron-order .cash-list {
+    /*width: 300px;*/
+    height: 120px;
+    float: left;
+    position: relative; }
+  .electron-order .list-content {
+    height: 100%; }
+  .electron-order .cash-list .left {
+    width: 58px;
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 40px;
+    position: relative; }
+    
+    .electron-order .cash-list .cashcircle-allamount {
+    background-image: url("../img/rec/cash-hz.png"); }
+  .electron-order .cash-list .cashcircle-his {
+    background-image: url("../img/rec/cash-mz.png"); }
+  .electron-order .cash-list .cashcircle-dif {
+    background-image: url("../img/rec/cash-zy.png"); }
+    
+    
+  .electron-order .cash-list .cashcircle {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    /* background: #12ce8a; */
+    /* background-image: url("../img/rec/ssz.png"); */
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); }
+  .electron-order .cash-list .right {
+    display: inline-block;
+    vertical-align: middle; }
+  .electron-order .right .title {
+    margin-bottom: 10px; }
+  .electron-order .cash-list .num {
+    color: #333333;
+    font-size: 20px; }
+  .electron-order .self-service {
+    width: 1600px;
+    height: 225px;
+    margin: 30px auto; }
+  .electron-order .self-service .left .content {
+    padding-left: 10px; }
+  .electron-order .line {
+    width: 2em;
+    height: 4px;
+    background: #3071ea;
+    margin-top: 5px;
+    margin-bottom: 15px; }
+  .electron-order .earning {
+    width: 100%; }
+  .electron-order .earning li {
+    width: 33.3%;
+    float: left; }
+  .electron-order .earning-title {
+    width: 60px;
+    height: 24px;
+    background: #dde4e9;
+    border-radius: 20px;
+    line-height: 24px;
+    text-align: center;
+    margin-bottom: 20px; }
+  .electron-order .earning-list {
+    width: 100%;
+    margin-bottom: 10px; }
+  .electron-order .earning-left {
+    width: 60%;
+    display: inline-block; }
+  .electron-order .earning-right {
+    width: 39%;
+    display: inline-block; }
+  .electron-order .self-service .right .content {
+    padding-left: 20px; }
+
+/*# sourceMappingURL=electronOrder.css.map */
+
+
+
+.hisCashRec-pay-methods-box{
+	margin: 0 -15px;
+	margin-bottom: 20px;
+}
+.electron-order .pay-methods {
+    position: relative;
+    margin: 0px;
+    /* box-shadow:3px 3px 10px 0px #e9eef2; */
+  }
+  .electron-order .pay-methods li {
+    height: 100%;
+    border-top: 1px solid #dde4e9;
+    padding: 14px 0;
+    display: flex;
+    align-items: center;
+  }
+.hisCashRec-pay-methods-sum{
+	background: #f5faff;
+	/* box-shadow:3px 3px 10px 0px #e9eef2; */
+	padding: 14px 0;
+	display: flex;
+    align-items: center;
+    position: relative;
+    min-height: 120px;
+}
+.pay-type-more-box{
+	position: absolute;
+	left: 50%;
+	bottom: 5px;
+	font-size: 12px;
+	cursor: pointer;
+    transform: translateX(-50%);
+}
+.pay-type-more-box .more-arrow{
+	color: #c3ceea;
+	margin-right: 5px;
+	display: inline-block;
+}
+.pay-type-more-box .pay-type-more-text{
+	color:#b0b4c5;
+}
+.hisCashRec-pay-methods-item .text{
+	color: #333;
+	font-family: PingFang-SC-Bold;	
+}
+
+.hisCashRec-pay-methods-item:not(.pay-method-icon) .text{
+	font-size: 16px;
+}
+.hisCashRec-pay-methods-item .text.err{
+	color:#ec639f;
+}
+.hisCashRec-pay-methods-sum .hisCashRec-pay-methods-item:not(.pay-method-icon){
+	flex:1;
+}
+.hisCashRec-pay-methods-item-bar .electron-err + .hisCashRec-pay-methods-item:not(.pay-method-icon):last-child{
+	flex:0.8;
+}
+.hisCashRec-pay-methods-item img{
+	margin-bottom: 8px;
+}
+.hisCashRec-pay-methods-item .title{
+	color: #9fa2bb;
+	margin-bottom: 8px;
+}
+.hisCashRec-pay-methods-item.pay-method-icon{
+	text-align: center;
+	min-width: 100px;
+	margin-right: 30px;
+	width: 200px;
+}
+.pay-method-icon .pay-type-0049{
+	content:url(/assets/img/hisCashRec/b-xj-icon.png);
+}
+.pay-method-icon .pay-type-0149{
+	content:url(/assets/img/hisCashRec/yhk-icon.png);
+}
+.pay-method-icon .pay-type-0249{
+	content:url(/assets/img/hisCashRec/wx-icon.png);
+}
+.pay-method-icon .pay-type-0349{
+	content:url(/assets/img/hisCashRec/zfb-icon.png);
+}
+.pay-method-icon .pay-type-1649{
+	content:url(/assets/img/hisCashRec/b-jhzf-icon.png);
+}
+.pay-method-icon .pay-type-0559{
+	content:url(/assets/img/hisCashRec/b-yb-icon.png);
+}
+.hisCashRec-pay-methods-item .text,
+.hisCashRec-pay-methods-item .title{
+	display: block;
+}
+.hisCashRec-pay-methods-diff{
+	display: inline-block;
+	height: 100%;
+    vertical-align: middle;
+}
+.hisCashRec-pay-methods-diff-item{
+	display: inline-block;
+	border-left:1px solid #dde4e9;
+	height: 100%;
+	padding-left: 30px;
+	width: 220px;
+}
+.hisCashRec-pay-methods-item-box{
+	vertical-align: middle;
+	flex:1;
+	display: flex;
+	flex-direction: column;
+}
+.hisCashRec-pay-methods-diff-item-box:FIRST-CHILD{
+	margin-bottom: 15px;
+}
+.hisCashRec-pay-methods-diff-item-box .text{
+	display: block;
+	color: #333;
+	font-family: PingFang-SC-Bold;
+	font-size: 16px;
+}
+.hisCashRec-pay-methods-diff-item-box .text.err{
+	color: #ec639f;
+}
+.hisCashRec-pay-methods-diff-item-box .title {
+	color: #9fa2bb;
+	display:block;
+	margin-bottom: 8px;
+}
+.hisCashRec-pay-methods-box-item{
+	display: flex;
+}
+.hisCashRec-pay-methods-box-item:FIRST-CHILD{
+	margin-bottom: 15px;
+}
+.hisCashRec-pay-methods-item-bar{
+	display: flex;
+	flex:1;
+}
+.hisCashRec-pay-methods-box-item .hisCashRec-pay-methods-item{
+	flex:0.8;
+	margin-right:0; 
+}
+.hisCashRec-pay-methods-box-item .hisCashRec-pay-methods-item:FIRST-CHILD{
+	flex:1;
+}
+
+.hisCashRec-diff-err{
+	color: white;
+	display: inline-block;
+	margin-left: 10px;
+	vertical-align: middle;
+	background: #ec639f;
+	padding: 2px 5px;
+	margin-top:-4px;
+}
+.hisCashRec-pay-methods-diff-item-box .hisCashRec-diff-err,
+.hisCashRec-pay-methods-item .hisCashRec-diff-err{
+	display: none;
+}
+.electron-err .hisCashRec-diff-err{
+	display: inline-block;
+}
+.electron-err .text{
+	color:#ec639f;
+}
+@media screen and (max-width: 1600px){
+	.hisCashRec-pay-methods-item.pay-method-icon{
+		width: 180px;
+	}
+}
+@media screen and (max-width: 1400px){
+	.hisCashRec-pay-methods-item.pay-method-icon{
+		width: 150px;
+	}
+}
+@media screen and (max-width: 1470px) {
+	.hisCashRec-pay-methods-item-bar{
+		flex-direction: column;
+	}
+	.hisCashRec-pay-methods-item-bar:nth-child(2){
+		flex:0.8;
+	}
+	.hisCashRec-pay-methods-item-bar .hisCashRec-pay-methods-item:first-child{
+		margin-bottom: 15px;
+	}
+}
+@media screen and (max-width: 1300px){
+	.hisCashRec-pay-methods-item.pay-method-icon{
+		width: 100px;
+	}
+	.hisCashRec-pay-methods-item-box{
+		flex-direction: row;
+	}
+	.hisCashRec-pay-methods-sum .hisCashRec-pay-methods-item:not(.pay-method-icon){
+		flex:1;
+	}
+	.hisCashRec-pay-methods-box-item{
+		min-width:140px;
+	}
+	.hisCashRec-pay-methods-box-item:FIRST-CHILD{	
+    	margin-bottom: 0px;
+	}
+	.hisCashRec-pay-methods-box-item {
+		flex-direction: column;
+    	flex: 1;
+	}
+	.hisCashRec-pay-methods-box-item .hisCashRec-pay-methods-item{
+		display: block;
+		margin-bottom: 30px;
+	}
+	.hisCashRec-pay-methods-box-item .hisCashRec-pay-methods-item:last-child{
+		margin-bottom: 0px;
+	}
+}
+@media screen and (max-width: 1190px){
+	.hisCashRec-pay-methods-diff-item{
+		display: block;
+	}
+	.hisCashRec-pay-methods-diff-item:after{
+	    content:' ';
+		display: block;
+		border-bottom: 1px solid #dde4e9;
+	}
+	.hisCashRec-pay-methods-diff-item:LAST-CHILD:after{
+		border-bottom:0;
+	}
+	.hisCashRec-pay-methods-diff-item:FIRST-CHILD .hisCashRec-pay-methods-diff-item-box:LAST-CHILD {
+		margin-bottom: 10px;
+	}
+	.hisCashRec-pay-methods-diff-item:LAST-CHILD .hisCashRec-pay-methods-diff-item-box:FIRST-CHILD {
+		padding-top: 10px;
+	}
+}
+@media screen and (max-width: 960px){
+	.hisCashRec-pay-methods-item.pay-method-icon{
+		margin-right: 0px;
+	}
+}
